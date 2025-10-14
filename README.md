@@ -80,7 +80,6 @@ A plataforma oferecerá acesso a informações atualizadas sobre **campeonatos i
 | CSU13 | Manifestar interesse em iniciativa esportiva | Aluno |
 | CSU14 | Visualizar notícias esportivas | Visitante |
 | CSU15 | Logar no sistema | Aluno |
-| CSU16 | Entrar como visitante | Visitante |
 
 ---
 
@@ -88,7 +87,7 @@ A plataforma oferecerá acesso a informações atualizadas sobre **campeonatos i
 
 | Sprint | Casos de Uso Planejados | Objetivo Geral |
 |---------|--------------------------|----------------|
-| **Sprint 1 – Estrutura base e páginas públicas** | CSU01, CSU04, CSU06, CSU13, CSU14, CSU15, CSU16 | Criar a base do sistema, autenticação, páginas iniciais e navegação pública. |
+| **Sprint 1 – Estrutura base e páginas públicas** | CSU01, CSU04, CSU06, CSU13, CSU14, CSU15 | Criar a base do sistema, autenticação, páginas iniciais e navegação pública. |
 | **Sprint 2 – Funcionalidades administrativas e de conteúdo** | CSU02, CSU03, CSU05, CSU08, CSU09 | Implementar as funções administrativas, cadastro e envio de notificações. |
 | **Sprint 3 – Integração e funcionalidades completas** | CSU07, CSU10, CSU11, CSU12 | Finalizar funcionalidades restantes, integrar módulos e revisar o sistema. |
 

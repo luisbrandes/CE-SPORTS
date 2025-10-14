@@ -14,9 +14,9 @@ A plataforma oferecerá acesso a informações atualizadas sobre **campeonatos i
 | Integrante | Função / Foco |
 |-------------|----------------|
 | **Luís** | Líder de projeto — autenticação, integração e controle de acesso |
-| **Mariana** | Gestão de campeonatos e resultados |
-| **Miguel** | Projetos esportivos e gerenciamento de treinos |
+| **Miguel** | Gestão de campeonatos e resultados |
 | **Rúbia** | Comunicação e conteúdo (notícias e notificações) |
+| **Mariana** | Projetos esportivos e gerenciamento de treinos |
 | **Ísis** | Interação do aluno e engajamento |
 
 ---
@@ -28,6 +28,36 @@ A plataforma oferecerá acesso a informações atualizadas sobre **campeonatos i
 | **Aluno** | Membro da comunidade acadêmica que acompanha campeonatos, projetos e treinos, podendo manifestar interesse em iniciativas esportivas. |
 | **Administrador** | Responsável por cadastrar, editar e gerenciar informações esportivas (campeonatos, projetos, treinos, notícias). |
 | **Visitante** | Usuário que acessa o sistema sem login, com permissão apenas de visualização. |
+
+---
+
+## ⚙️ Requisitos Funcionais
+
+| Código | Ator | Descrição |
+|---------|------|-----------|
+| **REQ001** | Aluno | Visualizar tabelas, resultados e classificações dos campeonatos internos. |
+| **REQ002** | Aluno | Consultar horários e locais de treinos dos projetos esportivos. |
+| **REQ003** | Aluno | Receber notificações e atualizações sobre eventos esportivos. |
+| **REQ004** | Administrador | Cadastrar e editar informações sobre campeonatos, treinos e equipes. |
+| **REQ005** | Visitante | Acessar informações públicas sobre campeonatos e projetos esportivos. |
+| **REQ006** | Aluno | Demonstrar interesse em iniciativas esportivas cadastradas no sistema. |
+| **REQ007** | Aluno / Administrador | Logar no sistema para autenticação e identificação. |
+| **REQ008** | Visitante | Utilizar o sistema sem realizar login. |
+
+---
+
+## 🧩 Regras de Negócio
+
+| Código | Nome | Descrição |
+|---------|------|-----------|
+| **RN001** | Veracidade das informações | Todas as informações cadastradas devem ser verificadas e aprovadas pelo administrador. |
+| **RN002** | Participação em projetos | Apenas alunos regularmente matriculados podem se inscrever em projetos esportivos. |
+| **RN003** | Atualização de resultados | Resultados de jogos só podem ser atualizados após confirmação oficial da administração. |
+| **RN004** | Interesse esportivo válido | Apenas alunos autenticados podem manifestar interesse em iniciativas esportivas. |
+| **RN005** | Acesso limitado ao visitante | Visitantes podem apenas visualizar informações públicas, sem realizar interações. |
+| **RN006** | Atualização de projetos | Apenas administradores podem alterar informações sobre projetos esportivos. |
+| **RN007** | Logar no sistema | O login deve ser realizado apenas por alunos ou discentes vinculados ao CEFET-MG. |
+| **RN008** | Exibição de modo de acesso | Ao entrar no site, deve ser oferecida a opção entre logar ou entrar como visitante. |
 
 ---
 
@@ -56,36 +86,13 @@ A plataforma oferecerá acesso a informações atualizadas sobre **campeonatos i
 
 ## 🚀 Planejamento de Implementação (3 Sprints)
 
-| Sprint | Integrante | Casos de Uso | Objetivo |
-|---------|-------------|--------------|-----------|
-| **Sprint 1 – Estrutura base e páginas públicas** | **Luís** | CSU15 (Logar no sistema), CSU16 (Entrar como visitante) | Criar sistema de login, autenticação e controle de sessão. |
-|  | **Mariana** | CSU04 (Visualizar classificação de equipes) | Exibir classificação de times e resultados iniciais. |
-|  | **Miguel** | CSU01 (Visualizar horários e locais de treino) | Criar tela e lógica para exibir treinos e locais. |
-|  | **Rúbia** | CSU14 (Visualizar notícias esportivas) | Exibir notícias esportivas no site. |
-|  | **Ísis** | CSU13 (Manifestar interesse em iniciativa esportiva) | Implementar formulário e registro de interesse. |
+| Sprint | Casos de Uso Planejados | Objetivo Geral |
+|---------|--------------------------|----------------|
+| **Sprint 1 – Estrutura base e páginas públicas** | CSU01, CSU04, CSU06, CSU13, CSU14, CSU15, CSU16 | Criar a base do sistema, autenticação, páginas iniciais e navegação pública. |
+| **Sprint 2 – Funcionalidades administrativas e de conteúdo** | CSU02, CSU03, CSU05, CSU08, CSU09 | Implementar as funções administrativas, cadastro e envio de notificações. |
+| **Sprint 3 – Integração e funcionalidades completas** | CSU07, CSU10, CSU11, CSU12 | Finalizar funcionalidades restantes, integrar módulos e revisar o sistema. |
 
 ---
-
-| Sprint | Integrante | Casos de Uso | Objetivo |
-|---------|-------------|--------------|-----------|
-| **Sprint 2 – Funcionalidades administrativas e de conteúdo** | **Luís** | CSU06 (Pesquisar eventos esportivos) | Criar barra de pesquisa e filtragem de eventos. |
-|  | **Mariana** | CSU09 (Cadastrar novo campeonato) | CRUD de campeonatos e gerenciamento de dados. |
-|  | **Miguel** | CSU03 (Criação de projeto esportivo) | Implementar cadastro de novos projetos esportivos. |
-|  | **Rúbia** | CSU05 (Enviar notificações aos usuários) | Permitir envio e controle de notificações. |
-|  | **Ísis** | CSU08 (Ver informações de participação) | Exibir status de participação do aluno nos projetos. |
-
----
-
-| Sprint | Integrante | Casos de Uso | Objetivo |
-|---------|-------------|--------------|-----------|
-| **Sprint 3 – Integração, histórico e aperfeiçoamentos** | **Luís** | Integração geral e revisão final | Integrar módulos, testar e corrigir falhas gerais. |
-|  | **Mariana** | CSU07 (Inscrição e monitoramento de time), CSU11 (Consultar histórico de jogos) | Permitir inscrição e histórico detalhado de jogos. |
-|  | **Miguel** | CSU10 (Editar dados de treino), CSU12 (Remover projeto esportivo) | Implementar edição e exclusão de projetos. |
-|  | **Rúbia** | CSU02 (Atualizar informações esportivas) | Atualizar e manter dados de campeonatos e treinos. |
-|  | **Ísis** | Melhorias de interface e usabilidade | Refinar UX, formulários e notificações. |
-
----
-
 
 ## 🌿 Estrutura de Branches
 

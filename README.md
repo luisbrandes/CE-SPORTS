@@ -15,8 +15,8 @@ A plataforma oferecerá acesso a informações atualizadas sobre **campeonatos i
 |-------------|----------------|
 | **Luís** | Líder de projeto — autenticação, integração e controle de acesso |
 | **Miguel** | Gestão de campeonatos e resultados |
-| **Rúbia** | Comunicação e conteúdo (notícias e notificações) |
-| **Mariana** | Projetos esportivos e gerenciamento de treinos |
+| **Rúbia** | Projetos esportivos e gerenciamento de treinos |
+| **Mariana** |  Comunicação e conteúdo (notícias e notificações)|
 | **Ísis** | Interação do aluno e engajamento |
 
 ---

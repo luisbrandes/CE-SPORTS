@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliar e Aprovar Projetos - CE Sports</title>
+  <link rel="stylesheet" href="../css/style.css">
+ 
+</head>
+
+<body>
+  <header>
+    
+    <div class="logo">CE Sports</div>
+    <span class="menu-toggle" id="menuToggle">☰</span>
+    <nav id="navbar">
+      <a href="/adm-pages/index-adm.html">Home</a>
+      <a href="/adm-pages/projetos-adm.html">Projetos</a>
+      <a>Administrador</a>
+      <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2 class="titulo-pagina">📋 Avaliar e Aprovar Propostas</h2>
+    <p class="subtitulo-pagina">
+      Veja as propostas de novos projetos esportivos enviadas pelos alunos.  
+      Você pode aprová-las ou recusá-las com base nas avaliações.
+    </p>
+
+    <section class="cards-avaliar">
+      <!-- Card 1 -->
+      <div class="card-avaliar">
+        <div class="card-info">
+          <h3>Projeto Corrida CEFET</h3>
+          <p><strong>Proposto por:</strong> João Pedro - 2º ano Redes</p>
+          <p><strong>Descrição:</strong> Criação de grupo de corrida semanal para incentivar o bem-estar e a saúde dos alunos.</p>
+          <div class="avaliacao">
+            <span class="estrelas-avaliadas">⭐⭐⭐⭐☆</span>
+            <span class="media">4.0 / 5</span>
+          </div>
+        </div>
+        <div class="acoes">
+          <button class="btn-aprovar">✅ Aprovar</button>
+          <button class="btn-recusar">❌ Recusar</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-avaliar">
+        <div class="card-info">
+          <h3>Projeto Vôlei Comunitário</h3>
+          <p><strong>Proposto por:</strong> Mariana Costa - 3º ano Mecatrônica</p>
+          <p><strong>Descrição:</strong> Iniciativa para treinos abertos de vôlei aos sábados, integrando alunos e servidores.</p>
+          <div class="avaliacao">
+            <span class="estrelas-avaliadas">⭐⭐⭐⭐⭐</span>
+            <span class="media">5.0 / 5</span>
+          </div>
+        </div>
+        <div class="acoes">
+          <button class="btn-aprovar">✅ Aprovar</button>
+          <button class="btn-recusar">❌ Recusar</button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-avaliar">
+        <div class="card-info">
+          <h3>Projeto Xadrez Educativo</h3>
+          <p><strong>Proposto por:</strong> Lucas Almeida - 1º ano Informática</p>
+          <p><strong>Descrição:</strong> Torneios mensais de xadrez para estimular o raciocínio lógico e a interação entre turmas.</p>
+          <div class="avaliacao">
+            <span class="estrelas-avaliadas">⭐⭐⭐☆☆</span>
+            <span class="media">3.0 / 5</span>
+          </div>
+        </div>
+        <div class="acoes">
+          <button class="btn-aprovar">✅ Aprovar</button>
+          <button class="btn-recusar">❌ Recusar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CE Sports - CEFET-MG</p>
+  </footer>
+
+ 
+</body>
+
+</html>

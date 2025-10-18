@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Notícias - CE Sports</title>
+  <link rel="stylesheet" href="../css/style.css">
+ 
+</head>
+
+<body>
+  <header>
+        
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="/adm-pages/index-adm.html">Home</a>
+            <a href="/adm-pages/noticias-adm.html">Notícias</a>
+            <a>Administrador</a>
+            <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+        </nav>
+    </header>
+
+  <main class="container">
+    <h2 class="titulo-pagina">📰 Gerenciamento de Notícias</h2>
+    <p class="subtitulo-pagina">Veja abaixo todas as notícias cadastradas. Você pode editar ou excluir qualquer uma delas.</p>
+
+    <section class="cards-campeonatos">
+      <!-- Notícia 1 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Times do CEFET brilham na Copa Calouro</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Data:</strong> 10/03/2025</p>
+        <p><strong>Autor:</strong> Equipe CE Sports</p>
+        <p class="descricao">
+          A Copa Calouro 2025 começou com jogos empolgantes e torcida animada! Destaque para o time de Engenharia, que venceu sua estreia por 3x1.
+        </p>
+      </div>
+
+      <!-- Notícia 2 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Projeto de Atletismo abre novas vagas</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Data:</strong> 25/04/2025</p>
+        <p><strong>Autor:</strong> Prof. Carlos Mendes</p>
+        <p class="descricao">
+          O projeto de atletismo do CEFET-MG está com novas vagas abertas para alunos interessados em corrida e salto em distância. Inscrições até 10/05!
+        </p>
+      </div>
+
+      <!-- Notícia 3 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Nova quadra poliesportiva é inaugurada</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Data:</strong> 03/05/2025</p>
+        <p><strong>Autor:</strong> Diretoria de Esportes</p>
+        <p class="descricao">
+          O campus BH recebeu uma nova quadra poliesportiva com piso emborrachado e cobertura, pronta para sediar torneios internos e regionais.
+        </p>
+      </div>
+
+      <!-- Notícia 4 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Alunos representam o CEFET em torneio estadual</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Data:</strong> 18/06/2025</p>
+        <p><strong>Autor:</strong> Comunicação CE Sports</p>
+        <p class="descricao">
+          As equipes de vôlei e futsal do CEFET-MG conquistaram medalhas de prata e bronze no torneio estadual estudantil, realizado em Uberaba.
+        </p>
+      </div>
+
+      <!-- Notícia 5 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Campanha “Movimente-se CEFET” começa este mês</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Data:</strong> 02/07/2025</p>
+        <p><strong>Autor:</strong> Coordenação Esportiva</p>
+        <p class="descricao">
+          A campanha incentiva alunos e servidores a participarem de atividades físicas semanais, com foco em bem-estar e integração.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CE Sports - CEFET-MG</p>
+  </footer>
+
+  <script>
+    // Funções simuladas de edição e exclusão
+    document.querySelectorAll('.btn-editar').forEach(btn => {
+      btn.addEventListener('click', () => alert('Função de edição de notícia em desenvolvimento!'));
+    });
+
+    document.querySelectorAll('.btn-deletar').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm('Tem certeza que deseja excluir esta notícia?')) {
+          btn.closest('.card-campeonato').remove();
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

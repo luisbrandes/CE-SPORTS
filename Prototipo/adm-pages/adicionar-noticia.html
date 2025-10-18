@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Notícia - CE Sports</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <header>
+    
+    <div class="logo">CE Sports</div>
+    <span class="menu-toggle" id="menuToggle">☰</span>
+    <nav id="navbar">
+      <a href="/adm-pages/index-adm.html">Home</a>
+      <a href="/adm-pages/noticias-adm.html">Notícias</a>
+      <a>Administrador</a>
+      <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+    </nav>
+  </header>
+
+  <main class="form-container">
+    <div class="form-card">
+      <h2>📰 Publicar Nova Notícia</h2>
+      <p class="form-subtitle">Preencha as informações abaixo para adicionar uma nova notícia esportiva ao sistema.</p>
+
+      <form action="#" method="post" enctype="multipart/form-data" class="form-campeonato">
+        <div class="form-group">
+          <label for="titulo">Título da Notícia</label>
+          <input type="text" id="titulo" name="titulo" placeholder="Ex: CEFET vence torneio intercampi!" required>
+        </div>
+
+        <div class="form-group">
+          <label for="autor">Autor</label>
+          <input type="text" id="autor" name="autor" placeholder="Ex: Mariana Oliveira" required>
+        </div>
+
+        <div class="form-group">
+          <label for="dataPublicacao">Data de Publicação</label>
+          <input type="date" id="dataPublicacao" name="dataPublicacao" required>
+        </div>
+
+        <div class="form-group">
+          <label for="imagem">Imagem da Notícia</label>
+          <input type="file" id="imagem" name="imagem" accept="image/*">
+          <small>Formatos aceitos: .jpg, .png, .jpeg</small>
+        </div>
+
+        <div class="form-group">
+          <label for="descricao">Resumo</label>
+          <textarea id="descricao" name="descricao" rows="3"
+            placeholder="Breve resumo do conteúdo da notícia..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="conteudo">Conteúdo Completo</label>
+          <textarea id="conteudo" name="conteudo" rows="7"
+            placeholder="Digite aqui o texto completo da notícia..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Publicar Notícia</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CE Sports - CEFET-MG</p>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CE Sports - CEFET-MG</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <header>
+
+    <div class="logo">CE Sports</div>
+    <span class="menu-toggle" id="menuToggle">☰</span>
+    <nav id="navbar">
+      <a href="campeonatos-aluno.html">Campeonatos</a>
+      <a href="projetos-aluno.html">Projetos</a>
+      <a href="noticias-alunos.html">Notícias</a>
+      <a class="user-info">Aluno</a>
+      <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+    </nav>
+  </header>
+
+  <section class="banner">
+    <div class="banner-content">
+      <h1>Participação, Esporte e Comunidade no CEFET-MG</h1>
+      <p>Clique em Login para acessar como Aluno ou Administrador — explore os Campeonatos, Treinos, Projetos e Notícias.</p>
+    </div>
+  </section>
+
+  <section class="cards-container fade-in">
+    <div class="card" onclick="location.href='campeonatos-aluno.html'">
+      <div class="card-icon">🏆</div>
+      <div class="card-title">Campeonatos</div>
+      <div class="card-desc">Resultados, inscrições e classificações</div>
+    </div>
+    <div class="card" onclick="location.href='projetos-aluno.html'">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Projetos</div>
+      <div class="card-desc">Horários, objetivos e equipes envolvidas</div>
+    </div>
+    <div class="card" onclick="location.href='noticias-alunos.html'">
+      <div class="card-icon">📰</div>
+      <div class="card-title">Notícias</div>
+      <div class="card-desc">Últimas informações do esporte no campus</div>
+    </div>
+  </section>
+
+    <section class="card-explicativo">
+  <h2>Sobre o CE Sports ⚽</h2>
+  <p>
+    O <strong>CE Sports</strong> é o sistema esportivo oficial do <strong>CEFET-MG</strong>,
+    criado para integrar alunos, professores e a comunidade acadêmica nas atividades esportivas da instituição.
+  </p>
+  <p>
+    Aqui você pode <strong>acompanhar campeonatos</strong>, <strong>participar de projetos esportivos</strong>,
+    e <strong>ficar por dentro das últimas notícias</strong> sobre o esporte no CEFET-MG.
+  </p>
+  <p>
+    Seja você um atleta, um organizador ou apenas um torcedor, o CE Sports foi feito para conectar você ao esporte!
+  </p>
+</section>
+
+  <section class="preview-section fade-in" id="campeonatos">
+    <h2>Campeonatos em Andamento</h2>
+    <div class="preview-cards">
+      <div class="preview-card">
+        <h3>Copa Caloura 2025</h3>
+        <p>Fase de grupos em andamento. Confira os resultados e próximos jogos.</p>
+        <button class="btn-outline">Ver mais</button>
+      </div>
+      <div class="preview-card">
+        <h3>Interturmas 2025</h3>
+        <p>Times das turmas do 2º ano competindo nas quadras do CEFET-MG.</p>
+        <button class="btn-outline">Ver mais</button>
+      </div>
+      <div class="preview-card">
+        <h3>Torneio de Vôlei</h3>
+        <p>Campeonato misto com equipes de diferentes cursos. Semifinais chegando!</p>
+        <button class="btn-outline">Ver mais</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="preview-section fade-in" id="noticias">
+    <h2>Últimas Notícias</h2>
+    <div class="news-container">
+      <article class="news-item">
+        <h3>Equipe de Futsal conquista vitória emocionante</h3>
+        <p>O time do CEFET-MG venceu o rival por 3x2 na prorrogação. Veja os melhores momentos da partida e os próximos desafios.</p>
+        <a href="#" class="read-more">Ler mais →</a>
+      </article>
+      <article class="news-item">
+        <h3>Novos horários de treinos disponíveis</h3>
+        <p>Os projetos esportivos divulgaram os novos horários para o segundo semestre. Confira e participe!</p>
+        <a href="#" class="read-more">Ler mais →</a>
+      </article>
+      <article class="news-item">
+        <h3>Projeto de corrida atrai alunos de vários cursos</h3>
+        <p>Mais de 100 estudantes participaram do evento de corrida realizado no campus Nova Suíça. Conheça a iniciativa!</p>
+        <a href="#" class="read-more">Ler mais →</a>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 CE Sports — CEFET-MG | Todos os direitos reservados
+  </footer>
+
+  <script src="aluno.js"></script>
+  
+</body>
+</html>

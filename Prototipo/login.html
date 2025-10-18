@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - CE Sports</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Estilos específicos para a página de login */
+    body {
+      background: linear-gradient(135deg, var(--azul-escuro), var(--azul-claro));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--branco);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-card h1 {
+      color: var(--azul-escuro);
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    .login-card h2 {
+      color: var(--texto-escuro);
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+    }
+
+    .login-type {
+      background: var(--cinza-claro);
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: var(--azul-escuro);
+    }
+
+    .login-card form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .login-card input {
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .login-card input:focus {
+      border-color: var(--azul-claro);
+      outline: none;
+    }
+
+    .login-card button[type="submit"] {
+      background: var(--azul-claro);
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .login-card button[type="submit"]:hover {
+      background: var(--azul-escuro);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 2px solid var(--azul-claro);
+      color: var(--azul-claro);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--azul-claro);
+      color: white;
+    }
+
+    .link {
+      display: block;
+      margin: 15px 0;
+      color: var(--azul-claro);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .link:hover {
+      color: var(--azul-escuro);
+      text-decoration: underline;
+    }
+
+    .admin-login {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .admin-login .link {
+      color: var(--dourado);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <h1>CE Sports</h1>
+    <h2>Login</h2>
+    
+    <div class="login-type" id="loginTypeDisplay">
+      <!-- Será preenchido via JavaScript -->
+    </div>
+
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="E-mail" required />
+      <input type="password" id="password" placeholder="Senha" required />
+      <button type="submit" id="submitBtn">Entrar</button>
+    </form>
+
+    <div class="admin-login" id="adminLoginSection" style="display: none;">
+      <a href="#" class="link" onclick="switchToAdmin()">↳ Acessar como Administrador</a>
+    </div>
+
+    <a href="cadastro.html" class="link">Não tem conta? Cadastre-se</a>
+    <a href="index.html" class="link">← Voltar para o site</a>
+  </div>
+
+  <script>
+    // Aplica o tema ao carregar
+    function applyTheme() {
+      const theme = localStorage.theme || "light";
+      document.documentElement.setAttribute("data-theme", theme);
+      const btn = document.querySelector('.theme-toggle');
+      if (btn) btn.textContent = theme === "dark" ? "🌙" : "🌞";
+    }
+
+    // Alterna entre claro e escuro
+    function toggleTheme() {
+      localStorage.theme = localStorage.theme === "dark" ? "light" : "dark";
+      applyTheme();
+    }
+
+    // Mostra seção de admin para usuários alunos
+    function switchToAdmin() {
+      localStorage.setItem('loginType', 'admin');
+      updateLoginDisplay();
+    }
+
+    // Atualiza a exibição do tipo de login
+    function updateLoginDisplay() {
+      const loginType = localStorage.getItem('loginType') || 'aluno';
+      const display = document.getElementById('loginTypeDisplay');
+      const adminSection = document.getElementById('adminLoginSection');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (loginType === 'admin') {
+        display.textContent = '🔐 Login como Administrador';
+        display.style.background = 'var(--dourado)';
+        display.style.color = 'var(--azul-escuro)';
+        adminSection.style.display = 'none';
+        submitBtn.textContent = 'Entrar como Administrador';
+        submitBtn.style.background = 'var(--dourado)';
+        submitBtn.style.color = 'var(--azul-escuro)';
+      } else {
+        display.textContent = '👤 Login como Aluno';
+        display.style.background = 'var(--cinza-claro)';
+        display.style.color = 'var(--azul-escuro)';
+        adminSection.style.display = 'block';
+        submitBtn.textContent = 'Entrar como Aluno';
+        submitBtn.style.background = 'var(--azul-claro)';
+        submitBtn.style.color = 'white';
+      }
+    }
+
+    // Processa o formulário de login
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const loginType = localStorage.getItem('loginType') || 'aluno';
+
+      // Simulação de autenticação
+      if (email && password) {
+        if (loginType === 'admin') {
+          // Login como administrador
+          localStorage.role = 'Administrador';
+          localStorage.greeting = 'Bem-vindo, Administrador!';
+          window.location.href = 'adm-pages/index-adm.html';
+        } else {
+          // Login como aluno
+          localStorage.role = 'Aluno';
+          localStorage.greeting = 'Bem-vindo, Aluno!';
+          window.location.href = 'aluno-pages/index-aluno.html';
+        }
+      } else {
+        alert('Por favor, preencha todos os campos.');
+      }
+    });
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+      applyTheme();
+      updateLoginDisplay();
+    });
+  </script>
+</body>
+</html>

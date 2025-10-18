@@ -1,0 +1,1382 @@
+/* ===================== */
+/* 🎨 PALETA DE CORES */
+:root {
+  --azul-escuro: #002147;
+  --azul-claro: #0055A4;
+  --cinza-claro: #F4F4F4;
+  --branco: #FFFFFF;
+  --dourado: #FFD700;
+  --texto-escuro: #333333;
+}
+
+/* ===================== */
+/* RESET E BASE */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: var(--texto-escuro);
+  background-color: var(--cinza-claro);
+  line-height: 1.6;
+  padding-top: 60px;
+  /* Adicionado para compensar o header fixo */
+}
+
+section,
+main {
+  padding: 40px 20px;
+  /* Reduzido o padding superior */
+  margin: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===================== */
+/* HEADER */
+header {
+  background-color: var(--azul-escuro);
+  color: var(--branco);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: var(--branco);
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+nav a:hover {
+  background-color: var(--azul-claro);
+}
+
+.btn-login {
+  background-color: #007BFF;
+  color: var(--branco);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #0056b3;
+}
+
+/* ===================== */
+/* BANNER */
+.banner {
+  /* REMOVIDO: margin-top: 60px; */
+  height: 60vh;
+  background: url("../img/banner1.jpg") center center / cover no-repeat;
+  position: relative;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.banner-content {
+  position: relative;
+  color: var(--branco);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.banner-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  animation: fadeInUp 1s ease;
+}
+
+.banner-content p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  animation: fadeInUp 1.5s ease;
+}
+
+/* ===================== */
+/* CARDS */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 40px 20px;
+  max-width: 1100px;
+  margin: auto;
+  position: relative;
+  /* Adicionado */
+  z-index: 1;
+  /* Adicionado */
+}
+
+.card {
+  background-color: var(--branco);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 25px 15px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: var(--azul-claro);
+}
+
+.card-title {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* ===================== */
+/* SEÇÕES DE PRÉVIA */
+.preview-section {
+  padding: 40px 20px;
+  max-width: 1100px;
+  margin: auto;
+  position: relative;
+  /* Adicionado */
+  z-index: 1;
+  /* Adicionado */
+}
+
+.preview-section h2 {
+  color: var(--azul-escuro);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.preview-cards,
+.news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.preview-card,
+.news-item {
+  background: var(--branco);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.preview-card:hover,
+.news-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline {
+  margin-top: 10px;
+  border: 2px solid var(--azul-claro);
+  background: none;
+  color: var(--azul-claro);
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background-color: var(--azul-claro);
+  color: var(--branco);
+}
+
+.read-more {
+  color: var(--azul-claro);
+  font-weight: bold;
+}
+
+/* ===================== */
+/* MODAL LOGIN */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: var(--branco);
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.2rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.btn-aluno {
+  background-color: var(--azul-claro);
+  color: var(--branco);
+}
+
+.btn-admin {
+  background-color: var(--dourado);
+  color: var(--azul-escuro);
+}
+
+/* ===================== */
+/* RODAPÉ */
+footer {
+  background-color: var(--azul-escuro);
+  color: var(--branco);
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+/* ===================== */
+/* ANIMAÇÕES */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s, transform 0.8s;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===================== */
+/* RESPONSIVIDADE */
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    background-color: var(--azul-escuro);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+  }
+
+  nav.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+    color: var(--branco);
+  }
+
+  /* Ajustes responsivos para as seções */
+  section,
+  main {
+    padding: 30px 15px;
+  }
+
+  .preview-section {
+    padding: 30px 15px;
+  }
+
+  .cards-container {
+    padding: 20px 15px;
+  }
+}
+
+
+/* ===================== */
+/* ESTILOS ADICIONAIS OPCIONAIS */
+
+/* Tabelas (classificação e treinos) */
+.tabela-classificacao {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--branco);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabela-classificacao th {
+  background-color: var(--azul-claro);
+  color: var(--branco);
+  text-align: left;
+  padding: 12px;
+}
+
+.tabela-classificacao td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabela-classificacao tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Botão de voltar */
+.btn-voltar {
+  display: inline-block;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  color: var(--azul-claro);
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.btn-voltar:hover {
+  color: var(--azul-escuro);
+}
+
+/* ===================== */
+/* 🔐 MODAL LOGIN (melhorado visualmente) */
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.modal-content {
+  background: var(--branco);
+  border-radius: 16px;
+  padding: 40px 30px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+  opacity: 0;
+  animation: popIn 0.4s ease forwards;
+}
+
+.modal-content h2 {
+  color: var(--azul-escuro);
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 25px;
+}
+
+/* Botões de escolha */
+.modal-content button {
+  display: inline-block;
+  width: 70%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-aluno {
+  background-color: var(--azul-claro);
+  color: var(--branco);
+}
+
+.btn-admin {
+  background-color: var(--dourado);
+  color: var(--azul-escuro);
+}
+
+/* Efeitos de hover e clique */
+.modal-content button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.modal-content button:active {
+  transform: scale(0.98);
+}
+
+/* Botão de fechar */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.modal-close:hover {
+  color: var(--azul-claro);
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===================== */
+/* BOTÃO DE SAIR */
+.btn-logout {
+  background-color: #dc3545;
+  color: var(--branco);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 10px;
+}
+
+.btn-logout:hover {
+  background-color: #c82333;
+}
+
+.user-info {
+  color: var(--dourado);
+  font-weight: bold;
+  padding: 8px 12px;
+}
+
+/* Ajuste para mobile */
+@media (max-width: 768px) {
+  .btn-logout {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .user-info {
+    margin-top: 10px;
+  }
+}
+
+/* ============================
+   FORMULÁRIO DE CAMPEONATO
+============================ */
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px);
+  background: var(--background, #f3f4f6);
+  padding: 40px 20px;
+  margin: auto;
+}
+
+.form-card {
+  background: #fff;
+  max-width: 700px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  padding: 40px 50px;
+  transition: all 0.3s ease;
+}
+
+.form-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.form-card h2 {
+  text-align: center;
+  color: #222;
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+}
+
+.form-subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0077ff;
+  box-shadow: 0 0 5px rgba(0, 119, 255, 0.3);
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.btn-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #0077ff, #0057d9);
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, #0057d9, #003da3);
+  transform: scale(1.02);
+}
+
+@media (max-width: 600px) {
+  .form-card {
+    padding: 30px 20px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* ============================
+   GERENCIAMENTO DE CAMPEONATOS
+============================ */
+
+.container {
+  padding: 40px 20px;
+  background: var(--background, #f3f4f6);
+  min-height: calc(100vh - 150px);
+}
+
+.titulo-pagina {
+  text-align: center;
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 5px;
+}
+
+.subtitulo-pagina {
+  text-align: center;
+  color: #666;
+  margin-bottom: 40px;
+  font-size: 1rem;
+}
+
+.cards-campeonatos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.card-campeonato {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  padding: 25px 30px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-campeonato:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.card-header h3 {
+  font-size: 1.3rem;
+  color: #0077ff;
+  margin: 0;
+}
+
+.card-campeonato p {
+  margin: 6px 0;
+  color: #444;
+}
+
+.card-campeonato .descricao {
+  color: #555;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-editar,
+.btn-deletar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-editar:hover {
+  color: #0077ff;
+  transform: scale(1.15);
+}
+
+.btn-deletar:hover {
+  color: #e63946;
+  transform: scale(1.15);
+}
+
+@media (max-width: 600px) {
+  .card-campeonato {
+    padding: 20px;
+  }
+}
+
+
+/* ============================
+   CARD EXPLICATIVO (HOME)
+============================ */
+
+.card-explicativo {
+  background: #fff;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-explicativo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-explicativo h2 {
+  color: #0077ff;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.card-explicativo p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.card-explicativo strong {
+  color: #0077ff;
+}
+
+@media (max-width: 600px) {
+  .card-explicativo {
+    margin: 30px 15px;
+    padding: 25px 20px;
+  }
+}
+
+
+/* ============================
+   ÁREA DE PROPOSTAS (AVALIAÇÃO)
+============================ */
+
+.area-propostas {
+  margin: 60px auto;
+  padding: 30px;
+  max-width: 1100px;
+}
+
+.cards-propostas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.card-proposta {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  transition: all 0.25s ease;
+}
+
+.card-proposta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-proposta h3 {
+  color: #0077ff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.card-proposta p {
+  color: #444;
+  margin: 6px 0;
+  font-size: 0.95rem;
+}
+
+.avaliacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  margin-bottom: 15px;
+}
+
+.estrelas {
+  display: flex;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #ccc;
+  transition: color 0.2s ease;
+}
+
+.estrelas span:hover,
+.estrelas span.hover,
+.estrelas span.selecionada {
+  color: #ffb400;
+}
+
+.btn-avaliar {
+  width: 100%;
+  background: linear-gradient(135deg, #0077ff, #0057d9);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-avaliar:hover {
+  background: linear-gradient(135deg, #0057d9, #003da3);
+  transform: scale(1.03);
+}
+
+@media (max-width: 600px) {
+  .area-propostas {
+    padding: 20px 15px;
+  }
+}
+
+/* ============================
+   AVALIAR E APROVAR PROJETOS
+============================ */
+
+.container {
+  padding: 40px 20px;
+  background: var(--background, #f3f4f6);
+  min-height: calc(100vh - 150px);
+}
+
+.cards-avaliar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.card-avaliar {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-avaliar:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-info h3 {
+  color: #0077ff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.card-info p {
+  color: #444;
+  font-size: 0.95rem;
+  margin: 5px 0;
+}
+
+.avaliacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.estrelas-avaliadas {
+  font-size: 1.2rem;
+  color: #ffb400;
+}
+
+.media {
+  font-weight: 600;
+  color: #333;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-aprovar,
+.btn-recusar {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn-aprovar {
+  background: linear-gradient(135deg, #00b347, #008a35);
+  color: white;
+}
+
+.btn-recusar {
+  background: linear-gradient(135deg, #e63946, #b71c1c);
+  color: white;
+}
+
+.btn-aprovar:hover,
+.btn-recusar:hover {
+  transform: scale(1.03);
+}
+
+.card-avaliar.aprovado {
+  border: 2px solid #00b347;
+  opacity: 0.85;
+}
+
+.card-avaliar.recusado {
+  border: 2px solid #e63946;
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .card-avaliar {
+    padding: 20px;
+  }
+}
+
+.form-group select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #0077ff;
+  box-shadow: 0 0 5px rgba(0, 119, 255, 0.3);
+}
+
+
+/* ============================
+   SEÇÃO - MEUS PROJETOS (ALUNO)
+============================ */
+
+.meus-projetos {
+  margin-top: 60px;
+  padding: 30px;
+  background: var(--background, #f3f4f6);
+  border-radius: 20px;
+}
+
+.cards-projetos-aluno {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.card-projeto-aluno {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-projeto-aluno:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-projeto-aluno h3 {
+  color: #0077ff;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.card-projeto-aluno p {
+  color: #444;
+  font-size: 0.95rem;
+  margin: 4px 0;
+}
+
+.card-projeto-aluno .descricao {
+  color: #555;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.btn-sair-projeto {
+  margin-top: 15px;
+  background: (var(--branco));
+  text-decoration: black;
+  border: 2px solid var(--azul-claro);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn-sair-projeto:hover {
+  background: (var(--azul-claro));
+  transform: scale(1.03);
+}
+
+@media (max-width: 600px) {
+  .card-projeto-aluno {
+    padding: 20px;
+  }
+}
+
+/* Estilos específicos para a página de sugestão */
+.form-container {
+  max-width: 800px;
+  margin: 80px auto 40px;
+  padding: 0 20px;
+}
+
+.form-card {
+  background: var(--branco);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.form-card h2 {
+  color: var(--azul-escuro);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-subtitle {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 1rem;
+}
+
+.form-campeonato {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--azul-escuro);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--azul-claro);
+  outline: none;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.btn-submit {
+  background-color: var(--azul-claro);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.btn-submit:hover {
+  background-color: var(--azul-escuro);
+}
+
+.success-message {
+  display: none;
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 6px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.info-box {
+  background-color: #e7f3ff;
+  border-left: 4px solid var(--azul-claro);
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-container {
+    margin-top: 70px;
+    padding: 0 15px;
+  }
+}
+
+/* Estilos para o botão de logout */
+.btn-logout {
+  background-color: #dc3545;
+  color: var(--branco);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 10px;
+}
+
+.btn-logout:hover {
+  background-color: #c82333;
+}
+
+.user-info {
+  color: var(--dourado);
+  font-weight: bold;
+  padding: 8px 12px;
+}
+
+/* ===================== */
+/* FORMULÁRIOS DE LOGIN */
+/* ===================== */
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--azul-escuro);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: var(--azul-claro);
+  outline: none;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.btn-submit.btn-aluno {
+  background-color: var(--azul-claro);
+  color: white;
+}
+
+.btn-submit.btn-admin {
+  background-color: var(--dourado);
+  color: var(--azul-escuro);
+}
+
+.btn-submit:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* ===================== */
+/* MODAL DE ESCOLHA DE LOGIN */
+/* ===================== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease forwards;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: var(--branco);
+  border-radius: 16px;
+  padding: 40px 30px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+  opacity: 0;
+  animation: popIn 0.4s ease forwards;
+}
+
+.modal-content h2 {
+  color: var(--azul-escuro);
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 25px;
+}
+
+.modal-content button {
+  display: inline-block;
+  width: 70%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-aluno {
+  background-color: var(--azul-claro);
+  color: var(--branco);
+}
+
+.btn-admin {
+  background-color: var(--dourado);
+  color: var(--azul-escuro);
+}
+
+.modal-content button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.modal-close:hover {
+  color: var(--azul-claro);
+}

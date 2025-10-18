@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Campeonato - CE Sports</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header>
+        
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="/adm-pages/index-adm.html">Home</a>
+            <a href="/adm-pages/campeonatos-adm.html">Campeonatos</a>
+            <a>Administrador</a>
+            <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+        </nav>
+    </header>
+
+    <main class="form-container">
+        <div class="form-card">
+            <h2>🏆 Cadastrar Novo Campeonato</h2>
+            <p class="form-subtitle">Preencha as informações abaixo para adicionar um novo campeonato ao sistema.</p>
+
+            <form action="#" method="post" class="form-campeonato">
+                <div class="form-group">
+                    <label for="nome">Nome do Campeonato</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Copa Calouro 2025" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva brevemente o campeonato..."
+                        required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dataInicio">Data de Início</label>
+                        <input type="date" id="dataInicio" name="dataInicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataFim">Data de Término</label>
+                        <input type="date" id="dataFim" name="dataFim" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="local">Local</label>
+                        <input type="text" id="local" name="local" placeholder="Ex: Ginásio Principal" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalidade">Modalidade Esportiva</label>
+                        <select id="modalidade" name="modalidade" required>
+                            <option value="">Selecione</option>
+                            <option value="futsal">Futsal</option>
+                            <option value="vôlei">Vôlei</option>
+                            <option value="basquete">Basquete</option>
+                            <option value="handebol">Handebol</option>
+                            <option value="xadrez">Xadrez</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="responsavel">Responsável</label>
+                    <input type="text" id="responsavel" name="responsavel"
+                        placeholder="Nome do responsável pelo campeonato" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Adicionar Campeonato</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 CE Sports - CEFET-MG</p>
+    </footer>
+</body>
+
+</html>

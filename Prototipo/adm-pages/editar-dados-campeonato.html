@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Campeonatos - CE Sports</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <header>
+        
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="/adm-pages/index-adm.html">Home</a>
+            <a href="/adm-pages/campeonatos-adm.html">Campeonatos</a>
+            <a>Administrador</a>
+            <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+        </nav>
+    </header>
+
+  <main class="container">
+    <h2 class="titulo-pagina">🏆 Gerenciamento de Campeonatos</h2>
+    <p class="subtitulo-pagina">Veja abaixo todos os campeonatos cadastrados. Você pode editar ou remover qualquer um deles.</p>
+
+    <section class="cards-campeonatos">
+      <!-- Card 1 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Copa Calouro 2025</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Modalidade:</strong> Futsal</p>
+        <p><strong>Local:</strong> Ginásio Principal</p>
+        <p><strong>Período:</strong> 10/03/2025 a 25/03/2025</p>
+        <p class="descricao">Campeonato de boas-vindas aos calouros do CEFET-MG, reunindo equipes de diferentes cursos.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>InterCEFET de Vôlei</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Modalidade:</strong> Vôlei</p>
+        <p><strong>Local:</strong> Quadra B</p>
+        <p><strong>Período:</strong> 02/05/2025 a 15/05/2025</p>
+        <p class="descricao">Torneio anual entre cursos técnicos do campus para incentivar o espírito de equipe.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Desafio de Xadrez 2025</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Modalidade:</strong> Xadrez</p>
+        <p><strong>Local:</strong> Biblioteca Central</p>
+        <p><strong>Período:</strong> 12/06/2025 a 14/06/2025</p>
+        <p class="descricao">Competição estratégica entre alunos e professores com fases eliminatórias.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card-campeonato">
+        <div class="card-header">
+          <h3>Maratona Esportiva</h3>
+          <div class="acoes">
+            <button class="btn-editar" title="Editar"><i>✏️</i></button>
+            <button class="btn-deletar" title="Excluir"><i>❌</i></button>
+          </div>
+        </div>
+        <p><strong>Modalidade:</strong> Multiesportiva</p>
+        <p><strong>Local:</strong> Campus CEFET-MG</p>
+        <p><strong>Período:</strong> 01/09/2025 a 07/09/2025</p>
+        <p class="descricao">Evento esportivo com várias modalidades e participação aberta a toda a comunidade.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CE Sports - CEFET-MG</p>
+  </footer>
+
+</body>
+
+</html>

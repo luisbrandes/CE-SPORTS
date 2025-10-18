@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projetos Esportivos - CE Sports</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header>
+
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="/aluno-pages/index-aluno.html">Home</a>
+            <a href="/aluno-pages/campeonatos-aluno.html">Campeonatos</a>
+            <a href="/aluno-pages/noticias-alunos.html">Notícias</a>
+            <a>Aluno</a>
+            <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+        </nav>
+    </header>
+
+    <main class="main-content fade-in">
+        <button class="btn-voltar" onclick="window.location.href='/aluno-pages/index-aluno.html'">← Voltar à Home</button>
+        <h1 class="page-title">Projetos Esportivos</h1>
+
+        <div class="preview-cards">
+            <div class="preview-card">
+                <h3>Projeto Futsal CEFET</h3>
+                <p>Treinos às terças e quintas às 18h, Quadra A. Aberto a todos os alunos matriculados.</p>
+                <button class="btn-outline">Participar</button>
+            </div>
+            <div class="preview-card">
+                <h3>Atletismo e Corrida</h3>
+                <p>Segundas e quartas às 17h, Pista de corrida. Acompanhamento com professor de Educação Física.</p>
+                <button class="btn-outline">Participar</button>
+            </div>
+            <div class="preview-card">
+                <h3>Vôlei Misto</h3>
+                <p>Treinos semanais às sextas, 19h, Quadra B. Projeto voltado à integração entre cursos.</p>
+                <button class="btn-outline">Participar</button>
+            </div>
+        </div>
+    </main>
+
+    <section class="meus-projetos">
+  <h2 class="titulo-pagina">📋 Meus Projetos</h2>
+  <p class="subtitulo-pagina">
+    Aqui estão os projetos esportivos em que você está inscrito.  
+    Acompanhe horários, responsáveis e locais de treino.
+  </p>
+
+  <div class="cards-projetos-aluno">
+    <!-- Card 1 -->
+    <div class="card-projeto-aluno">
+      <h3>🏀 Projeto Basquete CEFET</h3>
+      <p><strong>Responsável:</strong> Prof. Leonardo Andrade</p>
+      <p><strong>Local de Treino:</strong> Quadra A</p>
+      <p><strong>Horário:</strong> Terças e Quintas - 17h às 19h</p>
+      <p class="descricao">Treinos semanais de basquete voltados para desenvolvimento técnico e trabalho em equipe.</p>
+      <button class="btn-sair-projeto">❌ Cancelar Inscrição</button>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card-projeto-aluno">
+      <h3>⚽ Projeto Futsal Avançado</h3>
+      <p><strong>Responsável:</strong> Prof. Marcelo Vieira</p>
+      <p><strong>Local de Treino:</strong> Ginásio Principal</p>
+      <p><strong>Horário:</strong> Segunda e Quarta - 18h às 20h</p>
+      <p class="descricao">Projeto para alunos com experiência em futsal, com foco em torneios internos e amistosos.</p>
+      <button class="btn-sair-projeto">❌ Cancelar Inscrição</button>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card-projeto-aluno">
+      <h3>🏃 Projeto Corrida CEFET</h3>
+      <p><strong>Responsável:</strong> Prof. Carlos Mendes</p>
+      <p><strong>Local de Treino:</strong> Pista Externa</p>
+      <p><strong>Horário:</strong> Sextas - 16h às 18h</p>
+      <p class="descricao">Grupo de corrida semanal para alunos que desejam melhorar o condicionamento físico e saúde.</p>
+      <button class="btn-sair-projeto">❌ Cancelar Inscrição</button>
+    </div>
+  </div>
+</section>
+
+
+    <section class="area-propostas">
+        <h2 class="titulo-pagina">💡 Propostas de Novos Projetos</h2>
+        <p class="subtitulo-pagina">
+            Avalie as ideias enviadas pelos alunos e ajude a decidir quais projetos esportivos poderão se tornar
+            realidade.
+        </p>
+
+        <div class="cards-propostas">
+            <!-- Card 1 -->
+            <div class="card-proposta">
+                <h3>Projeto Corrida CEFET</h3>
+                <p><strong>Proposto por:</strong> João Pedro - 2º ano Redes</p>
+                <p><strong>Descrição:</strong> Criação de um grupo de corrida semanal para incentivar a prática de
+                    exercícios físicos entre os alunos.</p>
+                <div class="avaliacao">
+                    <span>Avaliação:</span>
+                    <div class="estrelas" data-avaliacao="0">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                </div>
+                <button class="btn-avaliar">Enviar Avaliação</button>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card-proposta">
+                <h3>Projeto Treino Funcional</h3>
+                <p><strong>Proposto por:</strong> Mariana Costa - 3º ano Mecatrônica</p>
+                <p><strong>Descrição:</strong> Iniciativa para treinos funcionais de baixo impacto, voltados para todos
+                    os alunos interessados em saúde e bem-estar.</p>
+                <div class="avaliacao">
+                    <span>Avaliação:</span>
+                    <div class="estrelas" data-avaliacao="0">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                </div>
+                <button class="btn-avaliar">Enviar Avaliação</button>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card-proposta">
+                <h3>Projeto Xadrez Aberto</h3>
+                <p><strong>Proposto por:</strong> Lucas Almeida - 1º ano Informática</p>
+                <p><strong>Descrição:</strong> Torneios mensais de xadrez com categorias iniciante e avançado, abertos a
+                    todos os alunos.</p>
+                <div class="avaliacao">
+                    <span>Avaliação:</span>
+                    <div class="estrelas" data-avaliacao="0">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                </div>
+                <button class="btn-avaliar">Enviar Avaliação</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content fade-in">
+        <h1 class="page-title">Horários de Treinos</h1>
+
+        <table class="tabela-classificacao">
+            <thead>
+                <tr>
+                    <th>Modalidade</th>
+                    <th>Dia</th>
+                    <th>Horário</th>
+                    <th>Local</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Futsal</td>
+                    <td>Terça e Quinta</td>
+                    <td>18h - 19h30</td>
+                    <td>Quadra A</td>
+                </tr>
+                <tr>
+                    <td>Atletismo</td>
+                    <td>Segunda e Quarta</td>
+                    <td>17h - 18h30</td>
+                    <td>Pista Externa</td>
+                </tr>
+                <tr>
+                    <td>Vôlei</td>
+                    <td>Sexta</td>
+                    <td>19h - 21h</td>
+                    <td>Quadra B</td>
+                </tr>
+                <tr>
+                    <td>Basquete</td>
+                    <td>Quarta</td>
+                    <td>18h - 20h</td>
+                    <td>Quadra C</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <div class="main-content" style="text-align: center; margin: 20px 0;">
+        <button class="btn-outline" onclick="window.location.href='/aluno-pages/propor-projeto.html'">＋ Propor Novo Projeto</button>
+    </div>
+
+    <footer>
+        &copy; 2025 CE Sports — CEFET-MG | Todos os direitos reservados
+    </footer>
+
+    <script src="aluno.js"></script>
+</body>
+
+</html>

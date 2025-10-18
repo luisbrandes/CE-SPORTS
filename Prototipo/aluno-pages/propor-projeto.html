@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugerir Projeto - CE Sports</title>
+    <link rel="stylesheet" href="../css/style.css">
+    
+</head>
+
+<body>
+    <header>
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="/aluno-pages/index-aluno.html">Home</a>
+            <a href="/aluno-pages/projetos-aluno.html">Projetos</a>
+            <a class="user-info">Aluno</a>
+            <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+        </nav>
+    </header>
+
+    <main class="form-container">
+        <div class="form-card">
+            <h2>💡 Sugerir Novo Projeto</h2>
+            <p class="form-subtitle">Compartilhe sua ideia para um novo projeto esportivo. Sua sugestão será analisada pela equipe administrativa.</p>
+            
+            <div class="info-box">
+                <strong>Como funciona:</strong> Sua sugestão será enviada para análise. Se aprovada, a equipe do CE Sports entrará em contato para discutir os próximos passos.
+            </div>
+
+            <form action="#" method="post" class="form-campeonato" id="sugestaoForm">
+                <div class="form-group">
+                    <label for="nome">Nome do Projeto Sugerido</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Torneio de Vôlei Praia" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição Detalhada</label>
+                    <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva sua ideia, objetivos, público-alvo e como seria implementada..." required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dataInicio">Data Inicial Sugerida</label>
+                        <input type="date" id="dataInicio" name="dataInicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="dataFim">Data Final Sugerida</label>
+                        <input type="date" id="dataFim" name="dataFim">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="local">Local Sugerido</label>
+                        <input type="text" id="local" name="local" placeholder="Ex: Quadra Externa, Ginásio Principal">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalidade">Modalidade Esportiva</label>
+                        <select id="modalidade" name="modalidade">
+                            <option value="">Selecione uma modalidade</option>
+                            <option value="Futsal">Futsal</option>
+                            <option value="Vôlei">Vôlei</option>
+                            <option value="Basquete">Basquete</option>
+                            <option value="Handebol">Handebol</option>
+                            <option value="Atletismo">Atletismo</option>
+                            <option value="Natação">Natação</option>
+                            <option value="Outra">Outra</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="responsavel">Seu Nome (opcional)</label>
+                    <input type="text" id="responsavel" name="responsavel" placeholder="Nome do sugerente">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contato">Contato (opcional)</label>
+                    <input type="text" id="contato" name="contato" placeholder="E-mail ou telefone para contato">
+                </div>
+
+                <button type="submit" class="btn-submit">Enviar Sugestão</button>
+                
+                <div class="success-message" id="successMessage">
+                    ✅ Sua sugestão foi enviada com sucesso! Obrigado por contribuir com o CE Sports.
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 CE Sports - CEFET-MG</p>
+    </footer>
+
+</body>
+
+</html>

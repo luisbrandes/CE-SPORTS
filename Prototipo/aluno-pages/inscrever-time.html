@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscrever Time - CE Sports</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo">CE Sports</div>
+    <span class="menu-toggle" id="menuToggle">☰</span>
+    <nav id="navbar">
+      <a href="/aluno-pages/index-aluno.html">Home</a>
+      <a href="/aluno-pages/campeonatos-aluno.html">Campeonatos</a>
+      <a>Aluno</a>
+      <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+    </nav>
+  </header>
+
+  <main class="form-container">
+    <div class="form-card">
+      <h2>⚽ Inscrever Time em Campeonato</h2>
+      <p class="form-subtitle">Preencha as informações abaixo para registrar o seu time no campeonato selecionado.</p>
+
+      <form action="#" method="post" class="form-campeonato">
+
+        <!-- Escolher Campeonato -->
+        <div class="form-group">
+          <label for="campeonato">Campeonato</label>
+          <select id="campeonato" name="campeonato" required>
+            <option value="">Selecione o campeonato</option>
+            <option value="copa_calouro_2025">Copa Calouro 2025</option>
+            <option value="intercefet_volei">InterCEFET de Vôlei</option>
+            <option value="desafio_xadrez">Desafio de Xadrez 2025</option>
+          </select>
+        </div>
+
+        <!-- Nome do Time -->
+        <div class="form-group">
+          <label for="nomeTime">Nome do Time</label>
+          <input type="text" id="nomeTime" name="nomeTime" placeholder="Ex: Os Invencíveis do CEFET" required>
+        </div>
+
+        <!-- Representante -->
+        <div class="form-group">
+          <label for="representante">Representante do Time</label>
+          <input type="text" id="representante" name="representante" placeholder="Ex: João Silva" required>
+        </div>
+
+        <!-- Curso e Turma -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="curso">Curso</label>
+            <input type="text" id="curso" name="curso" placeholder="Ex: Redes de Computadores" required>
+          </div>
+          <div class="form-group">
+            <label for="turma">Turma</label>
+            <input type="text" id="turma" name="turma" placeholder="Ex: 2º ano" required>
+          </div>
+        </div>
+
+        <!-- Lista de Integrantes -->
+        <div class="form-group">
+          <label for="integrantes">Integrantes do Time</label>
+          <textarea id="integrantes" name="integrantes" rows="4" placeholder="Informe os nomes dos jogadores..." required></textarea>
+        </div>
+
+        <!-- Contato -->
+        <div class="form-group">
+          <label for="contato">Contato (e-mail ou telefone)</label>
+          <input type="text" id="contato" name="contato" placeholder="Ex: joao.silva@cefetmg.br ou (31) 99999-9999" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar Inscrição</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CE Sports - CEFET-MG</p>
+  </footer>
+</body>
+
+</html>

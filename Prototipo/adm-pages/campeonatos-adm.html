@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Campeonatos - CE Sports</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header>
+
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="/adm-pages/index-adm.html">Home</a>
+            <a href="/adm-pages/projetos-adm.html">Projetos</a>
+            <a href="/adm-pages/noticias-adm.html">Notícias</a>
+            <a>Administrador</a>
+            <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+        </nav>
+    </header>
+
+    <main class="main-content fade-in">
+        <button class="btn-voltar" onclick="window.location.href='/adm-pages/index-adm.html'">← Voltar à Home</button>
+        <h1 class="page-title">Campeonatos em Andamento</h1>
+
+        <section class="preview-cards">
+            <div class="preview-card">
+                <h3>Copa Caloura 2025</h3>
+                <p>Campeonato entre turmas de primeiro ano. Próxima partida: Informática x Eletrotécnica.</p>
+                <button class="btn-outline">Ver Detalhes</button>
+                
+            </div>
+            <div class="preview-card">
+                <h3>Interturmas 2025</h3>
+                <p>Times de todos os cursos disputando o título de melhor equipe do campus.</p>
+                <button class="btn-outline">Ver Detalhes</button>
+                
+            </div>
+        </section>
+
+        <h2 class="page-subtitle">Tabela de Classificação - Copa Caloura</h2>
+        <table class="tabela-classificacao">
+            <thead>
+                <tr>
+                    <th>Posição</th>
+                    <th>Equipe</th>
+                    <th>Pontos</th>
+                    <th>Vitórias</th>
+                    <th>Derrotas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1º</td>
+                    <td>Informática</td>
+                    <td>12</td>
+                    <td>4</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>2º</td>
+                    <td>Eletrotécnica</td>
+                    <td>9</td>
+                    <td>3</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>3º</td>
+                    <td>Mecânica</td>
+                    <td>6</td>
+                    <td>2</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>4º</td>
+                    <td>Edificações</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <div class="main-content" style="text-align: center; margin: 20px 0;">
+        <button class="btn-outline" onclick="window.location.href='/adm-pages/adicionar-campeonato.html'">＋ Adicionar Novo Campeonato</button>
+        <button class="btn-outline" onclick="window.location.href='/adm-pages/editar-dados-campeonato.html'">Gerenciar Campeonato</button>
+    </div>
+    <footer>
+        &copy; 2025 CE Sports — CEFET-MG | Todos os direitos reservados
+    </footer>
+
+    <script src="adm.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notícias - CE Sports</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header>
+
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="/adm-pages/index-adm.html">Home</a>
+            <a href="/adm-pages/campeonatos-adm.html">Campeonatos</a>
+            <a href="/adm-pages/projetos-adm.html">Projetos</a>
+            <a>Administrador</a>
+            <button class="btn-logout" id="btnLogout" onclick="logout()">Sair</button>
+        </nav>
+    </header>
+
+    <main class="main-content fade-in">
+        <button class="btn-voltar" onclick="window.location.href='/adm-pages/index-adm.html'">← Voltar à Home</button>
+        <h1 class="page-title">Últimas Notícias</h1>
+
+        <section class="news-container">
+            <article class="news-item">
+                <h3>CEFET-MG realiza Copa Caloura 2025</h3>
+                <p>O tradicional campeonato entre turmas teve início nesta semana, reunindo mais de 200 alunos em
+                    diversas modalidades esportivas.</p>
+                <a href="#" class="read-more">Ler mais →</a>
+            </article>
+
+            <article class="news-item">
+                <h3>Projeto de Corrida reúne estudantes e servidores</h3>
+                <p>O projeto tem como objetivo promover a integração e incentivar hábitos saudáveis entre os membros da
+                    comunidade escolar.</p>
+                <a href="#" class="read-more">Ler mais →</a>
+            </article>
+
+            <article class="news-item">
+                <h3>Times femininos de vôlei ganham destaque</h3>
+                <p>As equipes femininas do CEFET-MG estão representando a instituição em torneios intercolegiais com
+                    ótimos resultados.</p>
+                <a href="#" class="read-more">Ler mais →</a>
+            </article>
+        </section>
+    </main>
+
+    <div class="main-content" style="text-align: center; margin: 20px 0;">
+        <button class="btn-outline" onclick="window.location.href='/adm-pages/adicionar-noticia.html'">＋ Adicionar Nova Notícia</button>
+        <button class="btn-outline" onclick="window.location.href='/adm-pages/editar-dados-noticia.html'">Editar dados </button>
+    </div>
+
+    <footer>
+        &copy; 2025 CE Sports — CEFET-MG | Todos os direitos reservados
+    </footer>
+
+    <script src="adm.js"></script>
+</body>
+
+</html>

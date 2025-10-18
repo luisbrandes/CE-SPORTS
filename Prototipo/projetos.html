@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projetos Esportivos - CE Sports</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <header>
+
+        <div class="logo">CE Sports</div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <nav id="navbar">
+            <a href="index.html">Home</a>
+            <a href="campeonatos.html">Campeonatos</a>
+            <a href="noticias.html">Notícias</a>
+            <button class="btn-login" id="btnLogin">Login</button>
+        </nav>
+    </header>
+
+    <main class="main-content fade-in">
+        <button class="btn-voltar" onclick="window.location.href='index.html'">← Voltar à Home</button>
+        <h1 class="page-title">Projetos Esportivos</h1>
+
+        <div class="preview-cards">
+            <div class="preview-card">
+                <h3>Projeto Futsal CEFET</h3>
+                <p>Treinos às terças e quintas às 18h, Quadra A. Aberto a todos os alunos matriculados.</p>
+                <button class="btn-outline">Participar</button>
+            </div>
+            <div class="preview-card">
+                <h3>Atletismo e Corrida</h3>
+                <p>Segundas e quartas às 17h, Pista de corrida. Acompanhamento com professor de Educação Física.</p>
+                <button class="btn-outline">Participar</button>
+            </div>
+            <div class="preview-card">
+                <h3>Vôlei Misto</h3>
+                <p>Treinos semanais às sextas, 19h, Quadra B. Projeto voltado à integração entre cursos.</p>
+                <button class="btn-outline">Participar</button>
+            </div>
+        </div>
+    </main>
+
+    <main class="main-content fade-in">
+        <h1 class="page-title">Horários de Treinos</h1>
+
+        <table class="tabela-classificacao">
+            <thead>
+                <tr>
+                    <th>Modalidade</th>
+                    <th>Dia</th>
+                    <th>Horário</th>
+                    <th>Local</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Futsal</td>
+                    <td>Terça e Quinta</td>
+                    <td>18h - 19h30</td>
+                    <td>Quadra A</td>
+                </tr>
+                <tr>
+                    <td>Atletismo</td>
+                    <td>Segunda e Quarta</td>
+                    <td>17h - 18h30</td>
+                    <td>Pista Externa</td>
+                </tr>
+                <tr>
+                    <td>Vôlei</td>
+                    <td>Sexta</td>
+                    <td>19h - 21h</td>
+                    <td>Quadra B</td>
+                </tr>
+                <tr>
+                    <td>Basquete</td>
+                    <td>Quarta</td>
+                    <td>18h - 20h</td>
+                    <td>Quadra C</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+
+    <!-- Modal de Login (igual ao da index) -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2>Login</h2>
+            <p>Escolha seu tipo de acesso:</p>
+            <button class="btn-aluno" onclick="loginAluno()">Aluno</button>
+            <button class="btn-admin" onclick="loginAdmin()">Administrador</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 CE Sports — CEFET-MG | Todos os direitos reservados
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

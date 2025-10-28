@@ -87,6 +87,7 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 | **CSU18** | Propor projeto esportivo | Aluno |
 | **CSU19** | Avaliar e aprovar projetos esportivos | Administrador |
 | **CSU20** | Avaliar projetos | Aluno |
+| **CSU21** | Cadastrar noticias esportivas | Aluno / Administrador |
 
 ---
 
@@ -106,6 +107,7 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 | **CSU04** | **Miguel** | Visualizar classificação de equipes |
 | **CSU11** | **Miguel** | Consultar histórico de jogos |
 | **CSU01** | **Rúbia** | Visualizar horários e locais de treinos |
+| **CSU21** | **Mariana** |  Cadastrar noticias esportivas | Aluno / Administrador |
 | **CSU14** | **Mariana** | Visualizar notícias esportivas |
 | **CSU06** | **Ísis** | Pesquisar eventos esportivos |
 | **CSU13** | **Ísis** | Manifestar interesse em iniciativas esportivas |

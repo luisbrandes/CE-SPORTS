@@ -155,3 +155,30 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 ## 🌿 Estrutura de Branches
 Cada integrante deve criar **sua própria branch** no formato:
 
+---
+
+## Estrutura de Pastas
+
+- **dao**: Responsável pelo acesso aos dados (CRUD). Contém interfaces e implementações para interagir com o banco de dados.
+  - Exemplo: `UserDao.java`, `ProductDao.java`
+
+- **common**: Contém classes e utilitários compartilhados por outras camadas, como validações e constantes.
+  - Exemplo: `ValidationUtils.java`, `Constants.java`
+
+- **domain**: Representa as entidades e regras de negócio. Contém classes que modelam os dados principais do sistema (ex. `User`, `Product`).
+  - Exemplo: `User.java`, `Product.java`
+
+- **service**: Contém a lógica de negócios e orquestra o fluxo de dados entre o DAO e o Controller. Executa operações mais complexas, como transações e validações de negócio.
+  - Exemplo: `UserService.java`, `ProductService.java`
+
+- **web**: Camada de interação com o usuário. Gerencia as requisições HTTP, interage com os serviços e renderiza respostas (via Controllers, APIs REST, etc).
+  - Exemplo: `UserController.java`, `ProductController.java`
+
+## Fluxo do Sistema
+
+1. **Controller (web)**: Recebe requisições do usuário e chama os **Services**.
+2. **Service (service)**: Executa a lógica de negócio e interage com o **DAO**.
+3. **DAO (dao)**: Realiza operações no banco de dados.
+4. **Domain (domain)**: Representa as entidades e regras de negócio.
+
+

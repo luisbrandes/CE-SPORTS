@@ -4,18 +4,17 @@ public class Partida {
 	Campeonato campeonato;
 	Equipe vencedor, perdedor, equipe1, equipe2;
 	int gols1, gols2;
-	
-	public Partida(Campeonato campeonato, Equipe vencedor, Equipe perdedor) {
+	boolean empate;
+
+	public Partida(Campeonato campeonato, Equipe vencedor, Equipe perdedor, Equipe equipe1, Equipe equipe2, int gols1, int gols2, boolean empate) {
 		this.campeonato = campeonato;
 		this.vencedor = vencedor;
 		this.perdedor = perdedor;
-	}
-	
-	public Partida(Equipe equipe1, Equipe equipe2, int gols1, int gols2) {
 		this.equipe1 = equipe1;
 		this.equipe2 = equipe2;
 		this.gols1 = gols1;
 		this.gols2 = gols2;
+		this.empate = empate;
 	}
 
 	public Campeonato getCampeonato() {
@@ -72,5 +71,13 @@ public class Partida {
 
 	public void setGols2(int gols2) {
 		this.gols2 = gols2;
+	}
+
+	public boolean isEmpate() {
+		return empate;
+	}
+
+	public void setEmpate(boolean empate) {
+		this.empate = empate;
 	}
 }

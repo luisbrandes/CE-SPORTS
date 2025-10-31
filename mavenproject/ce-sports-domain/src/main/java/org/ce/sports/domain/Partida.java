@@ -2,6 +2,7 @@ package org.ce.sports.domain;
 
 public class Partida {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Campeonato campeonato;
 	Equipe vencedor, perdedor, equipe1, equipe2;
 	int gols1, gols2;
@@ -18,6 +19,25 @@ public class Partida {
 		this.empate = empate;
 	}
 
+=======
+	Campeonato campeonato;
+	Equipe vencedor, perdedor, equipe1, equipe2;
+	int gols1, gols2;
+	
+	public Partida(Campeonato campeonato, Equipe vencedor, Equipe perdedor) {
+		this.campeonato = campeonato;
+		this.vencedor = vencedor;
+		this.perdedor = perdedor;
+	}
+	
+	public Partida(Equipe equipe1, Equipe equipe2, int gols1, int gols2) {
+		this.equipe1 = equipe1;
+		this.equipe2 = equipe2;
+		this.gols1 = gols1;
+		this.gols2 = gols2;
+	}
+
+>>>>>>> 31f4d18 (CSU04, CSU11)
 	public Campeonato getCampeonato() {
 		return campeonato;
 	}
@@ -73,6 +93,7 @@ public class Partida {
 	public void setGols2(int gols2) {
 		this.gols2 = gols2;
 	}
+<<<<<<< HEAD
 
 	public boolean isEmpate() {
 		return empate;
@@ -84,4 +105,6 @@ public class Partida {
 =======
 
 >>>>>>> a2c7b6a (Organizacao da branch e adicao de spring boot)
+=======
+>>>>>>> 31f4d18 (CSU04, CSU11)
 }

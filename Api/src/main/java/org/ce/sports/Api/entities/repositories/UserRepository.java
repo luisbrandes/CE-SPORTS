@@ -1,4 +1,4 @@
-package org.ce.sports.Api.repositories;
+package org.ce.sports.Api.entities.repositories;
 
 import org.ce.sports.Api.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

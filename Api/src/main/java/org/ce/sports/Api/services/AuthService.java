@@ -1,10 +1,10 @@
-package org.ce.sports.Api.entities.services;
+package org.ce.sports.Api.services;
 
 import lombok.RequiredArgsConstructor;
 import org.ce.sports.Api.dtos.Login;
 import org.ce.sports.Api.dtos.Register;
 import org.ce.sports.Api.enums.RoleEnum;
-import org.ce.sports.Api.repositories.UserRepository;
+import org.ce.sports.Api.entities.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

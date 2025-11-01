@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ce.sports.Api.dtos.Login;
 import org.ce.sports.Api.dtos.Register;
-import org.ce.sports.Api.entities.services.AuthService;
+import org.ce.sports.Api.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

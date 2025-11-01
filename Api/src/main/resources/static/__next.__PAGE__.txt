@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/_next/static/chunks/42879de7b8087bc9.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"KP-4rWGrk1ryckG66M5GU","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"flex flex-col items-center justify-center py-24 text-center","children":[["$","h1",null,{"className":"text-4xl font-bold text-primary mb-4","children":"Bem-vindo ao CE Sports 🏋️‍♂️"}],["$","p",null,{"className":"text-muted-foreground max-w-lg","children":"Explore programas esportivos, acompanhe atividades e faça parte da nossa comunidade esportiva do CEFET!"}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

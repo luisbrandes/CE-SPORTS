@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Button, Card } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
 export default function HomePage() {

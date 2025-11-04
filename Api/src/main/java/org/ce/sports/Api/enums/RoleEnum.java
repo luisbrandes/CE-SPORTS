@@ -6,6 +6,5 @@ package org.ce.sports.Api.enums;
  */
 public enum RoleEnum {
     ROLE_ADMIN,
-    ROLE_USER,
-    ROLE_VISITOR
+    ROLE_USER
 }

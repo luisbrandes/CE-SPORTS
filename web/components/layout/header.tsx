@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Dumbbell, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -18,12 +18,12 @@ export function Header() {
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-lg font-bold tracking-wide text-wite">
+          <span className="text-lg font-bold tracking-wide text-white">
             CE Sports
           </span>
         </Link>
 
-        {/* Desktop Navigation - alinhado à direita */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center justify-end gap-8 ml-auto text-right">
           <Link
             href="/campeonatos"
@@ -50,9 +50,12 @@ export function Header() {
             Contato
           </Link>
 
+          <Link href="/login">
           <Button variant="primary" size="sm" className="ml-2">
-            Entrar
+            Login
           </Button>
+          </Link>
+
         </nav>
 
         {/* Mobile Menu Button */}
@@ -76,9 +79,12 @@ export function Header() {
           <Link href="/noticias" onClick={() => setIsOpen(false)}>
             Notícias
           </Link>
+
+          <Link href="/login">
           <Button variant="primary" size="sm" onClick={() => setIsOpen(false)}>
-            Entrar
+            Login
           </Button>
+          </Link>
         </nav>
       )}
     </header>

@@ -21,7 +21,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<Void> login(Login request) {
-        Optional<User> usuarioOpt = userRepository.findByEmail(request.getUsername());
+        Optional<User> usuarioOpt = userRepository.findByEmail(request.getEmail());
 
         if (usuarioOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -48,15 +48,19 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
+        RoleEnum role = request.getRoleEnum();
+
         User novo = User.builder()
                 .nome(request.getNome())
                 .email(request.getEmail())
                 .senha(passwordEncoder.encode(request.getSenha()))
-                .role(RoleEnum.ROLE_USER)
+                .role(role)
                 .build();
 
         userRepository.save(novo);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 
 }

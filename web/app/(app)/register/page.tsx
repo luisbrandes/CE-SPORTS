@@ -8,45 +8,55 @@ import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react" 
 
 export default function LoginPage() {
+  const [nome, setNome] = useState("")
   const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [senha, setSenha] = useState("")
   const [message, setMessage] = useState("") 
   const [showPassword, setShowPassword] = useState(false) 
+  const [role, setRole] = useState("aluno") // "aluno" por padrão
 
   // Envio do formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!email || !password) {
+    if (!email || !senha || !nome) {
       alert("Por favor, preencha todos os campos.")
       return
     }
 
     try {
-    const res = await fetch("http://localhost:8080/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
+      const res = await fetch("http://localhost:8080/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, senha, role }), // Passa a role para o backend
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    if (!res.ok) throw new Error(data.message || "Erro ao fazer login")
+      if (!res.ok) throw new Error(data.message || "Erro ao fazer cadastro")
 
-    alert("✅ Login realizado com sucesso!")
-    console.log("Resposta do backend:", data)
-  } catch (err: any) {
-    alert("❌ Erro: " + err.message)
-  }
+      alert("✅ Cadastro realizado com sucesso!")
+      console.log("Resposta do backend:", data)
+    } catch (err: any) {
+      alert("❌ Erro: " + err.message)
+    }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-500 p-6">
+    <div className="min-h-screen flex items-center justify-center  p-6">
       <Card className="w-full max-w-md text-center bg-white p-8 shadow-2xl">
         <h1 className="text-3xl font-bold text-blue-900 mb-2">CE Sports</h1>
-        <h2 className="text-xl font-semibold text-gray-700 mb-6">Login</h2>
+        <h2 className="text-xl font-semibold text-gray-700 mb-6">Cadastro</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input
+            type="text"
+            placeholder="Nome"
+            required
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+
           {/* Campo de e-mail */}
           <Input
             type="email"
@@ -62,8 +72,8 @@ export default function LoginPage() {
               type={showPassword ? "text" : "password"}
               placeholder="Senha"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               className="pr-10"
             />
             <button
@@ -75,12 +85,36 @@ export default function LoginPage() {
             </button>
           </div>
 
+          {/* Campo para selecionar o papel (Aluno ou Administrador) */}
+          <div className="flex gap-6 justify-center">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="role"
+                value="aluno"
+                checked={role === "aluno"}
+                onChange={() => setRole("aluno")}
+              />
+              Aluno
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="role"
+                value="admin"
+                checked={role === "admin"}
+                onChange={() => setRole("admin")}
+              />
+              Administrador
+            </label>
+          </div>
+
           {/* Botão de enviar */}
           <Button
             type="submit"
             className="w-full bg-blue-600 text-white hover:bg-blue-700"
           >
-            Entrar
+            Cadastrar
           </Button>
         </form>
 
@@ -91,8 +125,8 @@ export default function LoginPage() {
 
         {/* Links inferiores */}
         <div className="mt-6 flex flex-col gap-2">
-          <Link href="/register" className="text-blue-500 hover:underline">
-            Não tem conta? Cadastre-se
+          <Link href="/login" className="text-blue-500 hover:underline">
+            Já tem conta? Login
           </Link>
           <Link href="/" className="text-blue-500 hover:underline">
             ← Voltar para o site

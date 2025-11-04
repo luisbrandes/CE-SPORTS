@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center w-full">
       {/* Banner */}
-      <section className="relative h-[60vh] w-full bg-[url('/banner1.jpg')] bg-cover bg-center flex items-center justify-center">
+      <section className="relative h-[60vh] w-full bg-[url('/img/banner1.jpg')] bg-cover bg-center flex items-center justify-center">
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 text-center text-white max-w-2xl px-4">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">

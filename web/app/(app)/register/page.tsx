@@ -13,9 +13,9 @@ export default function LoginPage() {
   const [senha, setSenha] = useState("")
   const [message, setMessage] = useState("") 
   const [showPassword, setShowPassword] = useState(false) 
-  const [role, setRole] = useState("aluno") // "aluno" por padrão
+  const [role, setRole] = useState("aluno") 
 
-  // Envio do formulário
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -28,7 +28,7 @@ export default function LoginPage() {
       const res = await fetch("http://localhost:8080/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email, senha, role }), // Passa a role para o backend
+        body: JSON.stringify({ nome, email, senha, role }),
       })
 
       const data = await res.json()

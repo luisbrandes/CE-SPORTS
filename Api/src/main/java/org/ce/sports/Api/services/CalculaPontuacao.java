@@ -1,6 +1,6 @@
 package org.ce.sports.Api.services;
 
-import org.ce.sports.Api.entities;
+import org.ce.sports.Api.entities.Campeonato;
 import org.springframework.stereotype.Service;
 
 @Service

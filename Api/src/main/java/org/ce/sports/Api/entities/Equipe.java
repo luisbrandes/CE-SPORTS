@@ -28,11 +28,11 @@ public class Equipe {
         joinColumns = @JoinColumn(name = "equipe_id"),
         inverseJoinColumns = @JoinColumn(name = "aluno_id")
     )
-    private Set<Aluno> integrantes;
+    private Set<User> integrantes;
 
     public Equipe() {}
 
-    public Equipe(String nome, Set<Campeonato> campeonatos, Set<Aluno> integrantes) {
+    public Equipe(String nome, Set<Campeonato> campeonatos, Set<User> integrantes) {
         this.nome = nome;
         this.campeonatos = campeonatos;
         this.integrantes = integrantes;
@@ -58,11 +58,11 @@ public class Equipe {
         this.campeonatos = campeonatos;
     }
 
-    public Set<Aluno> getIntegrantes() {
+    public Set<User> getIntegrantes() {
         return integrantes;
     }
 
-    public void setIntegrantes(Set<Aluno> integrantes) {
+    public void setIntegrantes(Set<User> integrantes) {
         this.integrantes = integrantes;
     }
 }

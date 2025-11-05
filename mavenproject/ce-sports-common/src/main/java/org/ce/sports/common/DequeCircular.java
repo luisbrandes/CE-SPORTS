@@ -1,5 +1,6 @@
 package org.ce.sports.common;
 
+<<<<<<< HEAD
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -79,4 +80,8 @@ public class DequeCircular<T> implements Iterable<T> {
 			}
 		};
 	}
+=======
+public class DequeCircular {
+
+>>>>>>> a2c7b6a (Organizacao da branch e adicao de spring boot)
 }

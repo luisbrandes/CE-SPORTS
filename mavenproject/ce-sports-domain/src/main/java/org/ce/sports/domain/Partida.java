@@ -1,6 +1,7 @@
 package org.ce.sports.domain;
 
 public class Partida {
+<<<<<<< HEAD
 	Campeonato campeonato;
 	Equipe vencedor, perdedor, equipe1, equipe2;
 	int gols1, gols2;
@@ -80,4 +81,7 @@ public class Partida {
 	public void setEmpate(boolean empate) {
 		this.empate = empate;
 	}
+=======
+
+>>>>>>> a2c7b6a (Organizacao da branch e adicao de spring boot)
 }

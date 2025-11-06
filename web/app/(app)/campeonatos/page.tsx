@@ -1,107 +1,116 @@
-import React, { useState } from 'react';
+"use client";
 
-const Campeonatos: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+import Link from "next/link";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-  const redirectToLogin = (type: string) => {
-    if (type === 'aluno') {
-      window.location.href = '/login/aluno';
-    } else {
-      window.location.href = '/login/admin';
-    }
-  };
+const campeonatos = [
+  {
+    titulo: "Copa Caloura 2025",
+    descricao:
+      "Campeonato entre turmas de primeiro ano. Próxima partida: Informática x Eletrotécnica.",
+  },
+  {
+    titulo: "Interturmas 2025",
+    descricao:
+      "Times de todos os cursos disputando o título de melhor equipe do campus.",
+  },
+];
 
+const classificacao = [
+  {
+    posicao: "1º",
+    equipe: "Informática",
+    pontos: 12,
+    vitorias: 4,
+    derrotas: 0,
+  },
+  {
+    posicao: "2º",
+    equipe: "Eletrotécnica",
+    pontos: 9,
+    vitorias: 3,
+    derrotas: 1,
+  },
+  { posicao: "3º", equipe: "Mecânica", pontos: 6, vitorias: 2, derrotas: 2 },
+  { posicao: "4º", equipe: "Edificações", pontos: 3, vitorias: 1, derrotas: 3 },
+];
+
+export default function CampeonatosPage() {
   return (
-    <div>
-      <header>
-        <div className="logo">CE Sports</div>
-        <span className="menu-toggle" id="menuToggle">☰</span>
-        <nav id="navbar">
-          <a href="index.html">Home</a>
-          <a href="projetos.html">Projetos</a>
-          <a href="noticias.html">Notícias</a>
-          <button className="btn-login" id="btnLogin" onClick={() => setModalOpen(true)}>Login</button>
+    <div className="min-h-screen bg-gradient-to-br flex flex-col">
+      <header className="bg-white shadow-md p-4 flex items-center justify-between">
+        <div className="font-bold text-2xl text-blue-900">CE Sports</div>
+        <nav className="flex gap-4 items-center">
+          <Link href="/" className="hover:underline text-blue-700">
+            Home
+          </Link>
+          <Link href="/projetos" className="hover:underline text-blue-700">
+            Projetos
+          </Link>
+          <Link href="/noticias" className="hover:underline text-blue-700">
+            Notícias
+          </Link>
+          <Link href="/login">
+            <Button className="bg-blue-600 text-white hover:bg-blue-700">
+              Login
+            </Button>
+          </Link>
         </nav>
       </header>
 
-      <main className="main-content fade-in">
-        <button className="btn-voltar" onClick={() => window.location.href = 'index.html'}>← Voltar à Home</button>
-        <h1 className="page-title">Campeonatos em Andamento</h1>
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <Button className="mb-4">
+          <Link href="/">← Voltar à Home</Link>
+        </Button>
+        <h1 className="text-3xl font-bold text-blue-900 mb-6">
+          Campeonatos em Andamento
+        </h1>
 
-        <section className="preview-cards">
-          <div className="preview-card">
-            <h3>Copa Caloura 2025</h3>
-            <p>Campeonato entre turmas de primeiro ano. Próxima partida: Informática x Eletrotécnica.</p>
-            <button className="btn-outline">Ver Detalhes</button>
-          </div>
-          <div className="preview-card">
-            <h3>Interturmas 2025</h3>
-            <p>Times de todos os cursos disputando o título de melhor equipe do campus.</p>
-            <button className="btn-outline">Ver Detalhes</button>
-          </div>
-        </section>
+        <div className="grid md:grid-cols-2 gap-6 mb-10">
+          {campeonatos.map((camp, idx) => (
+            <Card key={idx} className="p-6">
+              <h3 className="font-bold text-xl text-blue-800 mb-2">
+                {camp.titulo}
+              </h3>
+              <p className="text-gray-700 mb-4">{camp.descricao}</p>
+              <Button>Ver Detalhes</Button>
+            </Card>
+          ))}
+        </div>
 
-        <h2 className="page-subtitle">Tabela de Classificação - Copa Caloura</h2>
-        <table className="tabela-classificacao">
-          <thead>
-            <tr>
-              <th>Posição</th>
-              <th>Equipe</th>
-              <th>Pontos</th>
-              <th>Vitórias</th>
-              <th>Derrotas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1º</td>
-              <td>Informática</td>
-              <td>12</td>
-              <td>4</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>2º</td>
-              <td>Eletrotécnica</td>
-              <td>9</td>
-              <td>3</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>3º</td>
-              <td>Mecânica</td>
-              <td>6</td>
-              <td>2</td>
-              <td>2</td>
-            </tr>
-            <tr>
-              <td>4º</td>
-              <td>Edificações</td>
-              <td>3</td>
-              <td>1</td>
-              <td>3</td>
-            </tr>
-          </tbody>
-        </table>
+        <h2 className="text-2xl font-semibold text-blue-800 mb-4">
+          Tabela de Classificação - Copa Caloura
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow rounded">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border-b">Posição</th>
+                <th className="py-2 px-4 border-b">Equipe</th>
+                <th className="py-2 px-4 border-b">Pontos</th>
+                <th className="py-2 px-4 border-b">Vitórias</th>
+                <th className="py-2 px-4 border-b">Derrotas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {classificacao.map((row, idx) => (
+                <tr key={idx}>
+                  <td className="py-2 px-4 border-b">{row.posicao}</td>
+                  <td className="py-2 px-4 border-b">{row.equipe}</td>
+                  <td className="py-2 px-4 border-b">{row.pontos}</td>
+                  <td className="py-2 px-4 border-b">{row.vitorias}</td>
+                  <td className="py-2 px-4 border-b">{row.derrotas}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </main>
 
-      {modalOpen && (
-        <div className="modal" id="loginModal">
-          <div className="modal-content">
-            <button className="modal-close" id="modalClose" onClick={() => setModalOpen(false)}>×</button>
-            <h2>Login</h2>
-            <p>Escolha seu tipo de acesso:</p>
-            <button className="btn-aluno" onClick={() => redirectToLogin('aluno')}>Aluno</button>
-            <button className="btn-admin" onClick={() => redirectToLogin('admin')}>Administrador</button>
-          </div>
-        </div>
-      )}
-
-      <footer>
+      <footer className="bg-white text-gray-600 text-center py-4">
         &copy; 2025 CE Sports — CEFET-MG | Todos os direitos reservados
       </footer>
     </div>
   );
-};
-
-export default Campeonatos;
+}

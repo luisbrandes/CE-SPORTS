@@ -89,7 +89,7 @@ export default function NoticiasPage() {
       <div className="flex justify-center py-12">
         <Button
           className="bg-yellow-400 text-blue-900 hover:bg-yellow-500 px-8 py-6 text-lg font-semibold"
-          onClick={() => router.push("/cadastrarNoticia")}
+          onClick={() => router.push("noticias/cadastrarNoticia")}
         >
           Cadastrar Notícia
         </Button>

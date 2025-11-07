@@ -4,11 +4,6 @@ import { useState } from "react"
 import { Sidebar } from "@/components/layout/sidebar"
 import { Menu, X } from "lucide-react"
 
-export const metadata = {
-  title: "Painel Administrativo | CE Sports",
-  description: "Gerenciamento interno da plataforma CE Sports",
-}
-
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 

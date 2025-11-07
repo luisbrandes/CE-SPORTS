@@ -138,41 +138,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Modal de login */}
-      {showModal && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="bg-white rounded-2xl p-8 w-80 text-center shadow-xl relative animate-fade-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-3 right-4 text-gray-500 text-xl"
-            >
-              ×
-            </button>
-            <h2 className="text-xl font-bold text-primary mb-2">Login</h2>
-            <p className="text-muted-foreground mb-6">Escolha seu tipo de acesso:</p>
-            <div className="flex flex-col gap-3">
-              <Button
-                variant="primary"
-                onClick={() => (window.location.href = "/login/aluno")}
-              >
-                Aluno
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => (window.location.href = "/login/admin")}
-              >
-                Administrador
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      
+       
+    
     </main>
   )
 }

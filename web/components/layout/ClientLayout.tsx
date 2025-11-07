@@ -7,7 +7,7 @@ import { Header, Footer, MobileMenu } from "@/components/layout"
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || ""
   // rotas onde queremos esconder o header/footer
-  const hideLayout = ["/login", "/register"].includes(pathname)
+  const hideLayout = ["/login", "/register", "/admin",].includes(pathname)
 
   return (
     <>

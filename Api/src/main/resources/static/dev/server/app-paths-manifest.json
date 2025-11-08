@@ -1,0 +1,7 @@
+{
+  "/(app)/campeonatos/page": "app/(app)/campeonatos/page.js",
+  "/(app)/login/page": "app/(app)/login/page.js",
+  "/(app)/register/page": "app/(app)/register/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js"
+}

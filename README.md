@@ -105,8 +105,8 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 | **CSU15** | **Luís** | Logar no sistema (autenticação com Spring Security) |
 | **CSU16** | **Luís** | Entrar como visitante |
 | **CSU04** | **Miguel** | Visualizar classificação de equipes |
-| **CSU11** | **Miguel** | Consultar histórico de jogos |
-| **CSU01** | **Rúbia** | Visualizar horários e locais de treinos |
+| **CSU09** | **Miguel** | Cadastrar novo campeonato |
+| **CSU03** | **Rúbia** | Criação de projeto esportivo |
 | **CSU21** | **Mariana** |  Cadastrar noticias esportivas | Aluno / Administrador |
 | **CSU14** | **Mariana** | Visualizar notícias esportivas |
 | **CSU06** | **Ísis** | Pesquisar eventos esportivos |
@@ -120,8 +120,8 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 | Caso de Uso | Desenvolvedor | Função |
 |:-------------|:---------------|:--------|
 | **CSU02** | **Luís** | Atualizar informações esportivas |
-| **CSU09** | **Miguel** | Cadastrar novo campeonato |
-| **CSU03** | **Rúbia** | Criação de projeto esportivo |
+| **CSU11** | **Miguel** | Consultar histórico de jogos |
+| **CSU01** | **Rúbia** | Visualizar horários e locais de treinos |
 | **CSU10** | **Rúbia** | Editar dados de treino |
 | **CSU05** | **Mariana** | Enviar notificações aos usuários |
 | **CSU12** | **Mariana** | Remover projeto esportivo |

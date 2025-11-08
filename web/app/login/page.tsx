@@ -39,9 +39,10 @@ export default function LoginPage() {
         data?.error || data?.message || `Erro ${res.status}: ${res.statusText}`
       throw new Error(errorMessage)
     }
-
-    alert("✅ Login realizado com sucesso!")
-    router.push(data.redirect)
+      setMessage("✅ Login realizado com sucesso! Redirecionando...")
+      setTimeout(() => {
+        router.push(data.redirect)
+      }, 1500)
   } catch (err: any) {
     console.error("❌ Erro no login:", err)
     alert("❌ Erro: " + err.message)

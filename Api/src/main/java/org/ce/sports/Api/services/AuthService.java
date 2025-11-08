@@ -10,12 +10,14 @@ import org.ce.sports.Api.enums.RoleEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -43,7 +45,9 @@ public class AuthService {
             }
 
             request.getSession(true);
-            SecurityContextHolder.getContext().setAuthentication(null);
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), null, List.of());
+            SecurityContextHolder.getContext().setAuthentication(authToken);
 
             UserResponse dto = new UserResponse(
                     user.getId(),

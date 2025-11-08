@@ -27,7 +27,7 @@ public class NewsService {
                 .titulo(titulo)
                 .autorNome(autor)
                 .esporte(esporte)
-                .autorId(noticiaRepository.findByAutorNome(autor).getAutorId())
+                .autorId(1L)
                 .conteudo(conteudo)
                 .criadaEm(LocalDateTime.now())
                 .build();

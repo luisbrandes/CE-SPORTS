@@ -38,7 +38,7 @@ export function Header() {
             Projetos
           </Link>
           <Link
-            href="/noticias"
+            href="/noticia"
             className="text-sm font-medium text-white/90 hover:text-accent transition-colors"
           >
             Notícias

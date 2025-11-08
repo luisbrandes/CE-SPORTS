@@ -1,14 +1,25 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+
+interface Noticia {
+  id: number
+  titulo: string
+  autorNome: string
+  criadaEm: string
+  conteudo: string
+}
 
 export default function NoticiasPage() {
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [noticias, setNoticias] = useState<Noticia[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
@@ -18,9 +29,28 @@ export default function NoticiasPage() {
     closeModal()
   }
 
+  useEffect(() => {
+    let cancelado = false
+    async function load() {
+      try {
+        setLoading(true)
+        setError(null)
+        const res = await fetch("http://localhost:8080/api/noticias")
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const data: Noticia[] = await res.json()
+        if (!cancelado) setNoticias(data)
+      } catch (e: any) {
+        if (!cancelado) setError(e?.message ?? "Erro ao carregar notícias")
+      } finally {
+        if (!cancelado) setLoading(false)
+      }
+    }
+    load()
+    return () => { cancelado = true }
+  }, [])
+
   return (
-    <main className="min-h-screen bg-gradient-to-br text-white">
-      {/* Conteúdo principal */}
+    <main className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-500 text-white">
       <section className="container mx-auto py-12 px-6">
         <Button
           variant="outline"
@@ -34,59 +64,41 @@ export default function NoticiasPage() {
           Últimas Notícias
         </h1>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="bg-white text-blue-900 p-6">
-            <h3 className="text-xl font-semibold mb-2">
-              CEFET-MG realiza Copa Caloura 2025
-            </h3>
-            <p className="text-gray-700 mb-3">
-              O tradicional campeonato entre turmas teve início nesta semana,
-              reunindo mais de 200 alunos em diversas modalidades esportivas.
-            </p>
-            <Link
-              href="#"
-              className="text-blue-700 font-semibold hover:underline"
-            >
-              Ler mais →
-            </Link>
-          </Card>
+        {/* Lista de notícias */}
+        {loading && <p className="text-center">Carregando...</p>}
+        {error && <p className="text-center text-red-200">Erro: {error}</p>}
 
-          <Card className="bg-white text-blue-900 p-6">
-            <h3 className="text-xl font-semibold mb-2">
-              Projeto de Corrida reúne estudantes e servidores
-            </h3>
-            <p className="text-gray-700 mb-3">
-              O projeto tem como objetivo promover a integração e incentivar
-              hábitos saudáveis entre os membros da comunidade escolar.
-            </p>
-            <Link
-              href="#"
-              className="text-blue-700 font-semibold hover:underline"
-            >
-              Ler mais →
-            </Link>
-          </Card>
+        {!loading && !error && noticias.length === 0 && (
+          <p className="text-center opacity-80">Nenhuma notícia cadastrada ainda.</p>
+        )}
 
-          <Card className="bg-white text-blue-900 p-6">
-            <h3 className="text-xl font-semibold mb-2">
-              Times femininos de vôlei ganham destaque
-            </h3>
-            <p className="text-gray-700 mb-3">
-              As equipes femininas do CEFET-MG estão representando a instituição
-              em torneios intercolegiais com ótimos resultados.
-            </p>
-            <Link
-              href="#"
-              className="text-blue-700 font-semibold hover:underline"
-            >
-              Ler mais →
-            </Link>
-          </Card>
-        </div>
+        {!loading && !error && noticias.length > 0 && (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-10">
+            {noticias.map((n) => (
+              <Card
+                key={n.id}
+                className="bg-white/95 text-blue-900 p-6 rounded-xl shadow-lg"
+              >
+                <h3 className="text-xl font-semibold line-clamp-2">{n.titulo}</h3>
+                <p className="text-sm text-gray-500 mt-2">
+                  Por {n.autorNome} — {new Date(n.criadaEm).toLocaleDateString("pt-BR")}
+                </p>
+
+                <div className="mt-4">
+                  <Link href={`/noticia/${n.id}`}>
+                    <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-500">
+                      Ler mais
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* Botão centralizado abaixo do conteúdo */}
-      <div className="flex justify-center py-12">
+      {/* Botão central “Cadastrar Notícia” */}
+      <div className="flex justify-center pb-12">
         <Button
           className="bg-yellow-400 text-blue-900 hover:bg-yellow-500 px-8 py-6 text-lg font-semibold"
           onClick={() => router.push("/noticia/cadastrarNoticia")}

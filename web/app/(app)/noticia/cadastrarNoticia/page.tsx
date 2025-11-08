@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { ok } from "assert"
 
 export default function CadastrarNoticiaPage() {
     const router = useRouter()
@@ -12,44 +13,33 @@ export default function CadastrarNoticiaPage() {
     const [titulo, setTitulo] = useState("")
     const [autor, setAutor] = useState("")
     const [dataPublicacao, setDataPublicacao] = useState("")
-    const [descricao, setDescricao] = useState("")
+    const [esporte, setDescricao] = useState("")
     const [conteudo, setConteudo] = useState("")
     const [imagem, setImagem] = useState<File | null>(null)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-
-        const formData = new FormData()
-        formData.append("titulo", titulo)
-        formData.append("autor", autor)
-        formData.append("dataPublicacao", dataPublicacao)
-        formData.append("descricao", descricao)
-        formData.append("conteudo", conteudo)
-        if (imagem) formData.append("imagem", imagem)
-
-        console.log("Notícia enviada:", {
-            titulo,
-            autor,
-            dataPublicacao,
-            descricao,
-            conteudo,
-            imagem,
-        })
-
         const res = await fetch("http://localhost:8080/api/noticias", {
             method: "POST",
-            body: formData,
-        })
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                titulo,
+                autor,
+                esporte,
+                conteudo
+            }),
+        });
 
-        if (res.ok) {
+        if (res.status==201) {
             alert("Notícia cadastrada com sucesso!")
             router.push("/noticias")
         } else {
             alert("Erro ao cadastrar notícia")
         }
-
-        alert("Notícia cadastrada com sucesso!")
-        router.push("/noticias")
+        console.log(res);
+        
     }
 
     return (
@@ -111,29 +101,14 @@ export default function CadastrarNoticiaPage() {
                     </div>
 
                     <div>
-                        <label htmlFor="imagem" className="block font-medium mb-1">
-                            Imagem da Notícia
-                        </label>
-                        <Input
-                            id="imagem"
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => setImagem(e.target.files?.[0] || null)}
-                        />
-                        <small className="text-gray-500 text-sm">
-                            Formatos aceitos: .jpg, .png, .jpeg
-                        </small>
-                    </div>
-
-                    <div>
-                        <label htmlFor="descricao" className="block font-medium mb-1">
+                        <label htmlFor="esporte" className="block font-medium mb-1">
                             Resumo
                         </label>
                         <textarea
-                            id="descricao"
+                            id="esporte"
                             rows={3}
                             placeholder="Breve resumo do conteúdo da notícia..."
-                            value={descricao}
+                            value={esporte}
                             onChange={(e) => setDescricao(e.target.value)}
                             required
                             className="w-full rounded-md border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"

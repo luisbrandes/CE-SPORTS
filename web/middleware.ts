@@ -1,27 +1,17 @@
-// middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-// Rotas que exigem login
-const protectedRoutes = ["/admin", "/aluno"];
+export async function middleware(req: NextRequest) {
+  const sessionCookie = req.cookies.get("JSESSIONID")
 
-export function middleware(request: NextRequest) {
-  const cookie = request.cookies.get("JSESSIONID");
-  const pathname = request.nextUrl.pathname;
-
-  // Se for rota protegida e não tiver cookie, redireciona para /login
-  if (protectedRoutes.some(path => pathname.startsWith(path))) {
-    if (!cookie) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
+  // Se o usuário tentar acessar /admin ou /aluno sem cookie de sessão → redireciona
+  if (!sessionCookie && (req.nextUrl.pathname.startsWith("/admin") || req.nextUrl.pathname.startsWith("/aluno"))) {
+    return NextResponse.redirect(new URL("/login", req.url))
   }
 
-  // Senão, segue normalmente
-  return NextResponse.next();
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: ["/adm/:path*", "/aluno/:path*"], // Middleware só nessas rotas
-};
+  matcher: ["/admin/:path*", "/aluno/:path*"],
+}

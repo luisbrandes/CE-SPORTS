@@ -7,7 +7,7 @@ export function useAuth(redirectIfNotLogged = true) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadUser() {
+    async function fetchUser() {
       try {
         const res = await fetch("http://localhost:8080/api/auth/me", {
           credentials: "include",
@@ -24,8 +24,9 @@ export function useAuth(redirectIfNotLogged = true) {
         setLoading(false)
       }
     }
-    loadUser()
-  }, [])
+
+    fetchUser()
+  }, [redirectIfNotLogged])
 
   return { user, loading }
 }

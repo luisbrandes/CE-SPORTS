@@ -4,41 +4,49 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import Link from "next/link" 
-import { Eye, EyeOff } from "lucide-react" 
+import Link from "next/link"
+import { Eye, EyeOff } from "lucide-react"
+import { useRouter } from "next/dist/client/components/navigation"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [message, setMessage] = useState("") 
-  const [showPassword, setShowPassword] = useState(false) 
+  const [senha, setSenha] = useState("")
+  const [message, setMessage] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
 
-  // Envio do formulário
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+ 
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
 
-    if (!email || !password) {
-      alert("Por favor, preencha todos os campos.")
-      return
-    }
+  if (!email || !senha) {
+    alert("Por favor, preencha todos os campos.")
+    return
+  }
 
-    try {
+  try {
     const res = await fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      credentials: "include",
+      body: JSON.stringify({ email, senha }),
     })
 
-    const data = await res.json()
+    const data = await res.json().catch(() => ({})) 
 
-    if (!res.ok) throw new Error(data.message || "Erro ao fazer login")
+    if (!res.ok) {
+      const errorMessage =
+        data?.error || data?.message || `Erro ${res.status}: ${res.statusText}`
+      throw new Error(errorMessage)
+    }
 
     alert("✅ Login realizado com sucesso!")
-    console.log("Resposta do backend:", data)
+    router.push(data.redirect)
   } catch (err: any) {
+    console.error("❌ Erro no login:", err)
     alert("❌ Erro: " + err.message)
   }
-  }
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-500 p-6">
@@ -62,8 +70,8 @@ export default function LoginPage() {
               type={showPassword ? "text" : "password"}
               placeholder="Senha"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               className="pr-10"
             />
             <button

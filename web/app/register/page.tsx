@@ -43,7 +43,7 @@ export default function RegisterPage() {
         body: JSON.stringify({ nome, email, senha, role }),
       })
 
-      // Alguns backends retornam texto simples, então vamos tratar os dois casos
+     
       let data
       try {
         data = await res.json()

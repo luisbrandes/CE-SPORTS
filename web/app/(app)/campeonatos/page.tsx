@@ -25,7 +25,6 @@ export default function CampeonatosPage() {
 
   return (
     <main className="flex-1 container mx-auto px-4 py-8 fade-in">
-      {/* Botão Voltar */}
       <Link href="/">
         <Button variant="outline" size="sm" className="mb-4">
           ← Voltar à Home
@@ -90,6 +89,28 @@ export default function CampeonatosPage() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
+        <Link href="/campeonatos/registrar-partida">
+          <Button
+            variant="outline"
+            size="md"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50 px-6"
+          >
+            ➕ Registrar Partida
+          </Button>
+        </Link>
+
+        <Link href="/campeonatos/adicionar-campeonato">
+          <Button
+            variant="outline"
+            size="md"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50 px-6"
+          >
+            🏆 Adicionar Campeonato
+          </Button>
+        </Link>
       </div>
 
       {showModal && (

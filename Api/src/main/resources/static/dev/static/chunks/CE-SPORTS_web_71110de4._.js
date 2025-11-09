@@ -35,7 +35,7 @@ const buttonVariants = (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d
     variants: {
         variant: {
             default: "bg-accent text-white hover:bg-accent/90",
-            primary: "bg-primary text-white hover:bg-primary/90",
+            primary: "bg-blue-600 text-white hover:bg-blue-700",
             secondary: "bg-secondary text-primary hover:bg-secondary/80",
             outline: "border border-border text-primary hover:bg-secondary/20",
             ghost: "hover:bg-secondary/10 text-primary",
@@ -62,7 +62,7 @@ function Button({ className, variant, size, ...props }) {
         ...props
     }, void 0, false, {
         fileName: "[project]/CE-SPORTS/web/components/ui/button.tsx",
-        lineNumber: 43,
+        lineNumber: 38,
         columnNumber: 5
     }, this);
 }

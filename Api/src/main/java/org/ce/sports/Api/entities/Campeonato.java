@@ -18,7 +18,7 @@ public class Campeonato {
     private int derrota;
     private int empate;
 
-    @OneToMany(mappedBy = "campeonato", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "campeonatos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Equipe> equipes;
 
     public Campeonato() {}

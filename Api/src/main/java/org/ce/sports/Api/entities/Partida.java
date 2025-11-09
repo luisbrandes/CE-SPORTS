@@ -10,23 +10,23 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "campeonato_id")
     private Campeonato campeonato;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "equipe_vencedora_id")
     private Equipe vencedor;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "equipe_perdedora_id")
     private Equipe perdedor;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "equipe1_id")
     private Equipe equipe1;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "equipe2_id")
     private Equipe equipe2;
 
@@ -36,15 +36,22 @@ public class Partida {
 
     public Partida() {}
 
-    public Partida(Campeonato campeonato, Equipe vencedor, Equipe perdedor, Equipe equipe1, Equipe equipe2, int gols1, int gols2, boolean empate) {
+    public Partida(Campeonato campeonato, Equipe equipe1, Equipe equipe2, int gols1, int gols2) {
         this.campeonato = campeonato;
-        this.vencedor = vencedor;
-        this.perdedor = perdedor;
         this.equipe1 = equipe1;
         this.equipe2 = equipe2;
         this.gols1 = gols1;
         this.gols2 = gols2;
-        this.empate = empate;
+
+        if(gols1 == gols2){
+            this.empate = true;
+        }else if(gols1 > gols2){
+            this.vencedor = this.equipe1;
+            this.perdedor = this.equipe2;
+        }else{
+            this.vencedor = this.equipe2;
+            this.perdedor = this.equipe1;
+        }
     }
 
     public Long getId() {

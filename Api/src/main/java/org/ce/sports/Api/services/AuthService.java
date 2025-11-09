@@ -27,6 +27,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     // ---------------------------
     // LOGIN
@@ -55,6 +56,11 @@ public class AuthService {
                     user.getEmail(),
                     user.getRole() != null ? user.getRole().name() : null
             );
+
+            if (!user.isVerified()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "Conta ainda não verificada. Verifique seu e-mail."));
+            }
 
             String redirect = (user.getRole() != null && user.getRole().name().equals("ROLE_ADMIN"))
                     ? "/admin"
@@ -141,31 +147,36 @@ public class AuthService {
     public ResponseEntity<?> register(Register request) {
         try {
             Optional<User> existente = userRepository.findByEmail(request.getEmail());
-
             if (existente.isPresent()) {
-                System.out.println("⚠️ Tentativa de registro com e-mail já existente: " + request.getEmail());
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body(Map.of("error", "E-mail já cadastrado."));
             }
 
-            RoleEnum role = request.getRoleEnum();
+            String codigo = String.valueOf((int) (Math.random() * 900000) + 100000); // 6 dígitos
 
             User novo = User.builder()
                     .nome(request.getNome())
                     .email(request.getEmail())
                     .senha(passwordEncoder.encode(request.getSenha()))
-                    .role(role)
+                    .role(request.getRoleEnum())
+                    .verified(false)
+                    .verificationCode(codigo)
                     .build();
 
             userRepository.save(novo);
-            System.out.println("✅ Usuário registrado com sucesso: " + request.getEmail());
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Map.of("message", "Usuário registrado com sucesso!"));
 
+            emailService.enviarCodigoVerificacao(request.getEmail(), codigo);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of(
+                            "message", "Usuário registrado! Código enviado para o e-mail.",
+                            "email", request.getEmail()
+                    ));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(500)
                     .body(Map.of("error", "Erro ao registrar: " + e.getMessage()));
         }
     }
+
 }

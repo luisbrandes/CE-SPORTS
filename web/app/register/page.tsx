@@ -41,30 +41,23 @@ export default function RegisterPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, email, senha, role }),
-      })
+      });
 
-     
-      let data
-      try {
-        data = await res.json()
-      } catch {
-        data = { message: await res.text() }
+      if (res.ok) {
+        setMessage("✅ Cadastro realizado com sucesso! Redirecionando...");
+        setTimeout(() => {
+          router.push(`/register/verify?email=${encodeURIComponent(email)}`);
+        }, 1500);
+      } else {
+        const data = await res.json();
+        setMessage("❌ " + (data.error || data.message || "Erro ao registrar."));
       }
-
-      if (!res.ok) throw new Error(data.message || "Erro ao fazer cadastro")
-
-      setMessage("✅ Cadastro realizado com sucesso! Redirecionando...")
-
-   
-      setTimeout(() => {
-        router.push("/login")
-      }, 1500)
     } catch (err: any) {
-      setMessage("❌ Erro: " + err.message)
+      setMessage("❌ Erro: " + err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-500 p-6">

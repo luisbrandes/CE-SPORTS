@@ -11,7 +11,7 @@ export default function HomePage() {
     const { user, loading } = useSession()
 
     if (loading) return <p>Carregando...</p>
-    if (user?.role !== "ROLE_USER") return <p>Acesso negado.</p>
+    
 
     return (
         <main className="flex flex-col items-center justify-center w-full">

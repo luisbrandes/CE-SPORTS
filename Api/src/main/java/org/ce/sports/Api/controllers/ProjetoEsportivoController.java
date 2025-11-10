@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ce.sports.Api.services.ProjetoEsportivoService;
 import org.ce.sports.Api.entities.ProjetoEsportivo;
-import org.ce.sports.Api.dto.ProjetoEsportivoDTO;
+import org.ce.sports.Api.dtos.ProjetoEsportivoDTO;
 
 @RestController
 @RequestMapping("/api/projetos")

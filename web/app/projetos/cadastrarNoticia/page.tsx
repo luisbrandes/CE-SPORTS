@@ -117,4 +117,25 @@ export default function NovoProjetoPage() {
               placeholder="Nome do responsável"
               required
             />
-pps-xkbe-tap
+          </div>
+
+          <Button type="submit" className="w-full mt-3">
+            Adicionar Projeto
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            className="w-full"
+            onClick={() => router.push("/projetos")}
+          >
+            Cancelar
+          </Button>
+        </form>
+
+        <footer className="text-center text-sm text-muted-foreground pt-4">
+          © 2025 CE Sports - CEFET-MG
+        </footer>
+      </Card>
+    </main>
+  )
+}

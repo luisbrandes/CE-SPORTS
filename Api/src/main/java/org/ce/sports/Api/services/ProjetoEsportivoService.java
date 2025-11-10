@@ -2,9 +2,9 @@ package org.ce.sports.Api.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.cesports.repositories.ProjetoEsportivoRepository;
+import org.ce.sports.Api.entities.repositories.ProjetoEsportivoRepository;
 import org.ce.sports.Api.entities.ProjetoEsportivo;
-import org.ce.sports.Api.dto.ProjetoEsportivoDTO;
+import org.ce.sports.Api.dtos.ProjetoEsportivoDTO;
 
 @Service
 public class ProjetoEsportivoService {

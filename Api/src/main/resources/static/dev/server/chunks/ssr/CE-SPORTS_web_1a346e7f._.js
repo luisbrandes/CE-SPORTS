@@ -91,10 +91,36 @@ function CampeonatosPage() {
                 lineNumber: 28,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                className: "text-3xl font-bold text-black mb-6",
-                children: "Campeonatos em Andamento"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between mb-6",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                        className: "text-3xl page-title text-black font-bold mb-6",
+                        children: "Campeonatos em Andamento"
+                    }, void 0, false, {
+                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
+                        lineNumber: 35,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        href: "/campeonatos/historico-partidas",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                            variant: "ghost",
+                            size: "sm",
+                            className: "text-blue-600 hover:text-blue-800 hover:underline",
+                            children: "Histórico de Partidas"
+                        }, void 0, false, {
+                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
+                            lineNumber: 40,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
+                        lineNumber: 39,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
                 lineNumber: 34,
                 columnNumber: 7
@@ -109,7 +135,7 @@ function CampeonatosPage() {
                                 children: "Copa Caloura 2025"
                             }, void 0, false, {
                                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                lineNumber: 40,
+                                lineNumber: 52,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -118,7 +144,7 @@ function CampeonatosPage() {
                                     "Campeonato entre turmas de primeiro ano. Próxima partida:",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                        lineNumber: 45,
+                                        lineNumber: 57,
                                         columnNumber: 13
                                     }, this),
                                     " ",
@@ -126,14 +152,14 @@ function CampeonatosPage() {
                                         children: "Informática x Eletrotécnica"
                                     }, void 0, false, {
                                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                        lineNumber: 45,
+                                        lineNumber: 57,
                                         columnNumber: 20
                                     }, this),
                                     "."
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                lineNumber: 43,
+                                lineNumber: 55,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -141,13 +167,13 @@ function CampeonatosPage() {
                                 children: "Ver Detalhes"
                             }, void 0, false, {
                                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                lineNumber: 47,
+                                lineNumber: 59,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                        lineNumber: 39,
+                        lineNumber: 51,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -157,7 +183,7 @@ function CampeonatosPage() {
                                 children: "Interturmas 2025"
                             }, void 0, false, {
                                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                lineNumber: 51,
+                                lineNumber: 63,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -165,7 +191,7 @@ function CampeonatosPage() {
                                 children: "Times de todos os cursos disputando o título de melhor equipe do campus."
                             }, void 0, false, {
                                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                lineNumber: 54,
+                                lineNumber: 66,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -173,19 +199,19 @@ function CampeonatosPage() {
                                 children: "Ver Detalhes"
                             }, void 0, false, {
                                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                lineNumber: 58,
+                                lineNumber: 70,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                        lineNumber: 50,
+                        lineNumber: 62,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                lineNumber: 38,
+                lineNumber: 50,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -193,7 +219,7 @@ function CampeonatosPage() {
                 children: "Tabela de Classificação — Copa Caloura"
             }, void 0, false, {
                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                lineNumber: 62,
+                lineNumber: 74,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -210,7 +236,7 @@ function CampeonatosPage() {
                                         children: "Posição"
                                     }, void 0, false, {
                                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                        lineNumber: 70,
+                                        lineNumber: 82,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -218,7 +244,7 @@ function CampeonatosPage() {
                                         children: "Equipe"
                                     }, void 0, false, {
                                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                        lineNumber: 71,
+                                        lineNumber: 83,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -226,7 +252,7 @@ function CampeonatosPage() {
                                         children: "Pontos"
                                     }, void 0, false, {
                                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                        lineNumber: 72,
+                                        lineNumber: 84,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -234,7 +260,7 @@ function CampeonatosPage() {
                                         children: "Vitórias"
                                     }, void 0, false, {
                                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                        lineNumber: 73,
+                                        lineNumber: 85,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -242,18 +268,18 @@ function CampeonatosPage() {
                                         children: "Derrotas"
                                     }, void 0, false, {
                                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                        lineNumber: 74,
+                                        lineNumber: 86,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                lineNumber: 69,
+                                lineNumber: 81,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 68,
+                            lineNumber: 80,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -268,7 +294,7 @@ function CampeonatosPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                            lineNumber: 83,
+                                            lineNumber: 95,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -276,7 +302,7 @@ function CampeonatosPage() {
                                             children: time.nome
                                         }, void 0, false, {
                                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                            lineNumber: 84,
+                                            lineNumber: 96,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -284,7 +310,7 @@ function CampeonatosPage() {
                                             children: time.pontos
                                         }, void 0, false, {
                                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                            lineNumber: 85,
+                                            lineNumber: 97,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -292,7 +318,7 @@ function CampeonatosPage() {
                                             children: time.vitorias
                                         }, void 0, false, {
                                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                            lineNumber: 86,
+                                            lineNumber: 98,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -300,72 +326,53 @@ function CampeonatosPage() {
                                             children: time.derrotas
                                         }, void 0, false, {
                                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                            lineNumber: 87,
+                                            lineNumber: 99,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, time.posicao, true, {
                                     fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 91,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 77,
+                            lineNumber: 89,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                    lineNumber: 67,
+                    lineNumber: 79,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                lineNumber: 66,
+                lineNumber: 78,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex flex-col sm:flex-row justify-center items-center gap-4 mt-8",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                        href: "/campeonatos/registrar-partida",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                            variant: "outline",
-                            size: "md",
-                            className: "border-blue-600 text-blue-600 hover:bg-blue-50 px-6",
-                            children: "➕ Registrar Partida"
-                        }, void 0, false, {
-                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 96,
-                            columnNumber: 11
-                        }, this)
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                    href: "/campeonatos/adicionar-campeonato",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                        variant: "outline",
+                        size: "md",
+                        className: "border-blue-600 text-blue-600 hover:bg-blue-50 px-6",
+                        children: "🏆 Adicionar Campeonato"
                     }, void 0, false, {
                         fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                        lineNumber: 95,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                        href: "/campeonatos/adicionar-campeonato",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                            variant: "outline",
-                            size: "md",
-                            className: "border-blue-600 text-blue-600 hover:bg-blue-50 px-6",
-                            children: "🏆 Adicionar Campeonato"
-                        }, void 0, false, {
-                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 106,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                        lineNumber: 105,
-                        columnNumber: 9
+                        lineNumber: 108,
+                        columnNumber: 11
                     }, this)
-                ]
-            }, void 0, true, {
+                }, void 0, false, {
+                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
+                    lineNumber: 107,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                lineNumber: 94,
+                lineNumber: 106,
                 columnNumber: 7
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -379,7 +386,7 @@ function CampeonatosPage() {
                             children: "×"
                         }, void 0, false, {
                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 119,
+                            lineNumber: 121,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -387,7 +394,7 @@ function CampeonatosPage() {
                             children: "Login"
                         }, void 0, false, {
                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 126,
+                            lineNumber: 128,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -395,7 +402,7 @@ function CampeonatosPage() {
                             children: "Escolha seu tipo de acesso:"
                         }, void 0, false, {
                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 127,
+                            lineNumber: 129,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -407,7 +414,7 @@ function CampeonatosPage() {
                                     children: "Aluno"
                                 }, void 0, false, {
                                     fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 134,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -416,24 +423,24 @@ function CampeonatosPage() {
                                     children: "Administrador"
                                 }, void 0, false, {
                                     fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                                    lineNumber: 135,
+                                    lineNumber: 137,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                            lineNumber: 131,
+                            lineNumber: 133,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                    lineNumber: 118,
+                    lineNumber: 120,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/page.tsx",
-                lineNumber: 117,
+                lineNumber: 119,
                 columnNumber: 9
             }, this)
         ]

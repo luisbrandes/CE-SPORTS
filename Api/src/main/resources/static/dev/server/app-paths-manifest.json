@@ -1,4 +1,7 @@
 {
+  "/(app)/campeonatos/historico-partidas/page": "app/(app)/campeonatos/historico-partidas/page.js",
   "/(app)/campeonatos/page": "app/(app)/campeonatos/page.js",
-  "/(app)/campeonatos/registrar-partida/page": "app/(app)/campeonatos/registrar-partida/page.js"
+  "/(app)/campeonatos/registrar-partida/page": "app/(app)/campeonatos/registrar-partida/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js"
 }

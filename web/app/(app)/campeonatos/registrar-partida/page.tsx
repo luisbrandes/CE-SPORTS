@@ -85,10 +85,10 @@ export default function RegistrarPartidaPage() {
         </form>
 
         <Link
-          href="/campeonatos"
+          href="/campeonatos/historico-partidas"
           className="text-accent text-blue-600 hover:underline text-sm"
         >
-          ← Voltar para Campeonatos
+          ← Voltar para histórico
         </Link>
       </Card>
     </div>

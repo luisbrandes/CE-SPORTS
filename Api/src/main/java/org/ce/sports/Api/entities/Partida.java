@@ -30,22 +30,22 @@ public class Partida {
     @JoinColumn(name = "equipe2_id")
     private Equipe equipe2;
 
-    private int gols1;
-    private int gols2;
+    private int pontuacao1;
+    private int pontuacao2;
     private boolean empate;
 
     public Partida() {}
 
-    public Partida(Campeonato campeonato, Equipe equipe1, Equipe equipe2, int gols1, int gols2) {
+    public Partida(Campeonato campeonato, Equipe equipe1, Equipe equipe2, int pontuacao1, int pontuacao2) {
         this.campeonato = campeonato;
         this.equipe1 = equipe1;
         this.equipe2 = equipe2;
-        this.gols1 = gols1;
-        this.gols2 = gols2;
+        this.pontuacao1 = pontuacao1;
+        this.pontuacao2 = pontuacao2;
 
-        if(gols1 == gols2){
+        if(pontuacao1 == pontuacao2){
             this.empate = true;
-        }else if(gols1 > gols2){
+        }else if(pontuacao1 > pontuacao2){
             this.vencedor = this.equipe1;
             this.perdedor = this.equipe2;
         }else{
@@ -98,20 +98,20 @@ public class Partida {
         this.equipe2 = equipe2;
     }
 
-    public int getGols1() {
-        return gols1;
+    public int getPontuacao1() {
+        return pontuacao1;
     }
 
-    public void setGols1(int gols1) {
-        this.gols1 = gols1;
+    public void setPontuacao1(int pontuacao1) {
+        this.pontuacao1 = pontuacao1;
     }
 
-    public int getGols2() {
-        return gols2;
+    public int getPontuacao2() {
+        return pontuacao2;
     }
 
-    public void setGols2(int gols2) {
-        this.gols2 = gols2;
+    public void setPontuacao2(int pontuacao2) {
+        this.pontuacao2 = pontuacao2;
     }
 
     public boolean isEmpate() {

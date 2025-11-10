@@ -1,5 +1,7 @@
 package org.ce.sports.Api.controllers;
 
+import java.util.List;
+
 import org.ce.sports.Api.dtos.AdicionarPartida;
 import org.ce.sports.Api.entities.Campeonato;
 import org.ce.sports.Api.entities.Equipe;
@@ -21,7 +23,6 @@ public class PartidaController {
     @PostMapping
     public ResponseEntity<String> adicionar(@RequestBody AdicionarPartida partidaDto) {
 
-        // 🔹 Criando objetos fictícios (mock) só com nomes para teste
         Campeonato campeonato = new Campeonato();
         campeonato.setNome(partidaDto.campeonato());
 
@@ -31,7 +32,6 @@ public class PartidaController {
         Equipe equipe2 = new Equipe();
         equipe2.setNome(partidaDto.equipe2());
 
-        // 🔹 Criando a entidade Partida com base no DTO
         Partida partida = new Partida(
             campeonato,
             equipe1,
@@ -42,6 +42,13 @@ public class PartidaController {
 
         repository.save(partida);
 
-        return ResponseEntity.status(201).body("Partida criada com sucesso (dados fictícios).");
+        return ResponseEntity.status(201).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Partida>> listarTodas() {
+        List<Partida> partidas = repository.findAll();
+
+        return ResponseEntity.ok(partidas);
     }
 }

@@ -31,9 +31,21 @@ export default function CampeonatosPage() {
         </Button>
       </Link>
 
-      <h1 className="text-3xl font-bold text-black mb-6">
-        Campeonatos em Andamento
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl page-title text-black font-bold mb-6">
+          Campeonatos em Andamento
+        </h1>
+
+        <Link href="/campeonatos/historico-partidas">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-blue-600 hover:text-blue-800 hover:underline"
+          >
+            Histórico de Partidas
+          </Button>
+        </Link>
+      </div>
 
       <section className="grid sm:grid-cols-2 gap-6 mb-10">
         <Card>
@@ -92,16 +104,6 @@ export default function CampeonatosPage() {
       </div>
 
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
-        <Link href="/campeonatos/registrar-partida">
-          <Button
-            variant="outline"
-            size="md"
-            className="border-blue-600 text-blue-600 hover:bg-blue-50 px-6"
-          >
-            ➕ Registrar Partida
-          </Button>
-        </Link>
-
         <Link href="/campeonatos/adicionar-campeonato">
           <Button
             variant="outline"

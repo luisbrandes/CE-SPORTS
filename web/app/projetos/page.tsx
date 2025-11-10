@@ -19,13 +19,27 @@ interface Projeto {
 export default function ProjetosPage() {
   const router = useRouter()
   const [projetos, setProjetos] = useState<Projeto[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/projetos")
-      .then((res) => res.json())
-      .then(setProjetos)
-      .catch((err) => console.error("Erro ao buscar projetos:", err))
+    async function carregarProjetos() {
+      try {
+        const res = await fetch("http://localhost:8080/api/projetos")
+        if (!res.ok) throw new Error("Falha ao buscar projetos")
+        const data = await res.json()
+        setProjetos(data)
+      } catch (err) {
+        console.error("Erro ao buscar projetos:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    carregarProjetos()
   }, [])
+
+  const formatarData = (data: string) => {
+    return new Date(data).toLocaleDateString("pt-BR")
+  }
 
   return (
     <main className="p-6 space-y-8">
@@ -35,27 +49,41 @@ export default function ProjetosPage() {
 
       <h1 className="text-3xl font-bold text-center">🏅 Projetos Esportivos</h1>
 
-      <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {projetos.length > 0 ? (
-          projetos.map((proj) => (
-            <Card key={proj.id}>
-              <h3 className="text-lg font-semibold">{proj.nome}</h3>
-              <p className="text-sm text-muted-foreground mb-2">{proj.descricao}</p>
-              <p className="text-sm">
-                <strong>Modalidade:</strong> {proj.modalidade}
-              </p>
-              <p className="text-sm">
-                <strong>Local:</strong> {proj.local}
-              </p>
-              <Button variant="outline" size="sm" className="mt-3 w-full">
-                Participar
-              </Button>
-            </Card>
-          ))
-        ) : (
-          <p className="text-center text-muted-foreground">Nenhum projeto cadastrado.</p>
-        )}
-      </section>
+      {loading ? (
+        <p className="text-center text-muted-foreground">Carregando projetos...</p>
+      ) : (
+        <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+          {projetos.length > 0 ? (
+            projetos.map((proj) => (
+              <Card key={proj.id} className="flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold mb-1">{proj.nome}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{proj.descricao}</p>
+                  <p className="text-sm">
+                    <strong>Modalidade:</strong> {proj.modalidade}
+                  </p>
+                  <p className="text-sm">
+                    <strong>Local:</strong> {proj.local}
+                  </p>
+                  <p className="text-sm">
+                    <strong>Período:</strong> {formatarData(proj.dataInicio)} – {formatarData(proj.dataFim)}
+                  </p>
+                  <p className="text-sm">
+                    <strong>Responsável:</strong> {proj.responsavel}
+                  </p>
+                </div>
+                <Button variant="outline" size="sm" className="mt-3 w-full">
+                  Participar
+                </Button>
+              </Card>
+            ))
+          ) : (
+            <p className="text-center text-muted-foreground col-span-full">
+              Nenhum projeto cadastrado ainda.
+            </p>
+          )}
+        </section>
+      )}
 
       <div className="flex flex-wrap justify-center gap-4 pt-8">
         <Button variant="outline" onClick={() => router.push("/projetos/cadastrarProjetos")}>
@@ -65,9 +93,6 @@ export default function ProjetosPage() {
         <Button variant="outline">Aprovar Projetos</Button>
       </div>
 
-      <footer className="text-center text-sm text-muted-foreground mt-10">
-        &copy; 2025 CE Sports — CEFET-MG | Todos os direitos reservados
-      </footer>
     </main>
   )
 }

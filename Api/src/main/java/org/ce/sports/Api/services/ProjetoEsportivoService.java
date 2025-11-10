@@ -6,6 +6,8 @@ import org.ce.sports.Api.entities.repositories.ProjetoEsportivoRepository;
 import org.ce.sports.Api.entities.ProjetoEsportivo;
 import org.ce.sports.Api.dtos.ProjetoEsportivoDTO;
 
+import java.util.List;
+
 @Service
 public class ProjetoEsportivoService {
 
@@ -24,5 +26,9 @@ public class ProjetoEsportivoService {
                 .build();
 
         return repository.save(projeto);
+    }
+
+    public List<ProjetoEsportivo> listarProjetos() {
+        return repository.findAll();
     }
 }

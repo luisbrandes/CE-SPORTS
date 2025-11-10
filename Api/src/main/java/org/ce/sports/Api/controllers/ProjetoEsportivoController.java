@@ -7,6 +7,8 @@ import org.ce.sports.Api.services.ProjetoEsportivoService;
 import org.ce.sports.Api.entities.ProjetoEsportivo;
 import org.ce.sports.Api.dtos.ProjetoEsportivoDTO;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/projetos")
 @CrossOrigin(origins = "*")
@@ -19,5 +21,11 @@ public class ProjetoEsportivoController {
     public ResponseEntity<ProjetoEsportivo> criarProjeto(@RequestBody ProjetoEsportivoDTO dto) {
         ProjetoEsportivo novo = service.criarProjeto(dto);
         return ResponseEntity.ok(novo);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProjetoEsportivo>> listarProjetos() {
+        List<ProjetoEsportivo> projetos = service.listarProjetos();
+        return ResponseEntity.ok(projetos);
     }
 }

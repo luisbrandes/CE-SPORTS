@@ -104,8 +104,8 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 |:-------------|:---------------|:--------|
 | **CSU15** | **Luís** | Logar no sistema (autenticação com Spring Security) |
 | **CSU16** | **Luís** | Entrar como visitante |
-| **CSU04** | **Miguel** | Visualizar classificação de equipes |
 | **CSU09** | **Miguel** | Cadastrar novo campeonato |
+| **CSU11** | **Miguel** | Consultar histórico de jogos |
 | **CSU03** | **Rúbia** | Criação de projeto esportivo |
 | **CSU21** | **Mariana** |  Cadastrar noticias esportivas | Aluno / Administrador |
 | **CSU14** | **Mariana** | Visualizar notícias esportivas |
@@ -120,7 +120,7 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 | Caso de Uso | Desenvolvedor | Função |
 |:-------------|:---------------|:--------|
 | **CSU02** | **Luís** | Atualizar informações esportivas |
-| **CSU11** | **Miguel** | Consultar histórico de jogos |
+| **CSU04** | **Miguel** | Visualizar classificação de equipes |
 | **CSU01** | **Rúbia** | Visualizar horários e locais de treinos |
 | **CSU10** | **Rúbia** | Editar dados de treino |
 | **CSU05** | **Mariana** | Enviar notificações aos usuários |

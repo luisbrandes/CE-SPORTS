@@ -44,10 +44,15 @@ export default function RegisterPage() {
       });
 
       if (res.ok) {
-        setMessage("✅ Cadastro realizado com sucesso! Redirecionando...");
-        setTimeout(() => {
-          router.push(`/register/verify?email=${encodeURIComponent(email)}`);
-        }, 1500);
+         if (role === "aluno") {
+          setMessage("✅ Cadastro realizado! Verifique seu e-mail.")
+          setTimeout(() => {
+            router.push(`/register/verify?email=${encodeURIComponent(email)}`)
+          }, 1500)
+        } else {
+          setMessage("✅ Cadastro enviado! Aguarde aprovação do administrador.")
+          setTimeout(() => router.push("/login"), 2000)
+        }
       } else {
         const data = await res.json();
         setMessage("❌ " + (data.error || data.message || "Erro ao registrar."));

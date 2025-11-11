@@ -1,5 +1,7 @@
 package org.ce.sports.Api.services;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.ce.sports.Api.dtos.Login;
 import org.ce.sports.Api.dtos.Register;
@@ -12,10 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -39,32 +42,36 @@ public class AuthService {
             User user = userRepository.findByEmail(req.getEmail())
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-
             if (!passwordEncoder.matches(req.getSenha(), user.getSenha())) {
-                System.out.println("❌ Senha incorreta para: " + req.getEmail());
                 throw new BadCredentialsException("Senha incorreta");
             }
 
-            request.getSession(true);
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(user.getEmail(), null, List.of());
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+            // Bloqueia login de contas não verificadas (apenas para usuários comuns)
+            if (user.getRole() == RoleEnum.ROLE_USER && !user.isVerified()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "Conta ainda não verificada. Verifique seu e-mail."));
+            }
+
+            HttpSession session = request.getSession(true);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    user.getEmail(),
+                    null,
+                    List.of(new SimpleGrantedAuthority(user.getRole().name()))
+            );
+
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(authToken);
+            session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+            SecurityContextHolder.setContext(context);
 
             UserResponse dto = new UserResponse(
                     user.getId(),
                     user.getNome(),
                     user.getEmail(),
-                    user.getRole() != null ? user.getRole().name() : null
+                    user.getRole().name()
             );
 
-            if (!user.isVerified()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(Map.of("error", "Conta ainda não verificada. Verifique seu e-mail."));
-            }
-
-            String redirect = (user.getRole() != null && user.getRole().name().equals("ROLE_ADMIN"))
-                    ? "/admin"
-                    : "/aluno";
+            String redirect = user.getRole() == RoleEnum.ROLE_ADMIN ? "/admin" : "/aluno";
 
             System.out.println("✅ Login realizado com sucesso: " + req.getEmail());
             return ResponseEntity.ok(Map.of(
@@ -91,10 +98,10 @@ public class AuthService {
     // ---------------------------
     public ResponseEntity<?> logout(HttpServletRequest request) {
         try {
-            if (request.getSession(false) != null) {
-                request.getSession().invalidate();
-            }
+            HttpSession session = request.getSession(false);
+            if (session != null) session.invalidate();
             SecurityContextHolder.clearContext();
+
             System.out.println("👋 Logout realizado com sucesso");
             return ResponseEntity.ok(Map.of("message", "Logout realizado com sucesso"));
         } catch (Exception ex) {
@@ -109,14 +116,17 @@ public class AuthService {
     // ---------------------------
     public ResponseEntity<?> me(HttpServletRequest request) {
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            HttpSession session = request.getSession(false);
+            if (session == null)
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Sem sessão ativa"));
 
-            if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("error", "Não autenticado"));
-            }
+            SecurityContext context = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (context == null || context.getAuthentication() == null)
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Não autenticado"));
 
+            Authentication auth = context.getAuthentication();
             String email = auth.getName();
+
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -124,13 +134,14 @@ public class AuthService {
                     user.getId(),
                     user.getNome(),
                     user.getEmail(),
-                    user.getRole() != null ? user.getRole().name() : null
+                    user.getRole().name()
             );
 
             return ResponseEntity.ok(Map.of(
                     "user", dto,
-                    "sessionId", request.getSession(false) != null ? request.getSession(false).getId() : null
+                    "sessionId", session.getId()
             ));
+
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("error", ex.getMessage()));
@@ -146,37 +157,98 @@ public class AuthService {
     // ---------------------------
     public ResponseEntity<?> register(Register request) {
         try {
-            Optional<User> existente = userRepository.findByEmail(request.getEmail());
-            if (existente.isPresent()) {
+            if (userRepository.findByEmail(request.getEmail()).isPresent()) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body(Map.of("error", "E-mail já cadastrado."));
             }
 
-            String codigo = String.valueOf((int) (Math.random() * 900000) + 100000); // 6 dígitos
+            if (request.getRoleEnum() == RoleEnum.ROLE_USER) {
+                String codigo = String.valueOf((int) (Math.random() * 900000) + 100000);
 
-            User novo = User.builder()
-                    .nome(request.getNome())
-                    .email(request.getEmail())
-                    .senha(passwordEncoder.encode(request.getSenha()))
-                    .role(request.getRoleEnum())
-                    .verified(false)
-                    .verificationCode(codigo)
-                    .build();
+                User novo = User.builder()
+                        .nome(request.getNome())
+                        .email(request.getEmail())
+                        .senha(passwordEncoder.encode(request.getSenha()))
+                        .role(RoleEnum.ROLE_USER)
+                        .verified(false)
+                        .verificationCode(codigo)
+                        .build();
 
-            userRepository.save(novo);
+                userRepository.save(novo);
+                emailService.enviarCodigoVerificacao(request.getEmail(), codigo);
 
-            emailService.enviarCodigoVerificacao(request.getEmail(), codigo);
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(Map.of(
+                                "message", "Usuário registrado! Código enviado para o e-mail.",
+                                "email", request.getEmail()
+                        ));
+            }
 
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Map.of(
-                            "message", "Usuário registrado! Código enviado para o e-mail.",
-                            "email", request.getEmail()
-                    ));
+            if (request.getRoleEnum() == RoleEnum.ROLE_ADMIN) {
+                User novoAdmin = User.builder()
+                        .nome(request.getNome())
+                        .email(request.getEmail())
+                        .senha(passwordEncoder.encode(request.getSenha()))
+                        .role(RoleEnum.ROLE_ADMIN)
+                        .verified(false)
+                        .verificationCode(null)
+                        .build();
+
+                userRepository.save(novoAdmin);
+
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(Map.of(
+                                "message", "Administrador registrado! Aguarde aprovação de outro administrador."
+                        ));
+            }
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Tipo de usuário inválido."));
+
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Erro ao registrar: " + e.getMessage()));
         }
     }
 
+    // ---------------------------
+    // VERIFY
+    // ---------------------------
+    public ResponseEntity<?> verify(Map<String, String> req) {
+        try {
+            String email = req.get("email");
+            String codigo = req.get("codigo");
+
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+            if (user.getRole() != RoleEnum.ROLE_USER) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Somente usuários comuns precisam verificar o e-mail."));
+            }
+
+            if (user.isVerified()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Conta já verificada."));
+            }
+
+            if (!codigo.equals(user.getVerificationCode())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Código inválido."));
+            }
+
+            user.setVerified(true);
+            user.setVerificationCode(null);
+            userRepository.save(user);
+
+            return ResponseEntity.ok(Map.of("message", "Conta verificada com sucesso!"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Erro ao verificar conta: " + e.getMessage()));
+        }
+    }
 }

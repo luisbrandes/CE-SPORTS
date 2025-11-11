@@ -19,15 +19,48 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mensagem, true);
             helper.setTo(destinatario);
             helper.setSubject("Verifique seu e-mail - CE Sports");
-            helper.setText(
-                    "<h3>Bem-vindo ao CE Sports!</h3>" +
-                            "<p>Seu código de verificação é: <b>" + codigo + "</b></p>" +
-                            "<p>Use este código para confirmar seu cadastro.</p>",
-                    true
-            );
+
+            String html = String.format("""
+                <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #0f172a; 
+                            color: #f8fafc; padding: 30px; border-radius: 12px; 
+                            max-width: 480px; margin: auto; text-align: center;">
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h2 style="color: #38bdf8; margin: 0;">🏋️‍♂️ CE Sports</h2>
+                        <p style="font-size: 14px; color: #cbd5e1;">Centro Esportivo CEFET-MG</p>
+                    </div>
+
+                    <div style="background-color: #1e293b; border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+                        <h3 style="margin: 0; color: #f1f5f9;">Bem-vindo(a)!</h3>
+                        <p style="font-size: 15px; color: #cbd5e1; margin-top: 8px;">
+                            Aqui está seu código de verificação:
+                        </p>
+                        <p style="font-size: 28px; font-weight: bold; color: #38bdf8; margin: 15px 0;">
+                            %s
+                        </p>
+                        <p style="font-size: 14px; color: #94a3b8;">
+                            Use este código para confirmar seu cadastro no CE Sports.
+                        </p>
+                    </div>
+
+                    <a href="http://localhost:3000/register/verify"
+                       style="display: inline-block; padding: 12px 20px; background-color: #38bdf8; 
+                              color: #0f172a; text-decoration: none; font-weight: bold; 
+                              border-radius: 8px; font-size: 15px;">
+                        Confirmar Cadastro
+                    </a>
+
+                    <p style="font-size: 12px; color: #64748b; margin-top: 25px;">
+                        Caso não tenha solicitado este e-mail, apenas ignore.
+                    </p>
+                </div>
+                """, codigo);
+
+            helper.setText(html, true);
             mailSender.send(mensagem);
         } catch (MessagingException e) {
             throw new RuntimeException("Erro ao enviar e-mail: " + e.getMessage());
         }
     }
+
 }

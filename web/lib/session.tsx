@@ -4,7 +4,6 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { useRouter } from "next/navigation"
 import { apiFetch } from "./api"
 
-
 export type User = {
   id: number
   nome: string
@@ -28,8 +27,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   async function refreshSession() {
     try {
-      const res = await apiFetch("/auth/me")
-      setUser(res.user)
+      const userData = await apiFetch("/auth/me")
+      setUser(userData)
     } catch {
       setUser(null)
     } finally {
@@ -43,6 +42,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     } catch (e) {
       console.warn("Erro ao deslogar", e)
     } finally {
+      localStorage.removeItem("token")
       setUser(null)
       router.push("/login")
     }
@@ -58,7 +58,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     </SessionContext.Provider>
   )
 }
-
 
 export function useSession() {
   const context = useContext(SessionContext)

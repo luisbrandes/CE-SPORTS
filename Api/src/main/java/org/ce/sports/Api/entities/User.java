@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @Column(name = "verification_code", length = 6)
     private String verificationCode;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean systemAdmin = false;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> role.name());

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Dumbbell, Users, Settings, LogOut } from "lucide-react"
+import { Dumbbell, Users, Settings, LogOut, Newspaper, Trophy } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useSession } from "@/lib/session"
@@ -16,8 +16,9 @@ export function Sidebar({ onNavigate }: SidebarProps) {
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: Dumbbell },
-    { href: "/admin/usuarios", label: "Usuários", icon: Users },
-    { href: "/admin/config", label: "Configurações", icon: Settings },
+    { href: "/admin/aprovacoesContas", label: "Usuários Pendentes", icon: Users },
+    { href: "/admin/noticias", label: "Notícias", icon: Newspaper },
+    { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
   ]
 
   return (

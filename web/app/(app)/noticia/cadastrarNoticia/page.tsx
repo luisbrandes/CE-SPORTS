@@ -34,7 +34,7 @@ export default function CadastrarNoticiaPage() {
 
         if (res.status==201) {
             alert("Notícia cadastrada com sucesso!")
-            router.push("/noticias")
+            router.push("/noticia")
         } else {
             alert("Erro ao cadastrar notícia")
         }

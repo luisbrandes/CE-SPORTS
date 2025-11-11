@@ -24,17 +24,12 @@ public class NewsController {
         this.noticiaRepository = noticiaRepository;
     }
 
-    @PostMapping(consumes = "multipart/form-data")
+    @PostMapping()
     public ResponseEntity<?> cadastrarNoticia(
-            @RequestParam String titulo,
-            @RequestParam String autor,
-            @RequestParam String dataPublicacao,
-            @RequestParam String descricao,
-            @RequestParam String conteudo,
-            @RequestParam(required = false) MultipartFile imagem
-    ) throws IOException {
+            @RequestBody org.ce.sports.Api.dtos.News data
+            ) throws IOException {
 
-        News noticia = noticiaService.salvar(titulo, autor, dataPublicacao, descricao, conteudo, imagem);
+        News noticia = noticiaService.salvar(data.titulo(), data.autor(), data.esporte(), data.conteudo());
         return ResponseEntity.status(201).body(noticia);
     }
 

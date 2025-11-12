@@ -24,6 +24,7 @@ export default function RegistrarPartidaPage() {
     await fetch("http://localhost:8080/api/partida", {
       headers: { "Content-Type": "application/json" },
       method: "POST",
+      credentials: "include",
       body: JSON.stringify(formData),
     })
       .catch((err) => window.alert(err))

@@ -24,7 +24,7 @@ export default function ProjetosPage() {
   useEffect(() => {
     async function carregarProjetos() {
       try {
-        const res = await fetch("http://localhost:8080/api/projetos")
+  const res = await fetch("http://localhost:8080/api/projetos", { credentials: "include" })
         if (!res.ok) throw new Error("Falha ao buscar projetos")
         const data = await res.json()
         setProjetos(data)

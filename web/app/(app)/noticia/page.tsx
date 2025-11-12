@@ -35,7 +35,7 @@ export default function NoticiasPage() {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetch("http://localhost:8080/api/noticias")
+  const res = await fetch("http://localhost:8080/api/noticias", { credentials: "include" })
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const data: Noticia[] = await res.json()
         if (!cancelado) setNoticias(data)

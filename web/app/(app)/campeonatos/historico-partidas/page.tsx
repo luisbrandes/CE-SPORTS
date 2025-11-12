@@ -61,6 +61,7 @@ export default function PartidasPage() {
         const res = await fetch("http://localhost:8080/api/partida", {
           method: "GET",
           cache: "no-store",
+          credentials: "include",
         });
         if (!res.ok) {
           lastError = `endpoint ${url} retornou ${res.status}`;

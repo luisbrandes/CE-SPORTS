@@ -15,7 +15,7 @@ export default function NoticiaClientPage() {
 
     setLoading(true)
 
-    fetch("http://localhost:8080/api/noticias")
+    fetch("http://localhost:8080/api/noticias", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         // Filtra a notícia com o id correspondente

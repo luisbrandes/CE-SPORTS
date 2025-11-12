@@ -30,6 +30,7 @@ export default function CadastrarNoticiaPage() {
                 esporte,
                 conteudo
             }),
+            credentials: "include"
         });
 
         if (res.status==201) {

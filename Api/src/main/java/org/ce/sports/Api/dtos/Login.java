@@ -12,5 +12,5 @@ public class Login {
     private String email;
 
     @NotBlank(message = "O campo 'password' é obrigatório.")
-    private String password;
+    private String senha;
 }

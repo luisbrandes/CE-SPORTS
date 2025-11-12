@@ -1,9 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { Dumbbell, Users, Settings, LogOut } from "lucide-react"
+import { Dumbbell, Users, Settings, LogOut, Newspaper, Trophy } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useSession } from "@/lib/session"
 
 interface SidebarProps {
   onNavigate?: () => void
@@ -11,11 +12,13 @@ interface SidebarProps {
 
 export function Sidebar({ onNavigate }: SidebarProps) {
   const pathname = usePathname()
+  const { logout } = useSession()
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: Dumbbell },
-    { href: "/admin/usuarios", label: "Usuários", icon: Users },
-    { href: "/admin/config", label: "Configurações", icon: Settings },
+    { href: "/admin/aprovacoesContas", label: "Usuários Pendentes", icon: Users },
+    { href: "/admin/noticias", label: "Notícias", icon: Newspaper },
+    { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
   ]
 
   return (
@@ -50,7 +53,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
 
       {/* Logout */}
       <button
-        onClick={onNavigate}
+        onClick={logout}
         className="flex items-center gap-3 px-6 py-4 text-sm text-primary/60 hover:text-destructive transition"
       >
         <LogOut size={18} />

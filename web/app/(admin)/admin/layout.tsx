@@ -3,10 +3,9 @@
 import { useState } from "react"
 import { Sidebar } from "@/components/layout/sidebar"
 import { Menu, X } from "lucide-react"
-import { useAdminGuard } from "@/lib/useAdminGuard"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  useAdminGuard() 
+ 
     
   const [sidebarOpen, setSidebarOpen] = useState(false)
 

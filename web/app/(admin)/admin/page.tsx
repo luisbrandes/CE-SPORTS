@@ -4,10 +4,8 @@ import { useAuth } from "@/app/hook/useAuth"
 import { Card } from "@/components/ui"
 
 export default function AdminDashboardPage() {
-  const { user, loading } = useAuth(true)
 
-  if (loading) return <p>Carregando...</p>
-  if (user?.role !== "ROLE_ADMIN") return <p>Acesso negado.</p>
+  
 
   return (
     <section className="p-6">

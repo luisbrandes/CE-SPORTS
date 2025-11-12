@@ -30,30 +30,44 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 🔓 Libera as rotas de autenticação e públicas
+                // ⚙️ Controle de autorização
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().permitAll() // 👈 permite o resto também por enquanto
+                        .requestMatchers(
+                                "/api/auth/**",   // login, registro, verificação — públicos
+                                "/h2-console/**",
+                                "/swagger-ui/**", "/v3/api-docs/**"
+                        ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // 🔒 Apenas admins
+                        .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
+                        .anyRequest().authenticated()
                 )
-                // ⚙️ Desativa CSRF (importante para APIs REST)
+
+                // ⚙️ Sessão baseada em cookie JSESSIONID
+                .sessionManagement(session -> session
+                        .maximumSessions(1) // evita múltiplos logins simultâneos
+                )
+
+                // 🔓 Desabilita CSRF (para API REST)
                 .csrf(csrf -> csrf.disable())
-                // ⚙️ Permite exibição do H2
+
+                // 🧱 Necessário para o H2 funcionar
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-                // 🌐 Habilita CORS customizado
+
+                // 🌍 CORS liberado para o frontend (Next.js)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
     }
 
+    // 🔹 Carrega usuário do banco
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-                        .roles(user.getRole().name().replace("ROLE_", "")) // Ex: ROLE_ADMIN → ADMIN
+                        // 🔧 Garante prefixo correto (ROLE_USER, ROLE_ADMIN)
+                        .authorities(user.getRole().name())
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
@@ -67,9 +81,11 @@ public class SecurityConfig {
         return provider;
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
@@ -77,7 +93,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // ✅ CORS configurado corretamente para Next.js
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -16,27 +18,28 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // LOGIN
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login req, HttpServletRequest request) {
         return authService.login(req, request);
     }
 
-    // LOGOUT
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         return authService.logout(request);
     }
 
-    // ME
     @GetMapping("/me")
     public ResponseEntity<?> me(HttpServletRequest request) {
         return authService.me(request);
     }
 
-    // REGISTER
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Register request) {
         return authService.register(request);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<?> verify(@RequestBody Map<String, String> req) {
+        return authService.verify(req);
     }
 }

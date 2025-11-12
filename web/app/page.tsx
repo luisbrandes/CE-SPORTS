@@ -31,24 +31,23 @@ export default function HomePage() {
             icon: "🏆",
             title: "Campeonatos",
             desc: "Resultados, inscrições e classificações",
-            href: "/campeonatos",
+            
           },
           {
             icon: "📋",
             title: "Projetos",
             desc: "Horários, objetivos e equipes envolvidas",
-            href: "/projetos",
+            
           },
           {
             icon: "📰",
             title: "Notícias",
             desc: "Últimas informações do esporte no campus",
-            href: "/noticias",
+           
           },
         ].map((item) => (
           <Card
             key={item.title}
-            onClick={() => (window.location.href = item.href)}
             className="cursor-pointer hover:shadow-lg transition-transform hover:-translate-y-1 text-center"
           >
             <div className="text-4xl">{item.icon}</div>
@@ -97,7 +96,7 @@ export default function HomePage() {
             <Card key={item.title} className="p-6 text-center">
               <h3 className="text-lg font-semibold text-primary mb-2">{item.title}</h3>
               <p className="text-muted-foreground mb-3">{item.desc}</p>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => (window.location.href = "/login")}>
                 Ver mais
               </Button>
             </Card>
@@ -130,7 +129,7 @@ export default function HomePage() {
                 <h3 className="text-lg font-semibold text-primary mb-2">{item.title}</h3>
                 <p className="text-muted-foreground mb-3">{item.desc}</p>
               </div>
-              <Link href="#" className="text-accent font-medium hover:underline">
+              <Link href="/login" className="text-accent font-medium hover:underline">
                 Ler mais →
               </Link>
             </Card>
@@ -138,9 +137,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      
-       
-    
     </main>
   )
 }

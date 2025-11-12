@@ -1,0 +1,515 @@
+module.exports = [
+"[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>PartidasPage
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/CE-SPORTS/web/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/CE-SPORTS/web/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/CE-SPORTS/web/node_modules/next/dist/client/app-dir/link.js [app-ssr] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module '@/components/card'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+(()=>{
+    const e = new Error("Cannot find module '@/components/button'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+"use client";
+;
+;
+;
+;
+;
+function PartidasPage() {
+    const [partidas, setPartidas] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const normalizeName = (value)=>{
+        if (!value) return "-";
+        if (typeof value === "string") return value;
+        return value.nome ?? "-";
+    };
+    // garante que pontuações venham como number | null
+    const normalizeScore = (val)=>{
+        if (val === null || val === undefined) return null;
+        if (typeof val === "number") return val;
+        const n = Number(val);
+        return Number.isNaN(n) ? null : n;
+    };
+    const fetchPartidas = async ()=>{
+        setLoading(true);
+        setError(null);
+        setPartidas(null);
+        const candidates = [
+            "/api/partida",
+            "/api/partidas",
+            "/api/partida/all"
+        ];
+        let lastError = null;
+        for (const url of candidates){
+            try {
+                const res = await fetch(url, {
+                    method: "GET",
+                    cache: "no-store"
+                });
+                if (!res.ok) {
+                    lastError = `endpoint ${url} retornou ${res.status}`;
+                    continue;
+                }
+                const json = await res.json();
+                const arr = Array.isArray(json) ? json : json?.data ?? json?.content ?? json?.partidas ?? null;
+                if (!arr || !Array.isArray(arr)) {
+                    lastError = `endpoint ${url} retornou formato inesperado`;
+                    continue;
+                }
+                // Normalize scores in place to keep consistent types
+                const normalized = arr.map((p)=>({
+                        ...p,
+                        pontuacao1: normalizeScore(p.pontuacao1),
+                        pontuacao2: normalizeScore(p.pontuacao2)
+                    }));
+                setPartidas(normalized);
+                setLoading(false);
+                return;
+            } catch (e) {
+                lastError = e;
+            }
+        }
+        setLoading(false);
+        setError(`Não foi possível obter partidas: ${typeof lastError === "string" ? lastError : lastError && lastError.message || "erro desconhecido"}. Verifique o endpoint da API.`);
+    };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        fetchPartidas();
+    }, []);
+    // mock quick test
+    const MOCK_PARTIDAS = [
+        {
+            id: 1,
+            campeonato: {
+                id: 1,
+                nome: "Copa Caloura 2025"
+            },
+            equipe1: {
+                id: 1,
+                nome: "Informática"
+            },
+            equipe2: {
+                id: 2,
+                nome: "Eletrotécnica"
+            },
+            pontuacao1: 3,
+            pontuacao2: 2,
+            empate: false,
+            vencedor: {
+                id: 1,
+                nome: "Informática"
+            },
+            data: "2025-04-15T14:00:00"
+        },
+        {
+            id: 2,
+            campeonato: "Interturmas 2025",
+            equipe1: "Mecânica",
+            equipe2: "Edificações",
+            pontuacao1: 1,
+            pontuacao2: 1,
+            empate: true,
+            vencedor: null,
+            data: "2025-04-20T16:00:00"
+        }
+    ];
+    // Ordena partidas: mais recente primeiro. Prioriza campo `data` (ISO), depois id desc.
+    const sortedPartidas = (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>{
+        if (!partidas) return null;
+        return [
+            ...partidas
+        ].sort((a, b)=>{
+            const aDate = a.data ? Date.parse(a.data) : NaN;
+            const bDate = b.data ? Date.parse(b.data) : NaN;
+            if (!Number.isNaN(aDate) && !Number.isNaN(bDate)) return bDate - aDate;
+            if (!Number.isNaN(aDate)) return -1;
+            if (!Number.isNaN(bDate)) return 1;
+            const aId = a.id ?? 0;
+            const bId = b.id ?? 0;
+            return bId - aId;
+        });
+    }, [
+        partidas
+    ]);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "min-h-screen bg-background text-foreground py-8",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "container mx-auto px-4",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center justify-between mb-6",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                    className: "text-2xl font-bold text-black",
+                                    children: "Histórico de Partidas"
+                                }, void 0, false, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 150,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-sm text-muted-foreground",
+                                    children: "Lista das partidas registradas no sistema"
+                                }, void 0, false, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 153,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                            lineNumber: 149,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex items-center gap-3",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                    href: "/campeonatos",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Button, {
+                                        variant: "outline",
+                                        size: "sm",
+                                        className: "border-blue-600 text-blue-600 hover:bg-blue-50",
+                                        children: "← Voltar para Campeonatos"
+                                    }, void 0, false, {
+                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                        lineNumber: 160,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 159,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Button, {
+                                    variant: "outline",
+                                    size: "sm",
+                                    onClick: ()=>{
+                                        fetchPartidas();
+                                    },
+                                    children: "Refresh"
+                                }, void 0, false, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 169,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                    href: "/registrar-partida",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Button, {
+                                        variant: "primary",
+                                        size: "sm",
+                                        children: "➕ Nova Partida"
+                                    }, void 0, false, {
+                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                        lineNumber: 180,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 179,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                            lineNumber: 158,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                    lineNumber: 148,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Card, {
+                    className: "p-4",
+                    children: [
+                        loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "py-8 text-center",
+                            children: "Carregando partidas..."
+                        }, void 0, false, {
+                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                            lineNumber: 189,
+                            columnNumber: 13
+                        }, this),
+                        !loading && error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "py-6",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-red-600 mb-2",
+                                    children: [
+                                        "Erro: ",
+                                        error
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 194,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-sm text-muted-foreground mb-4",
+                                    children: "Se a API não estiver pronta, você pode usar dados mock:"
+                                }, void 0, false, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 195,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex gap-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Button, {
+                                            variant: "outline",
+                                            onClick: ()=>setPartidas(MOCK_PARTIDAS),
+                                            children: "Usar dados de exemplo"
+                                        }, void 0, false, {
+                                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                            lineNumber: 199,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Button, {
+                                            variant: "outline",
+                                            onClick: ()=>fetchPartidas(),
+                                            children: "Tentar novamente"
+                                        }, void 0, false, {
+                                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                            lineNumber: 205,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                    lineNumber: 198,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                            lineNumber: 193,
+                            columnNumber: 13
+                        }, this),
+                        !loading && sortedPartidas && sortedPartidas.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "py-8 text-center text-muted-foreground",
+                            children: "Nenhuma partida encontrada."
+                        }, void 0, false, {
+                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                            lineNumber: 213,
+                            columnNumber: 13
+                        }, this),
+                        !loading && sortedPartidas && sortedPartidas.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "overflow-x-auto",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                                className: "min-w-full text-sm",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                                        className: "bg-blue-600 text-white",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "p-2 text-left",
+                                                    children: "#"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                    lineNumber: 223,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "p-2 text-left",
+                                                    children: "Campeonato"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                    lineNumber: 224,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "p-2 text-left",
+                                                    children: "Equipe 1"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                    lineNumber: 225,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "p-2 text-left",
+                                                    children: "Equipe 2"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                    lineNumber: 226,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "p-2 text-left",
+                                                    children: "Placar"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                    lineNumber: 227,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "p-2 text-left",
+                                                    children: "Resultado"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                    lineNumber: 228,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "p-2 text-left",
+                                                    children: "Data"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                    lineNumber: 229,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                            lineNumber: 222,
+                                            columnNumber: 19
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                        lineNumber: 221,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                                        children: sortedPartidas.map((p, idx)=>{
+                                            const camp = normalizeName(p.campeonato);
+                                            const e1 = normalizeName(p.equipe1);
+                                            const e2 = normalizeName(p.equipe2);
+                                            // pegamos números normalizados (ou null)
+                                            const g1 = p.pontuacao1 === null || p.pontuacao1 === undefined ? null : Number(p.pontuacao1);
+                                            const g2 = p.pontuacao2 === null || p.pontuacao2 === undefined ? null : Number(p.pontuacao2);
+                                            // lógica do placar: se ambos null => "Pendente"
+                                            // se algum null => mostra "-" para esse lado
+                                            const left = g1 === null ? "-" : String(g1);
+                                            const right = g2 === null ? "-" : String(g2);
+                                            const placarDisplay = g1 === null && g2 === null ? "Pendente" : `${left} × ${right}`;
+                                            let resultado = "-";
+                                            if (p.empate) resultado = "Empate";
+                                            else if (p.vencedor) resultado = normalizeName(p.vencedor);
+                                            else if (typeof g1 === "number" && typeof g2 === "number") {
+                                                if (g1 > g2) resultado = e1;
+                                                else if (g2 > g1) resultado = e2;
+                                                else resultado = "—";
+                                            } else if (g1 === null && g2 === null) {
+                                                resultado = "-";
+                                            } else {
+                                                resultado = "-"; // indeciso quando um dos placares falta
+                                            }
+                                            const dataStr = p.data ? new Date(p.data).toLocaleString("pt-BR") : "-";
+                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                                className: "border-t border-border hover:bg-muted/30 transition",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "p-2",
+                                                        children: p.id ?? idx + 1
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                        lineNumber: 280,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "p-2 text-black",
+                                                        children: camp
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                        lineNumber: 281,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "p-2",
+                                                        children: e1
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                        lineNumber: 282,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "p-2",
+                                                        children: e2
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                        lineNumber: 283,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "p-2 font-medium",
+                                                        children: placarDisplay
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                        lineNumber: 284,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "p-2",
+                                                        children: resultado
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                        lineNumber: 285,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$CE$2d$SPORTS$2f$web$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "p-2",
+                                                        children: dataStr
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                        lineNumber: 286,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                ]
+                                            }, p.id ?? idx, true, {
+                                                fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                                lineNumber: 276,
+                                                columnNumber: 23
+                                            }, this);
+                                        })
+                                    }, void 0, false, {
+                                        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                        lineNumber: 233,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                                lineNumber: 220,
+                                columnNumber: 15
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                            lineNumber: 219,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+                    lineNumber: 187,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+            lineNumber: 147,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/CE-SPORTS/web/app/(app)/campeonatos/historico-partidas/page.tsx",
+        lineNumber: 146,
+        columnNumber: 5
+    }, this);
+}
+}),
+];
+
+//# sourceMappingURL=CE-SPORTS_web_app_%28app%29_campeonatos_historico-partidas_page_tsx_c88920a2._.js.map

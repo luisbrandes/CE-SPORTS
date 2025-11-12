@@ -1,0 +1,25 @@
+{
+  "name": "ce-sports",
+  "version": "1.0.0",
+  "description": "**Sistema de Acompanhamento Esportivo do CEFET-MG**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luisbrandes/CE-SPORTS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/luisbrandes/CE-SPORTS/issues"
+  },
+  "homepage": "https://github.com/luisbrandes/CE-SPORTS#readme"
+}

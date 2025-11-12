@@ -2513,3 +2513,18 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: D:/Development/P
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 143 more
+2025-11-11 22:36:15.378592-03:00 jdbc[48]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM NOTICIAS CAMPEONATOS [*]CAMPEONATOS"; SQL statement:
+SELECT * FROM NOTICIAS CAMPEONATOS CAMPEONATOS [42000-232]
+2025-11-11 22:36:26.014726-03:00 jdbc[48]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM NOTICIAS CAMPEONATOS [*]EQUIPES"; SQL statement:
+SELECT * FROM NOTICIAS CAMPEONATOS EQUIPES [42000-232]
+2025-11-11 22:36:30.360064-03:00 jdbc[48]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM NOTICIAS CAMPEONATOS [*]EQUIPES EQUIPE_CAMPEONATO"; SQL statement:
+SELECT * FROM NOTICIAS CAMPEONATOS EQUIPES EQUIPE_CAMPEONATO [42000-232]
+2025-11-11 22:38:40.831297-03:00 jdbc[48]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM NOTICIAS CAMPEONATOS [*]EQUIPES EQUIPE_CAMPEONATO PARTIDAS CAMPEONATOS"; SQL statement:
+SELECT * FROM NOTICIAS CAMPEONATOS EQUIPES EQUIPE_CAMPEONATO PARTIDAS CAMPEONATOS [42000-232]
+2025-11-11 22:39:17.621977-03:00 jdbc[49]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM PARTIDAS  PROJETOS_ESPORTIVOS [*]USUARIOS"; SQL statement:
+SELECT * FROM PARTIDAS  PROJETOS_ESPORTIVOS USUARIOS [42000-232]

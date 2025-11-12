@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,43 +31,52 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // ⚙️ Controle de autorização
+                // 🔒 Controle de autorização por endpoint
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",   // login, registro, verificação — públicos
+                                "/api/auth/**",  // rotas públicas (login, registro, verificação)
                                 "/h2-console/**",
                                 "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // 🔒 Apenas admins
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")  // somente ADMIN
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
                         .anyRequest().authenticated()
                 )
 
-                // ⚙️ Sessão baseada em cookie JSESSIONID
+                // 🧱 Configuração de sessão
                 .sessionManagement(session -> session
-                        .maximumSessions(1) // evita múltiplos logins simultâneos
+                        .maximumSessions(1)
                 )
 
-                // 🔓 Desabilita CSRF (para API REST)
+                // 🔓 Desativa CSRF (API REST + sessão)
                 .csrf(csrf -> csrf.disable())
 
-                // 🧱 Necessário para o H2 funcionar
+                // ✅ Libera frames do H2
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
-                // 🌍 CORS liberado para o frontend (Next.js)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                // 🌐 Configuração CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                // 🔚 Logout básico via /logout
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .clearAuthentication(true)
+                        .permitAll()
+                );
 
         return http.build();
     }
 
-    // 🔹 Carrega usuário do banco
+    // 🧩 Serviço para carregar usuários do banco
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-                        // 🔧 Garante prefixo correto (ROLE_USER, ROLE_ADMIN)
+                        // garante que o prefixo do papel esteja correto (ROLE_ADMIN, ROLE_USER)
                         .authorities(user.getRole().name())
                         .build()
                 )
@@ -91,7 +101,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
+    // 🌍 CORS: permite comunicação com o frontend (Next.js)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

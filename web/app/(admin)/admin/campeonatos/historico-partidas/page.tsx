@@ -127,7 +127,7 @@ export default function PartidasPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="/campeonatos">
+            <Link href="/admin/campeonatos">
               <Button
                 variant="outline"
                 size="sm"
@@ -147,7 +147,7 @@ export default function PartidasPage() {
               Refresh
             </Button>
 
-            <Link href="/campeonatos/registrar-partida">
+            <Link href="/admin/campeonatos/registrar-partida">
               <Button
                 variant="outline"
                 size="sm"

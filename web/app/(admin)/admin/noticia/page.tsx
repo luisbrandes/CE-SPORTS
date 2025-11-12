@@ -50,15 +50,8 @@ export default function NoticiasPage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-500 text-white">
+    <main className="min-h-screen bg-gradient-to-br text-white">
       <section className="container mx-auto py-12 px-6">
-        <Button
-          variant="outline"
-          onClick={() => router.push("/")}
-          className="mb-6 text-white border-white hover:bg-white/10"
-        >
-          ← Voltar à Home
-        </Button>
 
         <h1 className="text-4xl font-bold mb-10 text-center text-yellow-300">
           Últimas Notícias
@@ -85,7 +78,7 @@ export default function NoticiasPage() {
                 </p>
 
                 <div className="mt-4">
-                  <Link href={`/noticia/${n.id}`}>
+                  <Link href={`/admin/noticia/${n.id}`}>
                     <Button className="bg-yellow-400 text-blue-900 hover:bg-yellow-500">
                       Ler mais
                     </Button>
@@ -101,7 +94,7 @@ export default function NoticiasPage() {
       <div className="flex justify-center pb-12">
         <Button
           className="bg-yellow-400 text-blue-900 hover:bg-yellow-500 px-8 py-6 text-lg font-semibold"
-          onClick={() => router.push("/noticia/cadastrarNoticia")}
+          onClick={() => router.push("/admin/noticia/cadastrarNoticia")}
         >
           Cadastrar Notícia
         </Button>

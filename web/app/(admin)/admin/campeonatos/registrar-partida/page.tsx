@@ -6,32 +6,36 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function AdicionarCampeonatoPage() {
+export default function RegistrarPartidaPage() {
   const [formData, setFormData] = useState({
-    nome: "",
-    equipes: "",
-    pontosVitoria: "",
-    pontosDerrota: "",
-    pontosEmpate: "",
+    campeonato: "",
+    equipe1: "",
+    equipe2: "",
+    pontuacao1: "",
+    pontuacao2: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Campeonato adicionado:", formData);
-    alert("Campeonato adicionado com sucesso!");
+    await fetch("http://localhost:8080/api/partida", {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(formData),
+    })
+      .catch((err) => window.alert(err))
+      .then(() => window.alert("DEU CERTO"));
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
       <Card className="w-full max-w-md p-8 flex flex-col items-center gap-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-black">
-            Adicionar Campeonato
-          </h1>
+          <h1 className="text-3xl font-bold text-black">Registrar Partida</h1>
           <p className="text-muted-foreground text-sm mt-1">
             Preencha os dados abaixo
           </p>
@@ -39,62 +43,53 @@ export default function AdicionarCampeonatoPage() {
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
           <Input
-            name="nome"
+            name="campeonato"
             placeholder="Nome do campeonato"
             required
-            value={formData.nome}
+            value={formData.campeonato}
             onChange={handleChange}
           />
-
           <Input
-            name="equipes"
-            placeholder="Equipes participantes (separadas por vírgula)"
+            name="equipe1"
+            placeholder="Equipe 1"
             required
-            value={formData.equipes}
+            value={formData.equipe1}
             onChange={handleChange}
           />
-
           <Input
-            name="pontosVitoria"
+            name="equipe2"
+            placeholder="Equipe 2"
+            required
+            value={formData.equipe2}
+            onChange={handleChange}
+          />
+          <Input
+            name="pontuacao1"
             type="number"
-            placeholder="Pontos por vitória"
+            placeholder="Pontuação da Equipe 1"
             required
-            value={formData.pontosVitoria}
+            value={formData.pontuacao1}
             onChange={handleChange}
           />
-
           <Input
-            name="pontosDerrota"
+            name="pontuacao2"
             type="number"
-            placeholder="Pontos por derrota"
+            placeholder="Pontuação da Equipe 2"
             required
-            value={formData.pontosDerrota}
+            value={formData.pontuacao2}
             onChange={handleChange}
           />
 
-          <Input
-            name="pontosEmpate"
-            type="number"
-            placeholder="Pontos por empate"
-            required
-            value={formData.pontosEmpate}
-            onChange={handleChange}
-          />
-
-          <Button
-            type="submit"
-            variant="primary"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            Adicionar
+          <Button variant="primary" type="submit" className="w-full">
+            Registrar
           </Button>
         </form>
 
         <Link
-          href="/campeonatos"
-          className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          href="/admin/campeonatos/historico-partidas"
+          className="text-accent text-blue-600 hover:underline text-sm"
         >
-          ← Voltar para Campeonatos
+          ← Voltar para histórico
         </Link>
       </Card>
     </div>

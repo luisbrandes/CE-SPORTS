@@ -120,14 +120,14 @@ export default function NovoProjetoPage() {
             />
           </div>
 
-          <Button type="submit" className="w-full mt-3">
+          <Button type="submit" className="w-full mt-3 bg-yellow-400 hover:bg-yellow-500 font-semibold">
             Adicionar Projeto
           </Button>
           <Button
             variant="outline"
             type="button"
             className="w-full"
-            onClick={() => router.push("/projetos")}
+            onClick={() => router.push("/admin/projetos")}
           >
             Cancelar
           </Button>

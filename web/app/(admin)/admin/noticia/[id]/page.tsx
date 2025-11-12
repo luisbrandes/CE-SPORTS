@@ -30,8 +30,8 @@ export default function NoticiaClientPage() {
   if (!noticia) return <p>Notícia não encontrada.</p>
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-500 text-white p-8">
-      <Link href="/noticia">
+    <main className="min-h-screen bg-gradient-to-br text-white p-8">
+      <Link href="/admin/noticia">
         <Button variant="outline" className="mb-6 text-white border-white hover:bg-white/10">
           ← Voltar
         </Button>

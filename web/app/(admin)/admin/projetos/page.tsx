@@ -43,9 +43,6 @@ export default function ProjetosPage() {
 
   return (
     <main className="p-6 space-y-8">
-      <Button variant="outline" onClick={() => router.push("/")}>
-        ← Voltar à Home
-      </Button>
 
       <h1 className="text-3xl font-bold text-center">🏅 Projetos Esportivos</h1>
 
@@ -86,7 +83,7 @@ export default function ProjetosPage() {
       )}
 
       <div className="flex flex-wrap justify-center gap-4 pt-8">
-        <Button variant="outline" onClick={() => router.push("/projetos/cadastrarProjetos")}>
+        <Button variant="outline" onClick={() => router.push("/admin/projetos/cadastrarProjetos")}>
           ＋ Adicionar Novo Projeto
         </Button>
         <Button variant="outline">Editar Dados</Button>

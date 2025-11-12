@@ -135,7 +135,7 @@ export default function CadastrarNoticiaPage() {
                             type="button"
                             variant="outline"
                             className="border-blue-600 text-blue-600 hover:bg-blue-100"
-                            onClick={() => router.push("/noticias")}
+                            onClick={() => router.push("/admin/noticia")}
                         >
                             ← Voltar
                         </Button>

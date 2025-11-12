@@ -1,7 +1,14 @@
 {
+<<<<<<< HEAD
+  "/(app)/campeonatos/historico-partidas/page": "app/(app)/campeonatos/historico-partidas/page.js",
+  "/(app)/campeonatos/page": "app/(app)/campeonatos/page.js",
+  "/(app)/campeonatos/registrar-partida/page": "app/(app)/campeonatos/registrar-partida/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+=======
   "/(admin)/admin/noticias/page": "app/(admin)/admin/noticias/page.js",
   "/(admin)/admin/page": "app/(admin)/admin/page.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/login/page": "app/login/page.js",
+>>>>>>> ab42ab5d93d49a172cb26a9cd336c18fb3b79ad0
   "/page": "app/page.js"
 }

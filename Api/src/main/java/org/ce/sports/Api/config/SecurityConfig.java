@@ -59,6 +59,21 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // Permite tanto o Next em dev (porta 3000) quanto o próprio servidor (8080)
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+                "http://localhost:8080"
+        ));
+
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
     // 🔹 Carrega usuário do banco
     @Bean
     public UserDetailsService userDetailsService() {
@@ -92,6 +107,8 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+<<<<<<< HEAD
+=======
 
 
     @Bean
@@ -110,4 +127,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+>>>>>>> ab42ab5d93d49a172cb26a9cd336c18fb3b79ad0
 }

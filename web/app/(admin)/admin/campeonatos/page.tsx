@@ -25,13 +25,12 @@ export default function CampeonatosPage() {
 
   return (
     <main className="flex-1 container mx-auto px-4 py-8 fade-in">
-
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl page-title text-black font-bold mb-6">
           Campeonatos em Andamento
         </h1>
 
-        <Link href="/campeonatos/historico-partidas">
+        <Link href="/admin/campeonatos/historico-partidas">
           <Button
             variant="ghost"
             size="sm"
@@ -109,8 +108,6 @@ export default function CampeonatosPage() {
           </Button>
         </Link>
       </div>
-
-      
     </main>
   );
 }

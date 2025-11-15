@@ -13,6 +13,7 @@ export default function RegistrarPartidaPage() {
     equipe2: "",
     pontuacao1: "",
     pontuacao2: "",
+    data: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +22,27 @@ export default function RegistrarPartidaPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const dataSelecionada = new Date(formData.data + "T00:00:00");
+    dataSelecionada.setHours(0, 0, 0, 0);
+
+    const umAnoAtras = new Date();
+    umAnoAtras.setFullYear(umAnoAtras.getFullYear() - 1);
+    umAnoAtras.setHours(0, 0, 0, 0);
+
+    if (dataSelecionada > hoje) {
+      alert("A data da partida não pode ser no futuro!");
+      return;
+    }
+
+    if (dataSelecionada < umAnoAtras) {
+      alert("A data da partida não pode ser superior a 1 ano atrás!");
+      return;
+    }
+
     await fetch("http://localhost:8080/api/partida", {
       headers: { "Content-Type": "application/json" },
       method: "POST",
@@ -28,7 +50,7 @@ export default function RegistrarPartidaPage() {
       body: JSON.stringify(formData),
     })
       .catch((err) => window.alert(err))
-      .then(() => window.alert("DEU CERTO"));
+      .then(() => window.alert("Partida registrada com sucesso"));
   };
 
   return (
@@ -78,6 +100,42 @@ export default function RegistrarPartidaPage() {
             required
             value={formData.pontuacao2}
             onChange={handleChange}
+          />
+          <Input
+            name="data"
+            type="date"
+            required
+            className="text-black [&::-webkit-datetime-edit]:text-black"
+            value={formData.data}
+            onChange={(e) => {
+              const value = e.target.value;
+              const today = new Date();
+              const selected = new Date(value);
+
+              const oneYearAgo = new Date();
+              oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+              e.target.setCustomValidity("");
+
+              if (selected > today) {
+                e.target.setCustomValidity("A data não pode ser no futuro.");
+              } else if (selected < oneYearAgo) {
+                e.target.setCustomValidity(
+                  "A data não pode ser de mais de 1 ano atrás."
+                );
+              }
+
+              setFormData({ ...formData, data: value });
+            }}
+            onInvalid={(e) => {
+              const value = (e.target as HTMLInputElement).value;
+              if (!value) {
+                (e.target as HTMLInputElement).setCustomValidity(
+                  "A data é obrigatória."
+                );
+                return;
+              }
+            }}
           />
 
           <Button variant="primary" type="submit" className="w-full">

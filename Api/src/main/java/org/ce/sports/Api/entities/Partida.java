@@ -1,5 +1,9 @@
 package org.ce.sports.Api.entities;
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -34,14 +38,18 @@ public class Partida {
     private int pontuacao2;
     private boolean empate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate data;
+
     public Partida() {}
 
-    public Partida(Campeonato campeonato, Equipe equipe1, Equipe equipe2, int pontuacao1, int pontuacao2) {
+    public Partida(Campeonato campeonato, Equipe equipe1, Equipe equipe2, int pontuacao1, int pontuacao2, LocalDate data) {
         this.campeonato = campeonato;
         this.equipe1 = equipe1;
         this.equipe2 = equipe2;
         this.pontuacao1 = pontuacao1;
         this.pontuacao2 = pontuacao2;
+        this.data = data;
 
         if(pontuacao1 == pontuacao2){
             this.empate = true;
@@ -120,5 +128,13 @@ public class Partida {
 
     public void setEmpate(boolean empate) {
         this.empate = empate;
+    }
+
+    public LocalDate getData() {
+        return this.data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 }

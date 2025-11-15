@@ -1,5 +1,6 @@
 package org.ce.sports.Api.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.ce.sports.Api.dtos.AdicionarPartida;
@@ -23,6 +24,17 @@ public class PartidaController {
     @PostMapping
     public ResponseEntity<String> adicionar(@RequestBody AdicionarPartida partidaDto) {
 
+        LocalDate hoje = LocalDate.now();
+        LocalDate umAnoAtras = hoje.minusYears(1);
+
+        if (partidaDto.data().isAfter(hoje)) {
+            return ResponseEntity.badRequest().body("A data da partida não pode ser no futuro.");
+        }
+
+        if (partidaDto.data().isBefore(umAnoAtras)) {
+            return ResponseEntity.badRequest().body("A data da partida não pode ser superior a 1 ano atrás.");
+        }
+
         Campeonato campeonato = new Campeonato();
         campeonato.setNome(partidaDto.campeonato());
 
@@ -37,7 +49,8 @@ public class PartidaController {
             equipe1,
             equipe2,
             partidaDto.pontuacao1(),
-            partidaDto.pontuacao2()
+            partidaDto.pontuacao2(),
+            partidaDto.data()
         );
 
         repository.save(partida);

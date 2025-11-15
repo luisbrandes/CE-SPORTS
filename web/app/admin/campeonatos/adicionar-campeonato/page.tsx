@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -18,7 +18,15 @@ export default function AdicionarCampeonatoPage() {
 
   const router = useRouter();
 
+  const [numEquipes, setNumEquipes] = useState(0);
+  const [equipesArr, setEquipesArr] = useState<string[]>([]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    if (e.target.name === "nome") {
+      e.target.setCustomValidity("");
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -27,11 +35,17 @@ export default function AdicionarCampeonatoPage() {
 
     const payload = {
       nome: formData.nome,
-      equipes: formData.equipes.split(",").map((e) => e.trim()),
+      equipes: equipesArr,
       vitoria: Number(formData.pontosVitoria),
       derrota: Number(formData.pontosDerrota),
       empate: Number(formData.pontosEmpate),
     };
+
+    const nomeInput = (e.target as HTMLFormElement).elements.namedItem(
+      "nome"
+    ) as HTMLInputElement;
+
+    nomeInput.setCustomValidity("");
 
     const res = await fetch("http://localhost:8080/api/campeonato", {
       method: "POST",
@@ -41,7 +55,14 @@ export default function AdicionarCampeonatoPage() {
     });
 
     if (!res.ok) {
-      alert("Erro ao adicionar campeonato");
+      if (res.status === 409) {
+        nomeInput.setCustomValidity("Esse campeonato já existe.");
+
+        nomeInput.reportValidity();
+      } else {
+        alert("Erro ao adicionar campeonato");
+      }
+
       return;
     }
 
@@ -71,12 +92,28 @@ export default function AdicionarCampeonatoPage() {
           />
 
           <Input
-            name="equipes"
-            placeholder="Equipes participantes (separadas por vírgula)"
-            required
-            value={formData.equipes}
-            onChange={handleChange}
+            type="number"
+            value={numEquipes}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setNumEquipes(val);
+              setEquipesArr(Array(val).fill(""));
+            }}
+            placeholder="Quantidade de equipes"
           />
+          {Array.from({ length: numEquipes }).map((_, idx) => (
+            <Input
+              key={idx}
+              type="text"
+              value={equipesArr[idx]}
+              onChange={(e) => {
+                const newArr = [...equipesArr];
+                newArr[idx] = e.target.value;
+                setEquipesArr(newArr);
+              }}
+              placeholder={`Equipe ${idx + 1}`}
+            />
+          ))}
 
           <Input
             name="pontosVitoria"

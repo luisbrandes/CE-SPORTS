@@ -5,13 +5,18 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+interface Equipe {
+  id: number;
+  nome: string;
+}
+
 interface Campeonato {
   id: number;
   nome: string;
   vitoria: number;
   derrota: number;
   empate: number;
-  equipes: { id: number; nome: string }[];
+  equipes: Equipe[];
 }
 
 function calcularPontuacoes(camp: Campeonato, partidas: any[]) {

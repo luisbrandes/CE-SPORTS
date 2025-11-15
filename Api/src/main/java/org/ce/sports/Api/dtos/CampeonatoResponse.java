@@ -8,5 +8,5 @@ public record CampeonatoResponse(
     int vitoria,
     int derrota,
     int empate,
-    List<String> equipes
+    List<EquipeResponse> equipes
 ) {}

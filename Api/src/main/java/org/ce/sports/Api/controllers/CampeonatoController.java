@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.ce.sports.Api.dtos.CampeonatoRequest;
 import org.ce.sports.Api.dtos.CampeonatoResponse;
+import org.ce.sports.Api.dtos.EquipeResponse;
 import org.ce.sports.Api.entities.Campeonato;
 import org.ce.sports.Api.entities.Equipe;
 import org.ce.sports.Api.entities.repositories.CampeonatoRepository;
@@ -27,6 +28,12 @@ public class CampeonatoController {
 
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody CampeonatoRequest request) {
+        if (campeonatoRepository.existsByNome(request.nome())) {
+        return ResponseEntity
+            .status(409)
+            .body("Esse campeonato já existe");
+    }
+
         Set<Equipe> equipes = new HashSet<>();
 
         for (String nomeEquipe : request.equipes()) {
@@ -50,35 +57,39 @@ public class CampeonatoController {
     @GetMapping
     public ResponseEntity<List<CampeonatoResponse>> listarTodos() {
         List<CampeonatoResponse> resp = campeonatoRepository.findAll().stream()
-                .map(c -> new CampeonatoResponse(
-                        c.getId(),
-                        c.getNome(),
-                        c.getVitoria(),
-                        c.getDerrota(),
-                        c.getEmpate(),
-                        c.getEquipes().stream().map(Equipe::getNome).toList()
-                ))
-                .toList();
-        return ResponseEntity.ok(resp);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
-        Optional<Campeonato> opt = campeonatoRepository.findById(id);
-        if (opt.isEmpty()) return ResponseEntity.notFound().build();
-
-        Campeonato c = opt.get();
-        CampeonatoResponse resp = new CampeonatoResponse(
+            .map(c -> new CampeonatoResponse(
                 c.getId(),
                 c.getNome(),
                 c.getVitoria(),
                 c.getDerrota(),
                 c.getEmpate(),
-                c.getEquipes().stream().map(Equipe::getNome).toList()
-        );
-
+                c.getEquipes().stream()
+                    .map(e -> new EquipeResponse(e.getId(), e.getNome()))
+                    .toList()
+            )).toList();
         return ResponseEntity.ok(resp);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CampeonatoResponse> buscarPorId(@PathVariable Long id) {
+        Optional<Campeonato> opt = campeonatoRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Campeonato c = opt.get();
+        CampeonatoResponse resp = new CampeonatoResponse(
+            c.getId(),
+            c.getNome(),
+            c.getVitoria(),
+            c.getDerrota(),
+            c.getEmpate(),
+            c.getEquipes().stream()
+                .map(e -> new EquipeResponse(e.getId(), e.getNome()))
+                .toList()
+        );
+        return ResponseEntity.ok(resp);
+    }
+
 
     @PostMapping("/{id}/equipes")
     public ResponseEntity<?> adicionarEquipes(@PathVariable Long id, @RequestBody List<String> nomesEquipes) {

@@ -1,6 +1,8 @@
 package org.ce.sports.Api.entities;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,8 +20,13 @@ public class Campeonato {
     private int derrota;
     private int empate;
 
-    @OneToMany(mappedBy = "campeonatos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Equipe> equipes;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "equipe_campeonato",
+        joinColumns = @JoinColumn(name = "campeonato_id"),
+        inverseJoinColumns = @JoinColumn(name = "equipe_id")
+    )
+    private Set<Equipe> equipes = new HashSet<>();
 
     public Campeonato() {}
 

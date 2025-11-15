@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function RegistrarPartidaPage() {
@@ -15,6 +16,8 @@ export default function RegistrarPartidaPage() {
     pontuacao2: "",
     data: "",
   });
+
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,7 +53,10 @@ export default function RegistrarPartidaPage() {
       body: JSON.stringify(formData),
     })
       .catch((err) => window.alert(err))
-      .then(() => window.alert("Partida registrada com sucesso"));
+      .then(() => {
+        window.alert("Partida registrada com sucesso");
+        router.push("/admin/campeonatos/historico-partidas");
+      });
   };
 
   return (

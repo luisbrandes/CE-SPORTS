@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function AdicionarCampeonatoPage() {
@@ -15,14 +16,37 @@ export default function AdicionarCampeonatoPage() {
     pontosEmpate: "",
   });
 
+  const router = useRouter();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Campeonato adicionado:", formData);
-    alert("Campeonato adicionado com sucesso!");
+
+    const payload = {
+      nome: formData.nome,
+      equipes: formData.equipes.split(",").map((e) => e.trim()),
+      vitoria: Number(formData.pontosVitoria),
+      derrota: Number(formData.pontosDerrota),
+      empate: Number(formData.pontosEmpate),
+    };
+
+    const res = await fetch("http://localhost:8080/api/campeonato", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      alert("Erro ao adicionar campeonato");
+      return;
+    }
+
+    alert("Campeonato criado com sucesso!");
+    router.push("/admin/campeonatos");
   };
 
   return (

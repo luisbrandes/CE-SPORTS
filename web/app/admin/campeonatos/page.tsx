@@ -14,12 +14,46 @@ interface Campeonato {
   equipes: { id: number; nome: string }[];
 }
 
+function calcularPontuacoes(camp: Campeonato, partidas: any[]) {
+  const tabela: Record<string, number> = {};
+
+  camp.equipes.forEach((equipe) => {
+    tabela[equipe.nome] = 0;
+  });
+
+  partidas
+    .filter((p) =>
+      typeof p.campeonato === "string"
+        ? p.campeonato === camp.nome
+        : p.campeonato.nome === camp.nome
+    )
+    .forEach((p) => {
+      const e1 = typeof p.equipe1 === "string" ? p.equipe1 : p.equipe1.nome;
+      const e2 = typeof p.equipe2 === "string" ? p.equipe2 : p.equipe2.nome;
+
+      if (p.empate) {
+        tabela[e1] += camp.empate;
+        tabela[e2] += camp.empate;
+      } else if (p.vencedor) {
+        const vencedor =
+          typeof p.vencedor === "string" ? p.vencedor : p.vencedor.nome;
+        const perdedor = vencedor === e1 ? e2 : e1;
+
+        tabela[vencedor] += camp.vitoria;
+        tabela[perdedor] += camp.derrota;
+      }
+    });
+
+  return Object.entries(tabela)
+    .map(([nome, pontos]) => ({ nome, pontos }))
+    .sort((a, b) => b.pontos - a.pontos);
+}
+
 export default function CampeonatosPage() {
   const [campeonatos, setCampeonatos] = useState<Campeonato[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 🔹 busca os campeonatos do backend
   useEffect(() => {
     async function fetchCampeonatos() {
       try {
@@ -76,24 +110,36 @@ export default function CampeonatosPage() {
 
       {}
       <section className="grid sm:grid-cols-2 gap-6 mb-10">
-        {campeonatos.map((camp) => (
-          <Card key={camp.id}>
-            <h3 className="text-xl font-semibold mb-2 text-black">
-              {camp.nome}
-            </h3>
-            <p className="text-sm mb-4 text-muted-foreground">
-              {camp.equipes && camp.equipes.length > 0 ? (
-                <>
-                  Equipes participantes:{" "}
-                  <strong>{camp.equipes.map((e) => e.nome).join(", ")}</strong>
-                </>
-              ) : (
-                "Nenhuma equipe registrada ainda."
-              )}
-            </p>
-            <Button variant="outline">Ver Detalhes</Button>
-          </Card>
-        ))}
+        {campeonatos.map((camp) => {
+          const partidas: any[] = [];
+
+          const ranking = calcularPontuacoes(camp, partidas);
+
+          return (
+            <Card key={camp.id} className="p-4">
+              <h3 className="text-xl font-semibold text-black mb-4">
+                {camp.nome}
+              </h3>
+
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="p-2 text-left">Equipe</th>
+                    <th className="p-2 text-left">Pontos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ranking.map((r) => (
+                    <tr key={r.nome} className="border-b">
+                      <td className="p-2">{r.nome}</td>
+                      <td className="p-2 font-bold">{r.pontos}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          );
+        })}
       </section>
 
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,7 +19,22 @@ export default function RegistrarPartidaPage() {
 
   const router = useRouter();
 
+  const campeonatoRef = useRef<HTMLInputElement>(null);
+  const equipe1Ref = useRef<HTMLInputElement>(null);
+  const equipe2Ref = useRef<HTMLInputElement>(null);
+
+  const showFieldError = (
+    ref: React.RefObject<HTMLInputElement | null>,
+    message: string
+  ) => {
+    if (ref.current) {
+      ref.current.setCustomValidity(message);
+      ref.current.reportValidity();
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.setCustomValidity("");
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -46,17 +61,40 @@ export default function RegistrarPartidaPage() {
       return;
     }
 
-    await fetch("http://localhost:8080/api/partida", {
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify(formData),
-    })
-      .catch((err) => window.alert(err))
-      .then(() => {
-        window.alert("Partida registrada com sucesso");
-        router.push("/admin/campeonatos/historico-partidas");
+    try {
+      const response = await fetch("http://localhost:8080/api/partida", {
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+
+        if (errorText.includes("Campeonato")) {
+          showFieldError(campeonatoRef, errorText);
+        } else if (
+          errorText.includes("Uma equipe não pode jogar contra ela mesma")
+        ) {
+          showFieldError(equipe1Ref, errorText);
+          showFieldError(equipe2Ref, errorText);
+        } else if (errorText.includes("não existem")) {
+          showFieldError(equipe1Ref, errorText);
+          showFieldError(equipe2Ref, errorText);
+        } else if (errorText.includes("parte do campeonato")) {
+          showFieldError(equipe1Ref, errorText);
+          showFieldError(equipe2Ref, errorText);
+        }
+
+        return;
+      }
+
+      alert("Partida registrada com sucesso");
+      router.push("/admin/campeonatos/historico-partidas");
+    } catch (err) {
+      alert("Erro de conexão com o servidor.");
+    }
   };
 
   return (
@@ -71,6 +109,7 @@ export default function RegistrarPartidaPage() {
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
           <Input
+            ref={campeonatoRef}
             name="campeonato"
             placeholder="Nome do campeonato"
             required
@@ -78,6 +117,7 @@ export default function RegistrarPartidaPage() {
             onChange={handleChange}
           />
           <Input
+            ref={equipe1Ref}
             name="equipe1"
             placeholder="Equipe 1"
             required
@@ -85,6 +125,7 @@ export default function RegistrarPartidaPage() {
             onChange={handleChange}
           />
           <Input
+            ref={equipe2Ref}
             name="equipe2"
             placeholder="Equipe 2"
             required

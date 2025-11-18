@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "campeonatos")
 public class Campeonato {
@@ -26,6 +28,7 @@ public class Campeonato {
         joinColumns = @JoinColumn(name = "campeonato_id"),
         inverseJoinColumns = @JoinColumn(name = "equipe_id")
     )
+    @JsonIgnore
     private Set<Equipe> equipes = new HashSet<>();
 
     public Campeonato() {}

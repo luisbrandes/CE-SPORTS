@@ -20,9 +20,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,10 +48,14 @@ public class AuthService {
                 throw new BadCredentialsException("Senha incorreta");
             }
 
-            // Bloqueia login de contas não verificadas (apenas para usuários comuns)
             if (user.getRole() == RoleEnum.ROLE_USER && !user.isVerified()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(Map.of("error", "Conta ainda não verificada. Verifique seu e-mail."));
+            }
+
+            if (!user.isVerified()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "Aguarde aprovação de um administrador."));
             }
 
             HttpSession session = request.getSession(true);
@@ -250,5 +256,54 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Erro ao verificar conta: " + e.getMessage()));
         }
+    }
+
+    public ResponseEntity<?> forgotPassword(Map<String, String> request) {
+        String email = request.get("email");
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email não encontrado");
+        }
+
+        User user = userOpt.get();
+
+        String token = UUID.randomUUID().toString();
+        user.setResetToken(token);
+        user.setTokenExpiration(LocalDateTime.now().plusHours(1));
+
+        userRepository.save(user);
+
+        emailService.sendResetPasswordEmail(
+                user.getEmail(),
+                "http://localhost:3000/reset-password?token=" + token
+        );
+
+        return ResponseEntity.ok("Email enviado");
+    }
+
+    public ResponseEntity<?> resetPassword(Map<String, String> request) {
+        String token = request.get("token");
+        String newPassword = request.get("newPassword");
+
+        Optional<User> userOpt = userRepository.findByResetToken(token);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token inválido");
+        }
+
+        User user = userOpt.get();
+
+        if (user.getTokenExpiration().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token expirado");
+        }
+
+        user.setSenha(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        user.setTokenExpiration(null);
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Senha atualizada");
     }
 }

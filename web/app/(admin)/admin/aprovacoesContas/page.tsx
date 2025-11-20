@@ -3,16 +3,18 @@
 import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { useRouter } from "next/dist/client/components/navigation"
 
 export default function AprovacoesPage() {
     const [admins, setAdmins] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
+    const router = useRouter()
 
     const carregarPendentes = async () => {
         try {
             setLoading(true)
             const res = await fetch("http://localhost:8080/api/admin/pending-admins", {
-                credentials: "include", 
+                credentials: "include",
             })
             if (!res.ok) throw new Error("Erro ao carregar pendentes")
             const data = await res.json()
@@ -57,7 +59,18 @@ export default function AprovacoesPage() {
         }
     }
 
+    const checkSession = async () => {
+        const res = await fetch("http://localhost:8080/api/auth/me", {
+            credentials: "include"
+        })
+        if (!res.ok) {
+            alert("Você não está logado como administrador aprovado.")
+            return router.push("/login")
+        }
+    }
+
     useEffect(() => {
+        checkSession()
         carregarPendentes()
     }, [])
 

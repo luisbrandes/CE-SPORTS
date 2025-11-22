@@ -5,15 +5,19 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useRouter } from "next/dist/client/components/navigation"
+import { useRouter } from "next/navigation"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
   const Router = useRouter()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+
+    if (loading) return 
+    setLoading(true)
 
     const res = await fetch("http://localhost:8080/api/auth/forgot-password", {
       method: "POST",
@@ -23,10 +27,12 @@ export default function ForgotPasswordPage() {
 
     if (res.ok) {
       setMessage("📬 Email enviado! Verifique sua caixa de entrada.")
-      Router.push("/login")
+      setTimeout(() => Router.push("/login"), 1500)
     } else {
       setMessage("❌ Email não encontrado.")
     }
+
+    setLoading(false)
   }
 
   return (
@@ -44,13 +50,15 @@ export default function ForgotPasswordPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
           />
 
           <Button
             type="submit"
-            className="w-full bg-blue-600 text-white hover:bg-blue-700"
+            className="w-full bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
           >
-            Enviar link de recuperação
+            {loading ? "Enviando..." : "Enviar link de recuperação"}
           </Button>
         </form>
 

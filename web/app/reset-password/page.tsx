@@ -30,19 +30,26 @@ export default function ResetPasswordPage() {
       return
     }
 
-    const res = await fetch("http://localhost:8080/api/auth/reset-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, newPassword: password }),
-    })
+    try {
+      const res = await fetch("http://localhost:8080/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, newPassword: password }),
+      })
 
-    if (res.ok) {
-      setMessage("✅ Senha alterada com sucesso!")
-      setTimeout(() => router.push("/login"), 2000)
-    } else {
-      setMessage("❌ Token inválido ou expirado.")
+      const data = await res.json().catch(() => null)
+
+      if (res.ok) {
+        setMessage("✅ Senha alterada com sucesso!")
+        setTimeout(() => router.push("/login"), 2000)
+      } else {
+        setMessage(`❌ Erro: ${data?.message || "Algo deu errado."}`)
+      }
+    } catch (error: any) {
+      setMessage(`❌ Erro de conexão: ${error.message}`)
     }
   }
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-500 p-6">

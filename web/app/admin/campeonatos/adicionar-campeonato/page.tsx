@@ -11,9 +11,9 @@ export default function AdicionarCampeonatoPage() {
   const [formData, setFormData] = useState({
     nome: "",
     equipes: "",
-    pontosVitoria: "",
-    pontosDerrota: "",
-    pontosEmpate: "",
+    pontosVitoria: "3",
+    pontosDerrota: "0",
+    pontosEmpate: "1",
   });
 
   const router = useRouter();
@@ -27,7 +27,6 @@ export default function AdicionarCampeonatoPage() {
     if (e.target.name === "nome") {
       e.target.setCustomValidity("");
     }
-    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,12 +56,11 @@ export default function AdicionarCampeonatoPage() {
     if (!res.ok) {
       if (res.status === 409) {
         nomeInput.setCustomValidity("Esse campeonato já existe.");
-
         nomeInput.reportValidity();
       } else {
-        alert("Erro ao adicionar campeonato");
+        const errorText = await res.text();
+        alert(`Erro ao adicionar campeonato: ${errorText}`);
       }
-
       return;
     }
 
@@ -78,7 +76,7 @@ export default function AdicionarCampeonatoPage() {
             Adicionar Campeonato
           </h1>
           <p className="text-muted-foreground text-sm mt-1">
-            Preencha os dados abaixo
+            Configure o sistema de pontuação do campeonato
           </p>
         </div>
 
@@ -100,7 +98,9 @@ export default function AdicionarCampeonatoPage() {
               setEquipesArr(Array(val).fill(""));
             }}
             placeholder="Quantidade de equipes"
+            min="2"
           />
+
           {Array.from({ length: numEquipes }).map((_, idx) => (
             <Input
               key={idx}
@@ -112,42 +112,64 @@ export default function AdicionarCampeonatoPage() {
                 setEquipesArr(newArr);
               }}
               placeholder={`Equipe ${idx + 1}`}
+              required
             />
           ))}
 
-          <Input
-            name="pontosVitoria"
-            type="number"
-            placeholder="Pontos por vitória"
-            required
-            value={formData.pontosVitoria}
-            onChange={handleChange}
-          />
+          <div className="space-y-3 border-t pt-4">
+            <h3 className="font-medium text-black">Sistema de Pontuação</h3>
+            <p className="text-sm text-gray-600">
+              Defina quantos pontos cada resultado vale:
+            </p>
 
-          <Input
-            name="pontosDerrota"
-            type="number"
-            placeholder="Pontos por derrota"
-            required
-            value={formData.pontosDerrota}
-            onChange={handleChange}
-          />
+            <Input
+              name="pontosVitoria"
+              type="number"
+              placeholder="Pontos por vitória"
+              required
+              value={formData.pontosVitoria}
+              onChange={handleChange}
+              min="0"
+            />
 
-          <Input
-            name="pontosEmpate"
-            type="number"
-            placeholder="Pontos por empate"
-            required
-            value={formData.pontosEmpate}
-            onChange={handleChange}
-          />
+            <Input
+              name="pontosDerrota"
+              type="number"
+              placeholder="Pontos por derrota"
+              required
+              value={formData.pontosDerrota}
+              onChange={handleChange}
+              min="0"
+            />
+
+            <Input
+              name="pontosEmpate"
+              type="number"
+              placeholder="Pontos por empate"
+              required
+              value={formData.pontosEmpate}
+              onChange={handleChange}
+              min="0"
+            />
+
+            <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+              💡 <strong>Sugestões:</strong>
+              <br />
+              • Tradicional: 3 vitória, 1 empate, 0 derrota
+              <br />
+              • Vôlei: 3 vitória, 0 derrota (sem empates)
+              <br />
+              • Basquete: 2 vitória, 1 derrota (sem empates)
+              <br />• Personalize conforme necessário!
+            </div>
+          </div>
 
           <Button
             type="submit"
             variant="primary"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4"
           >
-            Adicionar
+            Adicionar Campeonato
           </Button>
         </form>
 

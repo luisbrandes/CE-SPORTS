@@ -43,10 +43,6 @@ public class CampeonatoController {
             return ResponseEntity.badRequest().body("O campeonato deve ter pelo menos 2 equipes");
         }
         
-        if (request.vitoria() <= 0 || request.derrota() < 0 || request.empate() < 0) {
-            return ResponseEntity.badRequest().body("Pontuações devem ser valores válidos");
-        }
-
         Set<Equipe> equipes = new HashSet<>();
         for (String nomeEquipe : request.equipes()) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)

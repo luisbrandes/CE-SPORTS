@@ -35,6 +35,8 @@ public class ClassificacaoService {
             ClassificacaoBuilder builder1 = classificacaoMap.get(equipe1);
             ClassificacaoBuilder builder2 = classificacaoMap.get(equipe2);
             
+            if (builder1 == null || builder2 == null) continue;
+            
             builder1.adicionarJogo(partida.getPontuacao1(), partida.getPontuacao2(), partida.isEmpate(), partida.getVencedor() != null && partida.getVencedor().getNome().equals(equipe1));
             builder2.adicionarJogo(partida.getPontuacao2(), partida.getPontuacao1(), partida.isEmpate(), partida.getVencedor() != null && partida.getVencedor().getNome().equals(equipe2));
             

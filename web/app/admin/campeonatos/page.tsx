@@ -19,43 +19,23 @@ interface Campeonato {
   equipes: Equipe[];
 }
 
-function calcularPontuacoes(camp: Campeonato, partidas: any[]) {
-  const tabela: Record<string, number> = {};
-
-  camp.equipes.forEach((equipe) => {
-    tabela[equipe.nome] = 0;
-  });
-
-  partidas
-    .filter((p) =>
-      typeof p.campeonato === "string"
-        ? p.campeonato === camp.nome
-        : p.campeonato.nome === camp.nome
-    )
-    .forEach((p) => {
-      const e1 = typeof p.equipe1 === "string" ? p.equipe1 : p.equipe1.nome;
-      const e2 = typeof p.equipe2 === "string" ? p.equipe2 : p.equipe2.nome;
-
-      if (p.empate) {
-        tabela[e1] += camp.empate;
-        tabela[e2] += camp.empate;
-      } else if (p.vencedor) {
-        const vencedor =
-          typeof p.vencedor === "string" ? p.vencedor : p.vencedor.nome;
-        const perdedor = vencedor === e1 ? e2 : e1;
-
-        tabela[vencedor] += camp.vitoria;
-        tabela[perdedor] += camp.derrota;
-      }
-    });
-
-  return Object.entries(tabela)
-    .map(([nome, pontos]) => ({ nome, pontos }))
-    .sort((a, b) => b.pontos - a.pontos);
+interface ClassificacaoEquipe {
+  nomeEquipe: string;
+  pontos: number;
+  jogos: number;
+  vitorias: number;
+  derrotas: number;
+  empates: number;
+  golsPro: number;
+  golsContra: number;
+  saldoGols: number;
 }
 
 export default function CampeonatosPage() {
   const [campeonatos, setCampeonatos] = useState<Campeonato[]>([]);
+  const [classificacoes, setClassificacoes] = useState<
+    Record<number, ClassificacaoEquipe[]>
+  >({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -71,6 +51,28 @@ export default function CampeonatosPage() {
           );
         const data = await res.json();
         setCampeonatos(data);
+
+        const classificacoesData: Record<number, ClassificacaoEquipe[]> = {};
+        for (const camp of data) {
+          try {
+            const classificacaoRes = await fetch(
+              `http://localhost:8080/api/campeonato/${camp.id}/classificacao`,
+              {
+                credentials: "include",
+              }
+            );
+            if (classificacaoRes.ok) {
+              const classificacaoData = await classificacaoRes.json();
+              classificacoesData[camp.id] = classificacaoData;
+            }
+          } catch (err) {
+            console.error(
+              `Erro ao buscar classificação do campeonato ${camp.id}:`,
+              err
+            );
+          }
+        }
+        setClassificacoes(classificacoesData);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -113,12 +115,9 @@ export default function CampeonatosPage() {
         </Link>
       </div>
 
-      {}
       <section className="grid sm:grid-cols-2 gap-6 mb-10">
         {campeonatos.map((camp) => {
-          const partidas: any[] = [];
-
-          const ranking = calcularPontuacoes(camp, partidas);
+          const classificacao = classificacoes[camp.id] || [];
 
           return (
             <Card key={camp.id} className="p-4">
@@ -126,22 +125,54 @@ export default function CampeonatosPage() {
                 {camp.nome}
               </h3>
 
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b">
-                    <th className="p-2 text-left">Equipe</th>
-                    <th className="p-2 text-left">Pontos</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ranking.map((r) => (
-                    <tr key={r.nome} className="border-b">
-                      <td className="p-2">{r.nome}</td>
-                      <td className="p-2 font-bold">{r.pontos}</td>
+              {classificacao.length > 0 ? (
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b bg-gray-50">
+                      <th className="p-2 text-left">Pos</th>
+                      <th className="p-2 text-left">Equipe</th>
+                      <th className="p-2 text-center">PTS</th>
+                      <th className="p-2 text-center">J</th>
+                      <th className="p-2 text-center">V</th>
+                      <th className="p-2 text-center">E</th>
+                      <th className="p-2 text-center">D</th>
+                      <th className="p-2 text-center">SG</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {classificacao.map((equipe, index) => (
+                      <tr
+                        key={equipe.nomeEquipe}
+                        className="border-b hover:bg-gray-50"
+                      >
+                        <td className="p-2 font-medium">{index + 1}°</td>
+                        <td className="p-2">{equipe.nomeEquipe}</td>
+                        <td className="p-2 text-center font-bold">
+                          {equipe.pontos}
+                        </td>
+                        <td className="p-2 text-center">{equipe.jogos}</td>
+                        <td className="p-2 text-center text-green-600">
+                          {equipe.vitorias}
+                        </td>
+                        <td className="p-2 text-center text-yellow-600">
+                          {equipe.empates}
+                        </td>
+                        <td className="p-2 text-center text-red-600">
+                          {equipe.derrotas}
+                        </td>
+                        <td className="p-2 text-center">
+                          {equipe.saldoGols > 0 ? "+" : ""}
+                          {equipe.saldoGols}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="text-center py-4 text-gray-500">
+                  Nenhuma partida registrada ainda
+                </div>
+              )}
             </Card>
           );
         })}

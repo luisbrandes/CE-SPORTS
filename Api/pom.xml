@@ -18,7 +18,7 @@
 	<description>Ce Sports for Spring Boot</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<exec.executable.npm>C:\Program Files\nodejs\npm.cmd</exec.executable.npm>
 	</properties>
 

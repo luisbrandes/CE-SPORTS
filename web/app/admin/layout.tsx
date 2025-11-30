@@ -1,13 +1,15 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Sidebar } from "@/components/layout/sidebar"
-import { Menu, X } from "lucide-react"
+import { useState } from "react";
+import { Sidebar } from "@/components/layout/sidebar";
+import { Menu, X } from "lucide-react";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
- 
-    
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background text-primary">
@@ -29,7 +31,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
 
       {/* Conteúdo principal */}
-      <main className="flex-1 p-6 md:ml-0 mt-12 md:mt-0 overflow-y-auto">{children}</main>
+      <main className="flex-1 p-6 md:ml-0 mt-12 md:mt-0 overflow-y-auto">
+        {children}
+      </main>
     </div>
-  )
+  );
 }

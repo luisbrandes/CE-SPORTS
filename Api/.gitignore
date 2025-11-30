@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/Api/data/
+/Api/src/main/resources/static/

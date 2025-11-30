@@ -34,7 +34,6 @@ public class PartidaController {
 
     @PostMapping
     public ResponseEntity<String> adicionar(@RequestBody AdicionarPartida partidaDto) {
-
         LocalDate hoje = LocalDate.now();
         LocalDate umAnoAtras = hoje.minusYears(1);
 
@@ -53,6 +52,7 @@ public class PartidaController {
             return ResponseEntity.badRequest().body("Campeonato não encontrado.");
         }
 
+        // Buscar equipes
         Equipe equipe1 = equipeRepository.findByNome(partidaDto.equipe1()).orElse(null);
         Equipe equipe2 = equipeRepository.findByNome(partidaDto.equipe2()).orElse(null);
 
@@ -90,8 +90,7 @@ public class PartidaController {
 
     @GetMapping
     public ResponseEntity<List<Partida>> listarTodas() {
-        List<Partida> partidas = repository.findAll();
-        
+        List<Partida> partidas = repository.findAllWithDetails();
         return ResponseEntity.ok(partidas);
     }
 }

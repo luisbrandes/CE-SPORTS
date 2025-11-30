@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(admin)/layout,_N_T_/(admin)/admin/layout,_N_T_/(admin)/admin/aprovacoesContas/layout,_N_T_/(admin)/admin/aprovacoesContas/page,_N_T_/admin/aprovacoesContas"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KGFkbWluKQ/admin/aprovacoesContas/__PAGE__",
+    "/!KGFkbWluKQ/admin/aprovacoesContas",
+    "/!KGFkbWluKQ/admin",
+    "/!KGFkbWluKQ",
+    "/_index"
+  ]
+}

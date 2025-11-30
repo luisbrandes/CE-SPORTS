@@ -1,0 +1,161 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/admin/noticia/[id]",
+      "regex": "^/admin/noticia/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/noticia/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/aprovacoesContas",
+      "regex": "^/admin/aprovacoesContas(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/aprovacoesContas(?:/)?$"
+    },
+    {
+      "page": "/admin/campeonatos",
+      "regex": "^/admin/campeonatos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/campeonatos(?:/)?$"
+    },
+    {
+      "page": "/admin/campeonatos/adicionar-campeonato",
+      "regex": "^/admin/campeonatos/adicionar\\-campeonato(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/campeonatos/adicionar\\-campeonato(?:/)?$"
+    },
+    {
+      "page": "/admin/campeonatos/historico-partidas",
+      "regex": "^/admin/campeonatos/historico\\-partidas(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/campeonatos/historico\\-partidas(?:/)?$"
+    },
+    {
+      "page": "/admin/campeonatos/registrar-partida",
+      "regex": "^/admin/campeonatos/registrar\\-partida(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/campeonatos/registrar\\-partida(?:/)?$"
+    },
+    {
+      "page": "/admin/noticia",
+      "regex": "^/admin/noticia(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/noticia(?:/)?$"
+    },
+    {
+      "page": "/admin/noticia/cadastrarNoticia",
+      "regex": "^/admin/noticia/cadastrarNoticia(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/noticia/cadastrarNoticia(?:/)?$"
+    },
+    {
+      "page": "/admin/projetos",
+      "regex": "^/admin/projetos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/projetos(?:/)?$"
+    },
+    {
+      "page": "/admin/projetos/cadastrarProjetos",
+      "regex": "^/admin/projetos/cadastrarProjetos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/projetos/cadastrarProjetos(?:/)?$"
+    },
+    {
+      "page": "/aluno",
+      "regex": "^/aluno(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/aluno(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/register",
+      "regex": "^/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/register(?:/)?$"
+    },
+    {
+      "page": "/register/verify",
+      "regex": "^/register/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/register/verify(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

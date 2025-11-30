@@ -31,33 +31,28 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 🔒 Controle de autorização por endpoint
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",  // rotas públicas (login, registro, verificação)
+                                "/api/auth/**",
                                 "/h2-console/**",
-                                "/swagger-ui/**", "/v3/api-docs/**"
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")  // somente ADMIN
+
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
+
                         .anyRequest().authenticated()
                 )
 
-                // 🧱 Configuração de sessão
-                .sessionManagement(session -> session
-                        .maximumSessions(1)
-                )
+                .sessionManagement(session -> session.maximumSessions(1))
 
-                // 🔓 Desativa CSRF (API REST + sessão)
                 .csrf(csrf -> csrf.disable())
 
-                // ✅ Libera frames do H2
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
-                // 🌐 Configuração CORS
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // 🔚 Logout básico via /logout
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
                         .invalidateHttpSession(true)
@@ -69,20 +64,21 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // 🧩 Serviço para carregar usuários do banco
+    // ----- USER DETAILS -----
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-                        // garante que o prefixo do papel esteja correto (ROLE_ADMIN, ROLE_USER)
-                        .authorities(user.getRole().name())
+                        // 🔥 IMPORTANTE: Spring exige prefixo ROLE_
+                        .roles(user.getRole().name().replace("ROLE_", ""))
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
+    // ----- PROVIDER -----
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -92,8 +88,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
     @Bean
@@ -101,21 +97,26 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS: permite comunicação com o frontend (Next.js)
+    // ----- CORS CONFIG -----
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of(
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOriginPatterns(List.of(
                 "http://localhost:3000",
-                "http://127.0.0.1:3000"
+                "http://127.0.0.1:3000",
+                "http://localhost:8080",
+                "http://127.0.0.1:8080",
+                "http://192.168.*.*:8080" // permite acesso via IP local
         ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }

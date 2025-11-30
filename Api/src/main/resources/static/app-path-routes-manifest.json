@@ -1,0 +1,21 @@
+{
+  "/(admin)/admin/aprovacoesContas/page": "/admin/aprovacoesContas",
+  "/(admin)/admin/campeonatos/adicionar-campeonato/page": "/admin/campeonatos/adicionar-campeonato",
+  "/(admin)/admin/campeonatos/historico-partidas/page": "/admin/campeonatos/historico-partidas",
+  "/(admin)/admin/campeonatos/page": "/admin/campeonatos",
+  "/(admin)/admin/campeonatos/registrar-partida/page": "/admin/campeonatos/registrar-partida",
+  "/(admin)/admin/noticia/[id]/page": "/admin/noticia/[id]",
+  "/(admin)/admin/noticia/cadastrarNoticia/page": "/admin/noticia/cadastrarNoticia",
+  "/(admin)/admin/noticia/page": "/admin/noticia",
+  "/(admin)/admin/page": "/admin",
+  "/(admin)/admin/projetos/cadastrarProjetos/page": "/admin/projetos/cadastrarProjetos",
+  "/(admin)/admin/projetos/page": "/admin/projetos",
+  "/(app)/aluno/page": "/aluno",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/login/page": "/login",
+  "/page": "/",
+  "/register/page": "/register",
+  "/register/verify/page": "/register/verify"
+}

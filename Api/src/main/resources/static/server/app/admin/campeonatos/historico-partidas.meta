@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(admin)/layout,_N_T_/(admin)/admin/layout,_N_T_/(admin)/admin/campeonatos/layout,_N_T_/(admin)/admin/campeonatos/historico-partidas/layout,_N_T_/(admin)/admin/campeonatos/historico-partidas/page,_N_T_/admin/campeonatos/historico-partidas"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KGFkbWluKQ/admin/campeonatos/historico-partidas/__PAGE__",
+    "/!KGFkbWluKQ/admin/campeonatos/historico-partidas",
+    "/!KGFkbWluKQ/admin/campeonatos",
+    "/!KGFkbWluKQ/admin",
+    "/!KGFkbWluKQ",
+    "/_index"
+  ]
+}

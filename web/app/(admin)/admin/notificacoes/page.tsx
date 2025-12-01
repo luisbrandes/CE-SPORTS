@@ -23,7 +23,7 @@ export default function EnviarNotificacaoPage() {
     setFeedback({ type: null, message: "" })
 
     try {
-      const res = await fetch("http://localhost:8080/api/admin/notificacoes", {
+      const res = await fetch("http://localhost:8080/api/admin/notification/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

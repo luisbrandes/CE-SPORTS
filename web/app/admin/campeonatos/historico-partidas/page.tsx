@@ -223,7 +223,9 @@ export default function PartidasPage() {
                     }
 
                     const dataStr = p.data
-                      ? new Date(p.data).toLocaleString("pt-BR")
+                      ? new Date(p.data + "T00:00:00").toLocaleDateString(
+                          "pt-BR"
+                        )
                       : "-";
 
                     return (

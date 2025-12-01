@@ -1,7 +1,11 @@
 package org.ce.sports.Api.entities;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "equipes")
@@ -15,13 +19,9 @@ public class Equipe {
     @Column(nullable = false)
     private String nome;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "equipe_campeonato",
-        joinColumns = @JoinColumn(name = "equipe_id"),
-        inverseJoinColumns = @JoinColumn(name = "campeonato_id")
-    )
-    private Set<Campeonato> campeonatos;
+    @ManyToMany(mappedBy = "equipes")
+    @JsonIgnore
+    private Set<Campeonato> campeonatos = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -29,7 +29,7 @@ public class Equipe {
         joinColumns = @JoinColumn(name = "equipe_id"),
         inverseJoinColumns = @JoinColumn(name = "aluno_id")
     )
-    private Set<User> integrantes;
+    private Set<User> integrantes = new HashSet<>();
 
     public Equipe() {}
 

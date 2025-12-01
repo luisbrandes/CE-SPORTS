@@ -26,3 +26,5 @@ replay_pid*
 node_modules/
 
 Api/src/main/resources/static/
+Api/data/
+.idea

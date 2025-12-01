@@ -1,115 +1,113 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+
+interface Equipe {
+  posicao: number;
+  nome: string;
+  pontos: number;
+  vitorias: number;
+  derrotas: number;
+}
 
 export default function CampeonatosPage() {
-  const router = useRouter()
+  const [showModal, setShowModal] = useState(false);
 
-  const handleVoltar = () => router.push("/admin")
-  const handleAddCampeonato = () =>
-    router.push("/admin/adicionar-campeonato")
-  const handleGerenciar = () =>
-    router.push("/admin/editar-dados-campeonato")
+  const tabela: Equipe[] = [
+    { posicao: 1, nome: "Informática", pontos: 12, vitorias: 4, derrotas: 0 },
+    { posicao: 2, nome: "Eletrotécnica", pontos: 9, vitorias: 3, derrotas: 1 },
+    { posicao: 3, nome: "Mecânica", pontos: 6, vitorias: 2, derrotas: 2 },
+    { posicao: 4, nome: "Edificações", pontos: 3, vitorias: 1, derrotas: 3 },
+  ];
 
   return (
-    <main className="container mx-auto py-10 px-6 animate-fade-in">
-      {/* Botão voltar */}
-      <Button variant="outline" onClick={handleVoltar} className="mb-6">
-        ← Voltar à Home
-      </Button>
+    <main className="flex-1 container mx-auto px-4 py-8 fade-in">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl page-title text-black font-bold mb-6">
+          Campeonatos em Andamento
+        </h1>
 
-      <h1 className="text-3xl font-bold text-primary mb-8">
-        Campeonatos em Andamento
-      </h1>
+        <Link href="/admin/campeonatos/historico-partidas">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-blue-600 hover:text-blue-800 hover:underline"
+          >
+            Histórico de Partidas
+          </Button>
+        </Link>
+      </div>
 
-      {/* Cards de campeonatos */}
-      <section className="grid md:grid-cols-2 gap-6 mb-10">
-        <Card className="p-6 flex flex-col gap-4">
-          <h3 className="text-xl font-semibold text-primary">
+      <section className="grid sm:grid-cols-2 gap-6 mb-10">
+        <Card>
+          <h3 className="text-xl font-semibold mb-2 text-black">
             Copa Caloura 2025
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm mb-4 text-muted-foreground">
             Campeonato entre turmas de primeiro ano. Próxima partida:
-            Informática x Eletrotécnica.
+            <br /> <strong>Informática x Eletrotécnica</strong>.
           </p>
-          <Button variant="outline" className="mt-auto w-fit">
-            Ver Detalhes
-          </Button>
+          <Button variant="outline">Ver Detalhes</Button>
         </Card>
 
-        <Card className="p-6 flex flex-col gap-4">
-          <h3 className="text-xl font-semibold text-primary">
+        <Card>
+          <h3 className="text-xl font-semibold mb-2 text-black">
             Interturmas 2025
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm mb-4 text-muted-foreground">
             Times de todos os cursos disputando o título de melhor equipe do
             campus.
           </p>
-          <Button variant="outline" className="mt-auto w-fit">
-            Ver Detalhes
-          </Button>
+          <Button variant="outline">Ver Detalhes</Button>
         </Card>
       </section>
 
-      {/* Tabela de classificação */}
-      <h2 className="text-2xl font-semibold text-primary mb-4">
-        Tabela de Classificação - Copa Caloura
+      <h2 className="text-2xl font-semibold mb-4 text-black">
+        Tabela de Classificação — Copa Caloura
       </h2>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
-          <thead className="bg-secondary text-primary font-semibold">
+
+      <div className="overflow-x-auto rounded-lg border border-border">
+        <table className="min-w-full text-sm">
+          <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="py-3 px-4 text-left">Posição</th>
-              <th className="py-3 px-4 text-left">Equipe</th>
-              <th className="py-3 px-4 text-left">Pontos</th>
-              <th className="py-3 px-4 text-left">Vitórias</th>
-              <th className="py-3 px-4 text-left">Derrotas</th>
+              <th className="p-2 text-left">Posição</th>
+              <th className="p-2 text-left">Equipe</th>
+              <th className="p-2 text-left">Pontos</th>
+              <th className="p-2 text-left">Vitórias</th>
+              <th className="p-2 text-left">Derrotas</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t border-border">
-              <td className="py-2 px-4">1º</td>
-              <td className="py-2 px-4">Informática</td>
-              <td className="py-2 px-4">12</td>
-              <td className="py-2 px-4">4</td>
-              <td className="py-2 px-4">0</td>
-            </tr>
-            <tr className="border-t border-border">
-              <td className="py-2 px-4">2º</td>
-              <td className="py-2 px-4">Eletrotécnica</td>
-              <td className="py-2 px-4">9</td>
-              <td className="py-2 px-4">3</td>
-              <td className="py-2 px-4">1</td>
-            </tr>
-            <tr className="border-t border-border">
-              <td className="py-2 px-4">3º</td>
-              <td className="py-2 px-4">Mecânica</td>
-              <td className="py-2 px-4">6</td>
-              <td className="py-2 px-4">2</td>
-              <td className="py-2 px-4">2</td>
-            </tr>
-            <tr className="border-t border-border">
-              <td className="py-2 px-4">4º</td>
-              <td className="py-2 px-4">Edificações</td>
-              <td className="py-2 px-4">3</td>
-              <td className="py-2 px-4">1</td>
-              <td className="py-2 px-4">3</td>
-            </tr>
+            {tabela.map((time) => (
+              <tr
+                key={time.posicao}
+                className="border-t border-border hover:bg-muted/30 transition"
+              >
+                <td className="p-2">{time.posicao}º</td>
+                <td className="p-2">{time.nome}</td>
+                <td className="p-2">{time.pontos}</td>
+                <td className="p-2">{time.vitorias}</td>
+                <td className="p-2">{time.derrotas}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      {/* Ações */}
-      <div className="flex flex-wrap justify-center gap-4 mt-10">
-        <Button variant="outline" onClick={handleAddCampeonato}>
-          ＋ Adicionar Novo Campeonato
-        </Button>
-        <Button variant="outline" onClick={handleGerenciar}>
-          Gerenciar Campeonato
-        </Button>
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
+        <Link href="/admin/campeonatos/adicionar-campeonato">
+          <Button
+            variant="outline"
+            size="md"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50 px-6"
+          >
+            🏆 Adicionar Campeonato
+          </Button>
+        </Link>
       </div>
     </main>
-  )
+  );
 }

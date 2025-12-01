@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,6 +31,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+<<<<<<< HEAD
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",     // login/registro públicos
@@ -37,14 +39,29 @@ public class SecurityConfig {
                                 "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+=======
+                // 🔒 Controle de autorização por endpoint
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/auth/**",  // rotas públicas (login, registro, verificação)
+                                "/h2-console/**",
+                                "/swagger-ui/**", "/v3/api-docs/**"
+                        ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")  // somente ADMIN
+>>>>>>> bef7e3ada9be7d9770e71c50eeb94c1809d7a740
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
                         .anyRequest().authenticated()
                 )
 
+<<<<<<< HEAD
+=======
+                // 🧱 Configuração de sessão
+>>>>>>> bef7e3ada9be7d9770e71c50eeb94c1809d7a740
                 .sessionManagement(session -> session
                         .maximumSessions(1)
                 )
 
+<<<<<<< HEAD
                 .csrf(csrf -> csrf.disable())
 
                 .headers(headers -> headers
@@ -52,18 +69,46 @@ public class SecurityConfig {
                 )
 
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+=======
+                // 🔓 Desativa CSRF (API REST + sessão)
+                .csrf(csrf -> csrf.disable())
+
+                // ✅ Libera frames do H2
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
+                // 🌐 Configuração CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                // 🔚 Logout básico via /logout
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .clearAuthentication(true)
+                        .permitAll()
+                );
+>>>>>>> bef7e3ada9be7d9770e71c50eeb94c1809d7a740
 
         return http.build();
     }
 
+<<<<<<< HEAD
     // Carrega usuário do banco
+=======
+    // 🧩 Serviço para carregar usuários do banco
+>>>>>>> bef7e3ada9be7d9770e71c50eeb94c1809d7a740
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
+<<<<<<< HEAD
                         .authorities("ROLE_" + user.getRole().name()) // garante prefixo ROLE_
+=======
+                        // garante que o prefixo do papel esteja correto (ROLE_ADMIN, ROLE_USER)
+                        .authorities(user.getRole().name())
+>>>>>>> bef7e3ada9be7d9770e71c50eeb94c1809d7a740
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
@@ -77,10 +122,16 @@ public class SecurityConfig {
         return provider;
     }
 
+<<<<<<< HEAD
     // Necessário para autenticação no Spring Security 6+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+=======
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+>>>>>>> bef7e3ada9be7d9770e71c50eeb94c1809d7a740
     }
 
     @Bean
@@ -88,7 +139,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+<<<<<<< HEAD
     // Configuração correta de CORS para permitir acesso ao frontend
+=======
+    // 🌍 CORS: permite comunicação com o frontend (Next.js)
+>>>>>>> bef7e3ada9be7d9770e71c50eeb94c1809d7a740
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

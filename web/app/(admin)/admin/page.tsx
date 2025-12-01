@@ -1,11 +1,10 @@
 "use client"
 
-import { useAuth } from "@/app/hook/useAuth"
-import { Card } from "@/components/ui"
+import { useRouter } from "next/navigation"
+import { Card } from "@/components/ui/card"
 
 export default function AdminDashboardPage() {
-
-  
+  const router = useRouter()
 
   return (
     <section className="p-6">
@@ -28,13 +27,17 @@ export default function AdminDashboardPage() {
           </p>
         </Card>
 
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold mb-2">Relatórios</h2>
+        <Card
+          className="p-6 cursor-pointer hover:bg-muted transition"
+          onClick={() => router.push("/admin/notificacoes")}
+        >
+          <h2 className="text-lg font-semibold mb-2">Notificações</h2>
           <p className="text-sm text-muted-foreground">
-            Visualize métricas e estatísticas de desempenho.
+            Envie comunicados para os usuários da plataforma.
           </p>
         </Card>
       </div>
     </section>
   )
 }
+

@@ -30,44 +30,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // ⚙️ Controle de autorização
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",   // login, registro, verificação — públicos
+                                "/api/auth/**",
                                 "/h2-console/**",
-                                "/swagger-ui/**", "/v3/api-docs/**"
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // 🔒 Apenas admins
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
                         .anyRequest().authenticated()
                 )
-
-                // ⚙️ Sessão baseada em cookie JSESSIONID
-                .sessionManagement(session -> session
-                        .maximumSessions(1) // evita múltiplos logins simultâneos
-                )
-
-                // 🔓 Desabilita CSRF (para API REST)
-                .csrf(csrf -> csrf.disable())
-
-                // 🧱 Necessário para o H2 funcionar
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-
-                // 🌍 CORS liberado para o frontend (Next.js)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                .sessionManagement(session -> session.maximumSessions(1))
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
     }
 
-    // 🔹 Carrega usuário do banco
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-                        // 🔧 Garante prefixo correto (ROLE_USER, ROLE_ADMIN)
-                        .authorities(user.getRole().name())
+                        .roles(user.getRole().name())
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
@@ -81,18 +69,15 @@ public class SecurityConfig {
         return provider;
     }
 
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

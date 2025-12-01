@@ -238,15 +238,6 @@ export default function CampeonatosPage() {
                   </span>
                 </div>
 
-                <div className="mb-3">
-                  <span className="text-sm text-gray-600">
-                    Sistema de pontuação:
-                    <span className="ml-2 font-medium">
-                      🏆 {camp.vitoria} | 🤝 {camp.empate} | ❌ {camp.derrota}
-                    </span>
-                  </span>
-                </div>
-
                 {classificacao.length > 0 ? (
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">

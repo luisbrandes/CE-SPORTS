@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -33,9 +34,7 @@ interface ClassificacaoEquipe {
 
 export default function CampeonatosPage() {
   const [campeonatos, setCampeonatos] = useState<Campeonato[]>([]);
-  const [classificacoes, setClassificacoes] = useState<
-    Record<number, ClassificacaoEquipe[]>
-  >({});
+  const [classificacoes, setClassificacoes] = useState<Record<number, ClassificacaoEquipe[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,9 +45,8 @@ export default function CampeonatosPage() {
           credentials: "include",
         });
         if (!res.ok)
-          throw new Error(
-            `Erro ${res.status}: não foi possível carregar os campeonatos`
-          );
+          throw new Error(`Erro ${res.status}: não foi possível carregar os campeonatos`);
+        
         const data = await res.json();
         setCampeonatos(data);
 
@@ -57,37 +55,32 @@ export default function CampeonatosPage() {
           try {
             const classificacaoRes = await fetch(
               `http://localhost:8080/api/campeonato/${camp.id}/classificacao`,
-              {
-                credentials: "include",
-              }
+              { credentials: "include" }
             );
+
             if (classificacaoRes.ok) {
               const classificacaoData = await classificacaoRes.json();
               classificacoesData[camp.id] = classificacaoData;
             }
-          } catch (err) {
-            console.error(
-              `Erro ao buscar classificação do campeonato ${camp.id}:`,
-              err
-            );
+          } catch (error) {
+            console.error(`Erro ao buscar classificação do campeonato ${camp.id}:`, error);
           }
         }
+
         setClassificacoes(classificacoesData);
+
       } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
+
     fetchCampeonatos();
   }, []);
 
   if (loading)
-    return (
-      <p className="text-center text-gray-500 mt-10">
-        Carregando campeonatos...
-      </p>
-    );
+    return <p className="text-center text-gray-500 mt-10">Carregando campeonatos...</p>;
   if (error)
     return <p className="text-center text-red-600 mt-10">Erro: {error}</p>;
 
@@ -120,7 +113,15 @@ export default function CampeonatosPage() {
           const classificacao = classificacoes[camp.id] || [];
 
           return (
-            <Card key={camp.id} className="p-4">
+            <Card key={camp.id} className="p-4 relative">
+
+              {/* Ícone do lápis (botão de editar) */}
+              <Link href={`/admin/campeonatos/${camp.id}/editar`}>
+                <Pencil
+                  className="w-5 h-5 absolute top-2 right-2 text-gray-600 hover:text-black cursor-pointer"
+                />
+              </Link>
+
               <h3 className="text-xl font-semibold text-black mb-4">
                 {camp.nome}
               </h3>
@@ -141,25 +142,14 @@ export default function CampeonatosPage() {
                   </thead>
                   <tbody>
                     {classificacao.map((equipe, index) => (
-                      <tr
-                        key={equipe.nomeEquipe}
-                        className="border-b hover:bg-gray-50"
-                      >
+                      <tr key={equipe.nomeEquipe} className="border-b hover:bg-gray-50">
                         <td className="p-2 font-medium">{index + 1}°</td>
                         <td className="p-2">{equipe.nomeEquipe}</td>
-                        <td className="p-2 text-center font-bold">
-                          {equipe.pontos}
-                        </td>
+                        <td className="p-2 text-center font-bold">{equipe.pontos}</td>
                         <td className="p-2 text-center">{equipe.jogos}</td>
-                        <td className="p-2 text-center text-green-600">
-                          {equipe.vitorias}
-                        </td>
-                        <td className="p-2 text-center text-yellow-600">
-                          {equipe.empates}
-                        </td>
-                        <td className="p-2 text-center text-red-600">
-                          {equipe.derrotas}
-                        </td>
+                        <td className="p-2 text-center text-green-600">{equipe.vitorias}</td>
+                        <td className="p-2 text-center text-yellow-600">{equipe.empates}</td>
+                        <td className="p-2 text-center text-red-600">{equipe.derrotas}</td>
                         <td className="p-2 text-center">
                           {equipe.saldoGols > 0 ? "+" : ""}
                           {equipe.saldoGols}

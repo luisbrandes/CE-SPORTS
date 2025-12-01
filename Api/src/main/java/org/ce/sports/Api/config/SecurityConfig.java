@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.ce.sports.Api.entities.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,30 +32,31 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
+                // ATIVA O CORS ANTES DE TUDO
+                .cors(Customizer.withDefaults())
+
+                .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(auth -> auth
+                        // O navegador sempre envia OPTIONS antes do PATCH
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/h2-console/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")  // somente ADMIN
 
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
+                        // APENAS ADMIN PODE ACESSAR /campeonato/**
+                        .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
 
-                .sessionManagement(session -> session.maximumSessions(1))
-
-                .csrf(csrf -> csrf.disable())
-
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
@@ -66,21 +69,19 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ----- USER DETAILS -----
+    // USER DETAILS
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-                        // 🔥 IMPORTANTE: Spring exige prefixo ROLE_
                         .roles(user.getRole().name().replace("ROLE_", ""))
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
-    // ----- PROVIDER -----
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -99,26 +100,27 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // ----- CORS CONFIG -----
+    // ------------------ CORS CORRETO ------------------
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOriginPatterns(List.of(
+        config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "http://127.0.0.1:3000",
-                "http://localhost:8080",
-                "http://127.0.0.1:8080",
-                "http://192.168.*.*:8080" // permite acesso via IP local
+                "http://127.0.0.1:3000"
         ));
 
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
+        ));
+
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 }

@@ -30,44 +30,40 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // ⚙️ Controle de autorização
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",   // login, registro, verificação — públicos
+                                "/api/auth/**",     // login/registro públicos
                                 "/h2-console/**",
                                 "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // 🔒 Apenas admins
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
                         .anyRequest().authenticated()
                 )
 
-                // ⚙️ Sessão baseada em cookie JSESSIONID
                 .sessionManagement(session -> session
-                        .maximumSessions(1) // evita múltiplos logins simultâneos
+                        .maximumSessions(1)
                 )
 
-                // 🔓 Desabilita CSRF (para API REST)
                 .csrf(csrf -> csrf.disable())
 
-                // 🧱 Necessário para o H2 funcionar
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable())
+                )
 
-                // 🌍 CORS liberado para o frontend (Next.js)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
     }
 
-    // 🔹 Carrega usuário do banco
+    // Carrega usuário do banco
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-                        // 🔧 Garante prefixo correto (ROLE_USER, ROLE_ADMIN)
-                        .authorities(user.getRole().name())
+                        .authorities("ROLE_" + user.getRole().name()) // garante prefixo ROLE_
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
@@ -81,11 +77,10 @@ public class SecurityConfig {
         return provider;
     }
 
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    // Necessário para autenticação no Spring Security 6+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
     @Bean
@@ -93,7 +88,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
+    // Configuração correta de CORS para permitir acesso ao frontend
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

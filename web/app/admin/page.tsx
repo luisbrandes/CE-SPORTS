@@ -5,8 +5,6 @@ import { Card } from "@/components/ui"
 
 export default function AdminDashboardPage() {
 
-  
-
   return (
     <section className="p-6">
       <h1 className="text-2xl font-bold text-primary mb-6">
@@ -32,6 +30,13 @@ export default function AdminDashboardPage() {
           <h2 className="text-lg font-semibold mb-2">Relatórios</h2>
           <p className="text-sm text-muted-foreground">
             Visualize métricas e estatísticas de desempenho.
+          </p>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold mb-2">Cadastro de Treinos</h2>
+          <p className="text-sm text-muted-foreground">
+            Adicione e gerencie treinos esportivos no sistema.
           </p>
         </Card>
       </div>

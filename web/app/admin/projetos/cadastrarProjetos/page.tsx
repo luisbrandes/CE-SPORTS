@@ -35,7 +35,7 @@ export default function NovoProjetoPage() {
       if (!res.ok) throw new Error("Erro ao cadastrar projeto")
 
       alert("✅ Projeto cadastrado com sucesso!")
-      router.push("/projetos")
+      router.push("/admin/projetos")
     } catch (err) {
       console.error(err)
       alert("❌ Erro ao cadastrar projeto.")

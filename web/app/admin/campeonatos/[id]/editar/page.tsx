@@ -99,7 +99,6 @@ export default function EditarCampeonatoPage() {
         }
     }
 
-
     function resetarCampos() {
         if (!initialData) return;
 
@@ -112,8 +111,6 @@ export default function EditarCampeonatoPage() {
         setEquipesArr(equipesNomes);
         setNumEquipes(equipesNomes.length);
     }
-
-
 
     if (!initialData) {
         return <p className="text-center mt-10 text-gray-600">Carregando dados...</p>;
@@ -175,26 +172,35 @@ export default function EditarCampeonatoPage() {
                     <div className="space-y-3 border-t pt-4">
                         <h3 className="font-medium text-black">Sistema de Pontuação</h3>
 
-                        <Input
-                            type="number"
-                            value={vitoria}
-                            onChange={(e) => setVitoria(Number(e.target.value))}
-                            placeholder="Pontos por vitória"
-                        />
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">Pontos por vitória</label>
+                            <Input
+                                type="number"
+                                value={vitoria}
+                                onChange={(e) => setVitoria(Number(e.target.value))}
+                                placeholder="Ex: 3"
+                            />
+                        </div>
 
-                        <Input
-                            type="number"
-                            value={derrota}
-                            onChange={(e) => setDerrota(Number(e.target.value))}
-                            placeholder="Pontos por derrota"
-                        />
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">Pontos por derrota</label>
+                            <Input
+                                type="number"
+                                value={derrota}
+                                onChange={(e) => setDerrota(Number(e.target.value))}
+                                placeholder="Ex: 0"
+                            />
+                        </div>
 
-                        <Input
-                            type="number"
-                            value={empate}
-                            onChange={(e) => setEmpate(Number(e.target.value))}
-                            placeholder="Pontos por empate"
-                        />
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">Pontos por empate</label>
+                            <Input
+                                type="number"
+                                value={empate}
+                                onChange={(e) => setEmpate(Number(e.target.value))}
+                                placeholder="Ex: 1"
+                            />
+                        </div>
                     </div>
 
                     <div className="flex gap-4 mt-4">

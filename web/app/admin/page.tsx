@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { Card } from "@/components/ui/card"
-import { useRouter } from "next/navigation"
+import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function AdminDashboardPage() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <section className="p-6">
@@ -41,7 +41,7 @@ export default function AdminDashboardPage() {
         {/* Notícias */}
         <Card
           className="p-6 cursor-pointer hover:bg-accent transition"
-          onClick={() => router.push("/admin/noticias")}
+          onClick={() => router.push("/admin/noticia")}
         >
           <h2 className="text-lg font-semibold mb-2">Notícias</h2>
           <p className="text-sm text-muted-foreground">
@@ -61,7 +61,19 @@ export default function AdminDashboardPage() {
             cronogramas, metas e materiais relacionados.
           </p>
         </Card>
+
+        {/* Notificações */}
+        <Card
+          className="p-6 cursor-pointer hover:bg-accent transition"
+          onClick={() => router.push("/admin/notificacoes")}
+        >
+          <h2 className="text-lg font-semibold mb-2">Notificações</h2>
+          <p className="text-sm text-muted-foreground">
+            Envie comunicados para os usuários da plataforma.
+          </p>
+        </Card>
+
       </div>
     </section>
-  )
+  );
 }

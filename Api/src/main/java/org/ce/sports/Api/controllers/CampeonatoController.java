@@ -17,13 +17,16 @@ import java.util.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/campeonato")
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        allowCredentials = "true"
+)
 public class CampeonatoController {
 
     private final CampeonatoRepository campeonatoRepository;
     private final EquipeRepository equipeRepository;
     private final ClassificacaoService classificacaoService;
     private final CampeonatoService campeonatoService;
-
 
     @PostMapping
     public ResponseEntity<?> adicionar(@Valid @RequestBody CampeonatoRequest request) {
@@ -38,7 +41,9 @@ public class CampeonatoController {
         Set<Equipe> equipes = new HashSet<>();
         for (String nomeEquipe : request.equipes()) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
-                    .orElseGet(() -> equipeRepository.save(new Equipe(nomeEquipe, new HashSet<>(), new HashSet<>())));
+                    .orElseGet(() -> equipeRepository.save(
+                            new Equipe(nomeEquipe, new HashSet<>(), new HashSet<>())
+                    ));
             equipes.add(equipe);
         }
 
@@ -124,6 +129,5 @@ public class CampeonatoController {
         campeonatoService.atualizarParcial(id, request);
         return ResponseEntity.ok("Campeonato atualizado (PATCH)!");
     }
-
-
 }
+

@@ -102,7 +102,7 @@ export default function EnviarNotificacaoPage() {
         </form>
       </Card>
 
-      <Button variant="outline" onClick={() => router.push("/admin/dashboard")}>
+      <Button variant="outline" onClick={() => router.push("/admin")}>
         Voltar ao Dashboard
       </Button>
     </section>

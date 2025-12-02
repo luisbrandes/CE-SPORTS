@@ -26,89 +26,85 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserRepository userRepository;
+        private final UserRepository userRepository;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http.authorizeHttpRequests(auth -> auth
+                                .requestMatchers(
+                                                "/api/auth/**",
+                                                "/h2-console/**",
+                                                "/swagger-ui/**",
+                                                "/v3/api-docs/**")
+                                .permitAll()
+                                .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
+                                .anyRequest().authenticated());
 
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/api/auth/**",
-                        "/h2-console/**",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**"
-                ).permitAll()
-                .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
-                .anyRequest().authenticated()
-        );
+                http.sessionManagement(session -> session.maximumSessions(1));
+                http.csrf(csrf -> csrf.disable());
+                http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+                http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-        http.sessionManagement(session -> session.maximumSessions(1));
-        http.csrf(csrf -> csrf.disable());
-        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                http.logout(logout -> logout
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID")
+                                .clearAuthentication(true)
+                                .permitAll());
 
-        http.logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .clearAuthentication(true)
-                .permitAll()
-        );
+                return http.build();
+        }
 
-        return http.build();
-    }
+        @Bean
+        public UserDetailsService userDetailsService() {
+                return username -> userRepository.findByEmail(username)
+                                .map(user -> org.springframework.security.core.userdetails.User.builder()
+                                                .username(user.getEmail())
+                                                .password(user.getSenha())
+                                                .roles(user.getRole().name().replace("ROLE_", ""))
+                                                .build())
+                                .orElseThrow(() -> new UsernameNotFoundException(
+                                                "Usuário não encontrado: " + username));
+        }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .map(user -> org.springframework.security.core.userdetails.User.builder()
-                        .username(user.getEmail())
-                        .password(user.getSenha())
-                        .roles(user.getRole().name().replace("ROLE_", ""))
-                        .build()
-                )
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
-    }
+        @Bean
+        public DaoAuthenticationProvider authenticationProvider() {
+                DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+                provider.setUserDetailsService(userDetailsService());
+                provider.setPasswordEncoder(passwordEncoder());
+                return provider;
+        }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+                return config.getAuthenticationManager();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration config = new CorsConfiguration();
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOriginPatterns(List.of(
+                                "http://localhost:3000",
+                                "http://127.0.0.1:3000",
+                                "http://localhost:8080",
+                                "http://127.0.0.1:8080",
+                                "http://192.168.*.*:8080"));
 
-        config.setAllowedOriginPatterns(List.of(
-                "http://localhost:3000",
-                "http://127.0.0.1:3000",
-                "http://localhost:8080",
-                "http://127.0.0.1:8080",
-                "http://192.168.*.*:8080"
-        ));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                config.setAllowedHeaders(List.of("*"));
+                config.setAllowCredentials(true);
+                config.setMaxAge(3600L);
 
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", config);
+                return source;
+        }
 }

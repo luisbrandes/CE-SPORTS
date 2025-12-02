@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Dumbbell, Users, Settings, LogOut, Newspaper, Trophy, Medal, Calendar } from "lucide-react"
+import { Dumbbell, Users, Settings, LogOut, Newspaper, Trophy, Medal, Calendar, Bell } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useSession } from "@/lib/session"
@@ -21,6 +21,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
     { href: "/admin/noticia", label: "Notícias", icon: Newspaper },
     { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
     { href: "/admin/projetos", label: "Projetos", icon: Medal },
+    { href: "/admin/notificacoes", label: "Notificações", icon: Bell },
   ]
 
   return (

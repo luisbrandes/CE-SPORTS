@@ -138,7 +138,7 @@ export default function CampeonatosPage() {
 
   return (
     <main className="flex-1 container mx-auto px-4 py-8 fade-in">
-      <Link href="/">
+      <Link href="/admin">
         <Button variant="outline" size="sm" className="mb-4">
           ← Voltar à Home
         </Button>

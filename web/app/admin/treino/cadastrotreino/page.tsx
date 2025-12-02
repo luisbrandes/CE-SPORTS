@@ -111,7 +111,7 @@ export default function NovoTreinoAdminPage() {
       vagasTotais: vagas,
       recorrente: true,
 
-      // *** AQUI ESTÁ A CORREÇÃO ***
+      
       diasDaSemana: diasSemana,
 
       dataInicio: dataInicio,

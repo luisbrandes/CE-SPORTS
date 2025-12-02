@@ -8,7 +8,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   const hideLayout =
     pathname.startsWith("/admin") ||
-    ["/login", "/register", "/register/verify"].includes(pathname)
+    ["/login", "/register", "/register/verify", "/forgot-password", "/reset-password"].includes(pathname)
 
   return (
     <>

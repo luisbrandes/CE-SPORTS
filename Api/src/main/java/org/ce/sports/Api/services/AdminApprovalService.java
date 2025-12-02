@@ -17,9 +17,7 @@ public class AdminApprovalService {
 
     private final UserRepository userRepository;
 
-    /**
-     * Lista todos os administradores pendentes (não verificados)
-     */
+
     public ResponseEntity<?> listarPendentes() {
         List<User> pendentes = userRepository.findAll()
                 .stream()
@@ -29,9 +27,7 @@ public class AdminApprovalService {
         return ResponseEntity.ok(pendentes);
     }
 
-    /**
-     * Aprova um administrador pendente
-     */
+
     public ResponseEntity<?> aprovarAdmin(Long id) {
         Optional<User> usuarioOpt = userRepository.findById(id);
 
@@ -51,9 +47,6 @@ public class AdminApprovalService {
         return ResponseEntity.ok(Map.of("message", "Administrador aprovado com sucesso!"));
     }
 
-    /**
-     * Rejeita (remove) um administrador pendente
-     */
     public ResponseEntity<?> rejeitarAdmin(Long id) {
         Optional<User> usuarioOpt = userRepository.findById(id);
 

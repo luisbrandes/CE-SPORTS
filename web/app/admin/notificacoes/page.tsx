@@ -57,12 +57,12 @@ export default function EnviarNotificacaoPage() {
   }
 
   return (
-    <section className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-primary">
+    <section className="min-h-screen flex flex-col justify-center items-center p-6 space-y-6">
+      <h1 className="text-2xl font-bold text-primary mb-4">
         Enviar Notificações
       </h1>
 
-      <Card className="p-6 max-w-xl">
+      <Card className="p-6 max-w-xl w-full">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-sm font-medium">Título</label>

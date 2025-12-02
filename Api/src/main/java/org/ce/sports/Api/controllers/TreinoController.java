@@ -21,8 +21,7 @@ public class TreinoController {
     @GetMapping
     public ResponseEntity<?> listarTreinos() {
         try {
-            List<Treino> treinos = treinoService.listarTreinos();
-            return ResponseEntity.ok(treinos);
+            return ResponseEntity.ok(treinoService.listarTreinos());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao carregar treinos");
         }
@@ -31,12 +30,9 @@ public class TreinoController {
     @PostMapping
     public ResponseEntity<?> criarTreino(@RequestBody TreinoDTO dto) {
         try {
-            Treino treino = treinoService.criarTreino(dto);
-            return ResponseEntity.ok(treino);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok(treinoService.criarTreino(dto));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno no servidor");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -44,11 +40,9 @@ public class TreinoController {
     public ResponseEntity<?> criarTreinosRecorrentes(@RequestBody TreinoRecorrenteDTO dto) {
         try {
             treinoService.criarTreinosRecorrentes(dto);
-            return ResponseEntity.ok("Treinos recorrentes criados com sucesso");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok("Treino recorrente criado");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro interno no servidor");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

@@ -1,9 +1,12 @@
 package org.ce.sports.Api.services;
 
+import jakarta.transaction.Transactional;
 import org.ce.sports.Api.dtos.ClassificacaoEquipe;
 import org.ce.sports.Api.entities.Campeonato;
+import org.ce.sports.Api.entities.Equipe;
 import org.ce.sports.Api.entities.Partida;
 import org.ce.sports.Api.entities.repositories.PartidaRepository;
+import org.ce.sports.Api.entities.repositories.CampeonatoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -105,4 +108,6 @@ public class ClassificacaoService {
             );
         }
     }
+
+
 }

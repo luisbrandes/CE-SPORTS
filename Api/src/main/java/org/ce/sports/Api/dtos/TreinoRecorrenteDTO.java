@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 public class TreinoRecorrenteDTO {
-
     private String modalidade;
     private LocalDate dataInicio;
     private LocalDate dataFim;
@@ -18,5 +17,6 @@ public class TreinoRecorrenteDTO {
     private String professor;
     private Integer vagasTotais;
 
-    private List<DayOfWeek> diasDaSemana;
+    private List<DayOfWeek> diasDaSemana; // correto
 }
+

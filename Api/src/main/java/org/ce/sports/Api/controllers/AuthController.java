@@ -42,4 +42,14 @@ public class AuthController {
     public ResponseEntity<?> verify(@RequestBody Map<String, String> req) {
         return authService.verify(req);
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> req) {
+        return authService.forgotPassword(req);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> req) {
+        return authService.resetPassword(req);
+    }
 }

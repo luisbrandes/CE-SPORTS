@@ -28,4 +28,11 @@ public class ProjetoEsportivoController {
         List<ProjetoEsportivo> projetos = service.listarProjetos();
         return ResponseEntity.ok(projetos);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarProjeto(@PathVariable Long id) {
+        service.deletarProjeto(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

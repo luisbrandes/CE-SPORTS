@@ -79,7 +79,7 @@ export default function TreinosAdminPage() {
       {!loading && treinos.length === 0 && !erro && (
         <Card className="p-8 text-center">
           <p className="text-muted-foreground mb-4">Nenhum treino cadastrado até o momento.</p>
-          <Link href="/admin/treino/novo">
+          <Link href="/admin/treino/cadastrotreino">
             <Button>Cadastrar Primeiro Treino</Button>
           </Link>
         </Card>

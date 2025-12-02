@@ -31,4 +31,12 @@ public class ProjetoEsportivoService {
     public List<ProjetoEsportivo> listarProjetos() {
         return repository.findAll();
     }
+
+    public void deletarProjeto(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Projeto não encontrado com ID: " + id);
+        }
+        repository.deleteById(id);
+    }
+
 }

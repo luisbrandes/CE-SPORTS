@@ -30,57 +30,48 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/h2-console/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        ).permitAll()
-                        .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")  // somente ADMIN
 
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/api/auth/**",
+                        "/h2-console/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**"
+                ).permitAll()
+                .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
+                .anyRequest().authenticated()
+        );
 
-                        .anyRequest().authenticated()
-                )
+        http.sessionManagement(session -> session.maximumSessions(1));
+        http.csrf(csrf -> csrf.disable());
+        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-                .sessionManagement(session -> session.maximumSessions(1))
-
-                .csrf(csrf -> csrf.disable())
-
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
-
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .clearAuthentication(true)
-                        .permitAll()
-                );
+        http.logout(logout -> logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .permitAll()
+        );
 
         return http.build();
     }
 
-    // ----- USER DETAILS -----
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-                        // 🔥 IMPORTANTE: Spring exige prefixo ROLE_
                         .roles(user.getRole().name().replace("ROLE_", ""))
                         .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
-    // ----- PROVIDER -----
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -99,7 +90,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // ----- CORS CONFIG -----
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -109,7 +99,7 @@ public class SecurityConfig {
                 "http://127.0.0.1:3000",
                 "http://localhost:8080",
                 "http://127.0.0.1:8080",
-                "http://192.168.*.*:8080" // permite acesso via IP local
+                "http://192.168.*.*:8080"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));

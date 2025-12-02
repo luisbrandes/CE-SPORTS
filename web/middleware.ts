@@ -5,12 +5,10 @@ export async function middleware(req: NextRequest) {
   const sessionCookie = req.cookies.get("JSESSIONID")
   const url = req.nextUrl.clone()
 
-
-  if (!sessionCookie && (url.pathname.startsWith("/admin") || url.pathname.startsWith("/aluno"))) {
+  if (!sessionCookie && url.pathname.startsWith("/aluno")) {
     url.pathname = "/login"
     return NextResponse.redirect(url)
   }
-
 
   if (sessionCookie) {
     try {
@@ -27,15 +25,16 @@ export async function middleware(req: NextRequest) {
       const data = await res.json()
       const role = data.user?.role
 
+      // Mantém regra: aluno não acessa admin
       if (url.pathname.startsWith("/admin") && role !== "ROLE_ADMIN") {
-        url.pathname = "/403"
-        return NextResponse.redirect(url)
+        return NextResponse.redirect(new URL("/403", req.url))
       }
 
+      // Mantém regra para área do aluno
       if (url.pathname.startsWith("/aluno") && role !== "ROLE_USER") {
-        url.pathname = "/403"
-        return NextResponse.redirect(url)
+        return NextResponse.redirect(new URL("/403", req.url))
       }
+
     } catch (e) {
       console.error("Erro no middleware:", e)
     }

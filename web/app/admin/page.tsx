@@ -50,6 +50,18 @@ export default function AdminDashboardPage() {
           </p>
         </Card>
 
+        {/* Treinos CORRIGIDO */}
+        <Card
+          className="p-6 cursor-pointer hover:bg-accent transition" 
+          onClick={() => router.push("/admin/treino")} 
+        >
+          <h2 className="text-lg font-semibold mb-2">Cadastro de Treinos</h2>
+          <p className="text-sm text-muted-foreground">
+            Adicione e gerencie treinos esportivos no sistema, definindo séries,
+            duração e grupos de alunos específicos.
+          </p>
+        </Card>
+
         {/* Projetos */}
         <Card
           className="p-6 cursor-pointer hover:bg-accent transition"

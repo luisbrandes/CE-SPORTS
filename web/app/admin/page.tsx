@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
-import { useAuth } from "@/app/hook/useAuth"
-import { Card } from "@/components/ui"
+import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
 
   return (
     <section className="p-6">
@@ -12,34 +13,74 @@ export default function AdminDashboardPage() {
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold mb-2">Usuários</h2>
+
+        {/* Usuários Pendentes */}
+        <Card
+          className="p-6 cursor-pointer hover:bg-accent transition"
+          onClick={() => router.push("/admin/aprovacoesContas")}
+        >
+          <h2 className="text-lg font-semibold mb-2">Usuários Pendentes</h2>
           <p className="text-sm text-muted-foreground">
-            Gerencie alunos, administradores e permissões de acesso.
+            Gerencie solicitações de acesso. Aprove, rejeite e ajuste permissões
+            de novos usuários que aguardam liberação no sistema.
           </p>
         </Card>
 
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold mb-2">Programas</h2>
+        {/* Campeonatos */}
+        <Card
+          className="p-6 cursor-pointer hover:bg-accent transition"
+          onClick={() => router.push("/admin/campeonatos")}
+        >
+          <h2 className="text-lg font-semibold mb-2">Campeonatos</h2>
           <p className="text-sm text-muted-foreground">
-            Controle as modalidades esportivas e inscrições.
+            Crie, edite e acompanhe campeonatos esportivos. Controle equipes,
+            pontuações, partidas e classificações em tempo real.
           </p>
         </Card>
 
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold mb-2">Relatórios</h2>
+        {/* Notícias */}
+        <Card
+          className="p-6 cursor-pointer hover:bg-accent transition"
+          onClick={() => router.push("/admin/noticia")}
+        >
+          <h2 className="text-lg font-semibold mb-2">Notícias</h2>
           <p className="text-sm text-muted-foreground">
-            Visualize métricas e estatísticas de desempenho.
+            Publique novidades e comunicados oficiais. Gerencie manchetes,
+            descrições, imagens e visibilidade das notícias no portal.
           </p>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-6"
+          onClick={() => router.push("/admin/treino")}>
           <h2 className="text-lg font-semibold mb-2">Cadastro de Treinos</h2>
           <p className="text-sm text-muted-foreground">
             Adicione e gerencie treinos esportivos no sistema.
           </p>
         </Card>
+        {/* Projetos */}
+        <Card
+          className="p-6 cursor-pointer hover:bg-accent transition"
+          onClick={() => router.push("/admin/projetos")}
+        >
+          <h2 className="text-lg font-semibold mb-2">Projetos</h2>
+          <p className="text-sm text-muted-foreground">
+            Administre projetos e programas esportivos. Controle participantes,
+            cronogramas, metas e materiais relacionados.
+          </p>
+        </Card>
+
+        {/* Notificações */}
+        <Card
+          className="p-6 cursor-pointer hover:bg-accent transition"
+          onClick={() => router.push("/admin/notificacoes")}
+        >
+          <h2 className="text-lg font-semibold mb-2">Notificações</h2>
+          <p className="text-sm text-muted-foreground">
+            Envie comunicados para os usuários da plataforma.
+          </p>
+        </Card>
+
       </div>
     </section>
-  )
+  );
 }

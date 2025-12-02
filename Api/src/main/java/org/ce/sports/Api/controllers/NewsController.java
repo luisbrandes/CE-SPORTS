@@ -1,6 +1,4 @@
 package org.ce.sports.Api.controllers;
-
-
 import org.ce.sports.Api.entities.News;
 import org.ce.sports.Api.entities.repositories.NewsRepository;
 import org.ce.sports.Api.services.NewsService;

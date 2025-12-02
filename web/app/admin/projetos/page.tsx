@@ -21,10 +21,27 @@ export default function ProjetosPage() {
   const [projetos, setProjetos] = useState<Projeto[]>([])
   const [loading, setLoading] = useState(true)
 
+  const handleRemoverProjeto = async (id: number) => {
+    if (!confirm("Deseja realmente remover este projeto?")) return
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/projetos/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      })
+      if (!res.ok) throw new Error("Erro ao remover projeto")
+      setProjetos(projetos.filter((proj) => proj.id !== id))
+      alert("✅ Projeto removido com sucesso!")
+    } catch (err) {
+      console.error(err)
+      alert("❌ Erro ao remover projeto.")
+    }
+  }
+
   useEffect(() => {
     async function carregarProjetos() {
       try {
-  const res = await fetch("http://localhost:8080/api/projetos", { credentials: "include" })
+        const res = await fetch("http://localhost:8080/api/projetos", { credentials: "include" })
         if (!res.ok) throw new Error("Falha ao buscar projetos")
         const data = await res.json()
         setProjetos(data)
@@ -43,7 +60,6 @@ export default function ProjetosPage() {
 
   return (
     <main className="p-6 space-y-8">
-
       <h1 className="text-3xl font-bold text-center">🏅 Projetos Esportivos</h1>
 
       {loading ? (
@@ -69,9 +85,19 @@ export default function ProjetosPage() {
                     <strong>Responsável:</strong> {proj.responsavel}
                   </p>
                 </div>
-                <Button variant="outline" size="sm" className="mt-3 w-full">
-                  Participar
-                </Button>
+                <div className="flex flex-col gap-2 mt-3">
+                  <Button variant="outline" size="sm" className="w-full">
+                    Participar
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="w-full"
+                    onClick={() => handleRemoverProjeto(proj.id)}
+                  >
+                    Remover
+                  </Button>
+                </div>
               </Card>
             ))
           ) : (
@@ -89,7 +115,6 @@ export default function ProjetosPage() {
         <Button variant="outline">Editar Dados</Button>
         <Button variant="outline">Aprovar Projetos</Button>
       </div>
-
     </main>
   )
 }

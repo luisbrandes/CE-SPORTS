@@ -106,16 +106,28 @@ export default function NovoTreinoAdminPage() {
   }
 
   const enviarTreinoRecorrente = async (vagas: number) => {
+
+    const diasMapper: Record<string, string> = {
+      SEG: "MONDAY",
+      TER: "TUESDAY",
+      QUA: "WEDNESDAY",
+      QUI: "THURSDAY",
+      SEX: "FRIDAY",
+      SAB: "SATURDAY",
+    }
+
     const treinoRecorrente = {
-      ...form,
+      modalidade: form.modalidade,
+      local: form.local,
+      professor: form.professor,
+      horaInicio: form.horaInicio,
+      horaFim: form.horaFim,
       vagasTotais: vagas,
-      recorrente: true,
 
-      // *** AQUI ESTÁ A CORREÇÃO ***
-      diasDaSemana: diasSemana,
+      dataInicio,
+      dataFim,
 
-      dataInicio: dataInicio,
-      dataFim: dataFim,
+      diasDaSemana: diasSemana.map((d) => diasMapper[d]), // << AQUI É A MAGIA!
     }
 
     const res = await fetch("http://localhost:8080/api/treinos/recorrentes", {
@@ -130,6 +142,7 @@ export default function NovoTreinoAdminPage() {
       throw new Error(error)
     }
   }
+
 
   return (
     <section className="p-6">
@@ -174,24 +187,24 @@ export default function NovoTreinoAdminPage() {
             <>
               <div className="space-y-4 border rounded p-4 bg-muted/10">
                 <h3 className="font-semibold">📅 Configuração Recorrente</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Data Início *</label>
-                    <Input 
-                      type="date" 
-                      value={dataInicio} 
-                      onChange={(e) => setDataInicio(e.target.value)} 
-                      required 
+                    <Input
+                      type="date"
+                      value={dataInicio}
+                      onChange={(e) => setDataInicio(e.target.value)}
+                      required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Data Fim *</label>
-                    <Input 
-                      type="date" 
-                      value={dataFim} 
-                      onChange={(e) => setDataFim(e.target.value)} 
-                      required 
+                    <Input
+                      type="date"
+                      value={dataFim}
+                      onChange={(e) => setDataFim(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -219,22 +232,22 @@ export default function NovoTreinoAdminPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Hora Início *</label>
-                    <Input 
-                      type="time" 
-                      name="horaInicio" 
-                      value={form.horaInicio} 
-                      onChange={handleChange} 
-                      required 
+                    <Input
+                      type="time"
+                      name="horaInicio"
+                      value={form.horaInicio}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Hora Fim *</label>
-                    <Input 
-                      type="time" 
-                      name="horaFim" 
-                      value={form.horaFim} 
-                      onChange={handleChange} 
-                      required 
+                    <Input
+                      type="time"
+                      name="horaFim"
+                      value={form.horaFim}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                 </div>
@@ -244,34 +257,34 @@ export default function NovoTreinoAdminPage() {
             <>
               <div>
                 <label className="block text-sm font-medium mb-2">Data *</label>
-                <Input 
-                  type="date" 
-                  name="data" 
-                  value={form.data} 
-                  onChange={handleChange} 
-                  required 
+                <Input
+                  type="date"
+                  name="data"
+                  value={form.data}
+                  onChange={handleChange}
+                  required
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Hora Início *</label>
-                  <Input 
-                    type="time" 
-                    name="horaInicio" 
-                    value={form.horaInicio} 
-                    onChange={handleChange} 
-                    required 
+                  <Input
+                    type="time"
+                    name="horaInicio"
+                    value={form.horaInicio}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Hora Fim *</label>
-                  <Input 
-                    type="time" 
-                    name="horaFim" 
-                    value={form.horaFim} 
-                    onChange={handleChange} 
-                    required 
+                  <Input
+                    type="time"
+                    name="horaFim"
+                    value={form.horaFim}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
               </div>
@@ -315,15 +328,15 @@ export default function NovoTreinoAdminPage() {
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="flex-1"
               disabled={loading}
             >
-              {loading 
-                ? "Cadastrando..." 
-                : recorrente 
-                  ? "Cadastrar Treino Recorrente" 
+              {loading
+                ? "Cadastrando..."
+                : recorrente
+                  ? "Cadastrar Treino Recorrente"
                   : "Cadastrar Treino Único"
               }
             </Button>
@@ -338,7 +351,7 @@ export default function NovoTreinoAdminPage() {
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-700">
               <p className="font-medium">ℹ️ Informação sobre treino recorrente:</p>
               <p className="mt-1">
-                O sistema criará um treino para cada dia selecionado, 
+                O sistema criará um treino para cada dia selecionado,
                 dentro do período informado, sempre no mesmo horário.
               </p>
             </div>

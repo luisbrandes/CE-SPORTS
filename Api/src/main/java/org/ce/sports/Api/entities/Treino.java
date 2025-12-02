@@ -1,11 +1,19 @@
 package org.ce.sports.Api.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "treinos")
+@Getter
+@Setter
+@ToString
 public class Treino {
 
     @Id
@@ -14,9 +22,6 @@ public class Treino {
 
     @Column(nullable = false)
     private String modalidade;
-
-    @Column(nullable = false)
-    private LocalDate data;
 
     @Column(nullable = false)
     private LocalTime horaInicio;
@@ -36,75 +41,23 @@ public class Treino {
     @Column(nullable = false)
     private String status = "ATIVO";
 
-    public Long getId() {
-        return id;
-    }
+    // 🔹 Período do treino recorrente
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // 🔹 Se não for recorrente, salva somente 1 data
+    private LocalDate data;
 
-    public String getModalidade() {
-        return modalidade;
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "treino_dias", joinColumns = @JoinColumn(name = "treino_id"))
+    @Column(name = "dia_semana")
+    private List<String> diasDaSemana;
 
-    public void setModalidade(String modalidade) {
-        this.modalidade = modalidade;
-    }
+    @Column(nullable = false)
+    private boolean recorrente = false;
 
-    public LocalDate getData() {
-        return data;
-    }
+    @Transient
+    private List<LocalDate> todasDatas;
 
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
 
-    public LocalTime getHoraInicio() {
-        return horaInicio;
-    }
-
-    public void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
-    }
-
-    public LocalTime getHoraFim() {
-        return horaFim;
-    }
-
-    public void setHoraFim(LocalTime horaFim) {
-        this.horaFim = horaFim;
-    }
-
-    public String getLocal() {
-        return local;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
-    public String getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(String professor) {
-        this.professor = professor;
-    }
-
-    public Integer getVagasTotais() {
-        return vagasTotais;
-    }
-
-    public void setVagasTotais(Integer vagasTotais) {
-        this.vagasTotais = vagasTotais;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

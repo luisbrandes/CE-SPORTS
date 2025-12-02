@@ -8,8 +8,8 @@ import org.ce.sports.Api.dtos.TreinoDTO;
 import org.ce.sports.Api.dtos.TreinoRecorrenteDTO;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.time.DayOfWeek;
+import java.util.*;
 
 @Service
 public class TreinoService {
@@ -18,97 +18,88 @@ public class TreinoService {
     private TreinoRepository treinoRepository;
 
     public List<Treino> listarTreinos() {
-        return treinoRepository.findAll();
+        List<Treino> treinos = treinoRepository.findAll();
+
+        for (Treino t : treinos) {
+            if (t.isRecorrente()) {
+                t.setTodasDatas(gerarDatasRecorrentes(t));
+            } else {
+                t.setTodasDatas(List.of(t.getData()));
+            }
+        }
+
+        return treinos;
     }
 
+    // 🔹 Gera todas as datas com base no período do treino
+    private List<LocalDate> gerarDatasRecorrentes(Treino t) {
+
+        List<LocalDate> datas = new ArrayList<>();
+        LocalDate atual = t.getDataInicio();
+
+        Set<DayOfWeek> dias = new HashSet<>();
+        for (String dia : t.getDiasDaSemana()) {
+            dias.add(DayOfWeek.valueOf(dia));
+        }
+
+        while (!atual.isAfter(t.getDataFim())) {
+
+            if (dias.contains(atual.getDayOfWeek())) {
+                datas.add(atual);
+            }
+
+            atual = atual.plusDays(1);
+        }
+
+        return datas;
+    }
+
+    // 🔹 Treino único
     public Treino criarTreino(TreinoDTO dto) {
-        return criarTreinoInterno(dto, true);
-    }
 
-    private Treino criarTreinoInterno(TreinoDTO dto, boolean validarConflito) {
-
-        validarDados(dto);
-
-        if (validarConflito) {
-            validarConflito(dto);
-        }
-
-        Treino treino = criarInstanciaTreino(dto);
-        return salvarTreino(treino);
-    }
-
-    private void validarDados(TreinoDTO dto) {
-        if (dto.getData() == null || dto.getData().isBefore(LocalDate.now())) {
+        if (dto.getData() == null)
             throw new RuntimeException("Data inválida");
-        }
-        if (dto.getVagasTotais() == null || dto.getVagasTotais() <= 0) {
-            throw new RuntimeException("Vagas devem ser maiores que zero");
-        }
+
+        Treino t = new Treino();
+        t.setModalidade(dto.getModalidade());
+        t.setHoraInicio(dto.getHoraInicio());
+        t.setHoraFim(dto.getHoraFim());
+        t.setLocal(dto.getLocal());
+        t.setProfessor(dto.getProfessor());
+        t.setVagasTotais(dto.getVagasTotais());
+
+        t.setRecorrente(false);
+        t.setData(dto.getData());
+
+        return treinoRepository.save(t);
     }
 
-    private void validarConflito(TreinoDTO dto) {
-        Optional<Treino> existente =
-                treinoRepository.findByDataAndHoraInicioAndHoraFim(
-                        dto.getData(),
-                        dto.getHoraInicio(),
-                        dto.getHoraFim()
-                );
+    // 🔹 Treino recorrente
+    public Treino criarTreinosRecorrentes(TreinoRecorrenteDTO dto) {
 
-        if (existente.isPresent()) {
-            throw new RuntimeException("Já existe um treino nesse horário e data");
-        }
-    }
+        if (dto.getDataInicio() == null || dto.getDataFim() == null)
+            throw new RuntimeException("Período inválido");
 
-    private Treino criarInstanciaTreino(TreinoDTO dto) {
+        if (dto.getDiasDaSemana() == null || dto.getDiasDaSemana().isEmpty())
+            throw new RuntimeException("Selecione ao menos um dia");
+
         Treino treino = new Treino();
         treino.setModalidade(dto.getModalidade());
-        treino.setData(dto.getData());
         treino.setHoraInicio(dto.getHoraInicio());
         treino.setHoraFim(dto.getHoraFim());
         treino.setLocal(dto.getLocal());
         treino.setProfessor(dto.getProfessor());
         treino.setVagasTotais(dto.getVagasTotais());
-        treino.setStatus("ATIVO");
-        return treino;
-    }
 
-    private Treino salvarTreino(Treino treino) {
+        treino.setRecorrente(true);
+        treino.setDataInicio(dto.getDataInicio());
+        treino.setDataFim(dto.getDataFim());
+        treino.setDiasDaSemana(
+                dto.getDiasDaSemana().stream()
+                        .map(Enum::name)
+                        .toList()
+        );
+
         return treinoRepository.save(treino);
-    }
-
-    public void criarTreinosRecorrentes(TreinoRecorrenteDTO dto) {
-
-        if (dto.getDataInicio() == null || dto.getDataFim() == null) {
-            throw new RuntimeException("Datas inválidas");
-        }
-
-        if (dto.getDataFim().isBefore(dto.getDataInicio())) {
-            throw new RuntimeException("Data final não pode ser antes da inicial");
-        }
-
-        if (dto.getDiasDaSemana() == null || dto.getDiasDaSemana().isEmpty()) {
-            throw new RuntimeException("Selecione ao menos um dia da semana");
-        }
-
-        LocalDate data = dto.getDataInicio();
-
-        while (!data.isAfter(dto.getDataFim())) {
-
-            if (dto.getDiasDaSemana().contains(data.getDayOfWeek())) {
-
-                TreinoDTO treino = new TreinoDTO();
-                treino.setModalidade(dto.getModalidade());
-                treino.setData(data);
-                treino.setHoraInicio(dto.getHoraInicio());
-                treino.setHoraFim(dto.getHoraFim());
-                treino.setLocal(dto.getLocal());
-                treino.setProfessor(dto.getProfessor());
-                treino.setVagasTotais(dto.getVagasTotais());
-
-                criarTreinoInterno(treino, false);
-            }
-
-            data = data.plusDays(1);
-        }
     }
 }

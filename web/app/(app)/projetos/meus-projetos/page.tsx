@@ -30,7 +30,6 @@ export default function MeusProjetosPage() {
         });
         const data = await res.json();
 
-        // Normaliza a resposta para garantir que `projetos` seja sempre um array
         let projetosData: any[] = [];
         if (Array.isArray(data)) {
           projetosData = data;
@@ -63,38 +62,55 @@ export default function MeusProjetosPage() {
   const meusProjetos = projetos.filter((p) => inscritos.includes(p.id));
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Meus Projetos Inscritos</h1>
+    <main className="container mx-auto px-6 py-8 min-h-screen">
+      <h1 className="text-4xl font-extrabold text-blue-700 mb-8 select-none">
+        Meus Projetos Inscritos
+      </h1>
 
       {meusProjetos.length === 0 ? (
-        <p className="text-gray-600">Você ainda não está inscrito em nenhum projeto.</p>
+        <p className="text-gray-600 text-center text-lg select-text">
+          Você ainda não está inscrito em nenhum projeto.
+        </p>
       ) : (
-        <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {meusProjetos.map((p) => (
-            <Card key={p.id} className="p-5 bg-white rounded-xl">
-              <h2 className="text-xl font-bold text-blue-600">{p.nome}</h2>
+            <Card
+              key={p.id}
+              className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg border border-gray-300 transition"
+            >
+              <h2 className="text-2xl font-bold text-blue-700 mb-3 select-text truncate">
+                {p.nome}
+              </h2>
 
-              <p><strong>Modalidade:</strong> {p.modalidade}</p>
-              <p><strong>Local:</strong> {p.local}</p>
-              <p><strong>Responsável:</strong> {p.responsavel}</p>
+              <p className="text-sm text-gray-700 mb-1">
+                <strong>Modalidade:</strong> {p.modalidade}
+              </p>
+              <p className="text-sm text-gray-700 mb-1">
+                <strong>Local:</strong> {p.local}
+              </p>
+              <p className="text-sm text-gray-700 mb-3">
+                <strong>Responsável:</strong> {p.responsavel}
+              </p>
 
-              <p className="mt-3 text-sm text-gray-600">{p.descricao}</p>
+              <p className="text-sm text-gray-600 mb-5 select-text">{p.descricao}</p>
 
-              <p className="mt-3 text-sm font-semibold">
-                Vagas: {p.vagasPreenchidas}/{p.vagasTotais}
+              <p className="text-sm font-semibold text-gray-700">
+                Vagas: {p.vagasPreenchidas} / {p.vagasTotais}
               </p>
             </Card>
           ))}
         </section>
       )}
 
-      <Button
-        onClick={() => window.history.back()}
-        className="mt-6"
-        variant="outline"
-      >
-        Voltar
-      </Button>
+      <div className="flex justify-center">
+        <Button
+          onClick={() => window.history.back()}
+          variant="outline"
+          className="mt-10 px-8 py-3 hover:bg-gray-100 transition"
+        >
+          Voltar
+        </Button>
+      </div>
     </main>
   );
 }

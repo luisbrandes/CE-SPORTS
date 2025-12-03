@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.ce.sports.Api.dtos.UserResponse;
 
 @RestController
 @RequestMapping("/api/projetos")
@@ -125,6 +126,25 @@ public class ProjetoEsportivoController {
     public ResponseEntity<List<Long>> meusInscritos(Authentication auth) {
         List<Long> lista = service.listarProjetosInscritos(auth.getName());
         return ResponseEntity.ok(lista);
+    }
+
+    // ----------- LISTAR INSCRITOS DE UM PROJETO (ADMIN) -----------
+    @GetMapping("/{id}/inscritos")
+    public ResponseEntity<?> listarInscritosPorProjeto(@PathVariable Long id) {
+        try {
+            ProjetoEsportivo projeto = projetoRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+
+            List<UserResponse> lista = projeto.getInscritos().stream()
+                    .map(u -> new UserResponse(u.getId(), u.getNome(), u.getEmail(), u.getRole().name()))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(lista);
+        } catch (Exception e) {
+            log.error("Erro ao listar inscritos do projeto {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Erro ao listar inscritos: " + e.getMessage()));
+        }
     }
 
     // ----------- CONVERSOR PARA RESPONSE DTO -----------

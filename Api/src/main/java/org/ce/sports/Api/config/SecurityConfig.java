@@ -38,6 +38,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        
+                        // Treinos - apenas admin pode criar, atualizar e deletar
+                        .requestMatchers(HttpMethod.GET, "/api/treinos/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/treinos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/treinos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/treinos/**").hasRole("ADMIN")
+                        
                         .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")

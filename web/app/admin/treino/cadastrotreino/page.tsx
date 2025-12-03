@@ -145,12 +145,11 @@ export default function NovoTreinoAdminPage() {
 
   return (
     <section className="p-6">
-      <div className="mb-6">
-        <Link href="/admin/treino" className="text-sm text-primary hover:underline">
-          ← Voltar para Treinos
-        </Link>
+     <div className="mb-6">
+      <Link href="/admin/treino" className="text-sm text-primary hover:underline">
+        ← Voltar para Treinos
+      </Link>
       </div>
-
       <Card className="max-w-2xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-2">🏋️‍♂️ Cadastrar Novo Treino</h2>
         <p className="text-muted-foreground text-sm mb-6">

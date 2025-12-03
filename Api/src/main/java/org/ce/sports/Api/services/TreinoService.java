@@ -102,4 +102,50 @@ public class TreinoService {
 
         return treinoRepository.save(treino);
     }
+
+    // 🔹 Obter um treino por ID
+    public Treino obterTreino(Long id) {
+        Optional<Treino> treino = treinoRepository.findById(id);
+        if (treino.isPresent()) {
+            Treino t = treino.get();
+            if (t.isRecorrente()) {
+                t.setTodasDatas(gerarDatasRecorrentes(t));
+            } else {
+                t.setTodasDatas(List.of(t.getData()));
+            }
+            return t;
+        }
+        return null;
+    }
+
+    // 🔹 Atualizar um treino
+    public Treino atualizarTreino(Long id, TreinoDTO dto) {
+        Optional<Treino> optional = treinoRepository.findById(id);
+        if (optional.isEmpty()) {
+            throw new RuntimeException("Treino não encontrado");
+        }
+
+        Treino treino = optional.get();
+        treino.setModalidade(dto.getModalidade());
+        treino.setHoraInicio(dto.getHoraInicio());
+        treino.setHoraFim(dto.getHoraFim());
+        treino.setLocal(dto.getLocal());
+        treino.setProfessor(dto.getProfessor());
+        treino.setVagasTotais(dto.getVagasTotais());
+
+        // Se for treino único
+        if (!treino.isRecorrente() && dto.getData() != null) {
+            treino.setData(dto.getData());
+        }
+
+        return treinoRepository.save(treino);
+    }
+
+    // 🔹 Deletar um treino
+    public void deletarTreino(Long id) {
+        if (!treinoRepository.existsById(id)) {
+            throw new RuntimeException("Treino não encontrado");
+        }
+        treinoRepository.deleteById(id);
+    }
 }

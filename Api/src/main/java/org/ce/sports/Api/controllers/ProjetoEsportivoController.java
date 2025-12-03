@@ -1,6 +1,7 @@
 package org.ce.sports.Api.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ce.sports.Api.dtos.ProjetoEsportivoDTO;
 import org.ce.sports.Api.dtos.ProjetoEsportivoResponse;
 import org.ce.sports.Api.dtos.ProjetoUpdateDTO;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/projetos")
 @RequiredArgsConstructor
+@Slf4j
 public class ProjetoEsportivoController {
 
     private final ProjetoEsportivoService service;
@@ -33,13 +35,19 @@ public class ProjetoEsportivoController {
 
     // ----------- LISTAR TODOS -----------
     @GetMapping
-    public ResponseEntity<List<ProjetoEsportivoResponse>> listarProjetos() {
-        List<ProjetoEsportivoResponse> lista = projetoRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+    public ResponseEntity<?> listarProjetos() {
+        try {
+            List<ProjetoEsportivoResponse> lista = projetoRepository.findAll()
+                    .stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList());
 
-        return ResponseEntity.ok(lista);
+            return ResponseEntity.ok(lista);
+        } catch (Exception e) {
+            log.error("Erro ao listar projetos", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Erro ao listar projetos: " + e.getMessage()));
+        }
     }
 
     // ----------- BUSCAR POR ID -----------

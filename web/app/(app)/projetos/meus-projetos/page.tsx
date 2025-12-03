@@ -29,13 +29,25 @@ export default function MeusProjetosPage() {
           credentials: "include",
         });
         const data = await res.json();
-        setProjetos(data);
+
+        // Normaliza a resposta para garantir que `projetos` seja sempre um array
+        let projetosData: any[] = [];
+        if (Array.isArray(data)) {
+          projetosData = data;
+        } else if (data && typeof data === "object") {
+          if (Array.isArray((data as any).content)) projetosData = (data as any).content;
+          else if (Array.isArray((data as any).data)) projetosData = (data as any).data;
+          else if (Array.isArray((data as any).projetos)) projetosData = (data as any).projetos;
+          else projetosData = [];
+        }
+
+        setProjetos(Array.isArray(projetosData) ? projetosData : []);
 
         const inscRes = await fetch("http://localhost:8080/api/projetos/inscritos", {
           credentials: "include",
         });
         const inscIds = await inscRes.json();
-        setInscritos(inscIds);
+        setInscritos(Array.isArray(inscIds) ? inscIds : []);
       } catch (e) {
         console.error(e);
       } finally {

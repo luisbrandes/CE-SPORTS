@@ -40,27 +40,28 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Libera login, docs, console
-                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**")
-                        .permitAll()
+                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                         // --- REGRAS DE PROJETOS ---
-                        // Buscar projeto por ID (GET) - antes das rotas específicas
-                        .requestMatchers(HttpMethod.GET, "/api/projetos/{id}").permitAll()
-                        
-                        // Listar todos os projetos (GET)
-                        .requestMatchers(HttpMethod.GET, "/api/projetos").permitAll()
+                        // Permitir leitura pública (lista e detalhe)
+                        .requestMatchers(HttpMethod.GET, "/api/projetos/**").permitAll()
 
                         // Criar projeto (somente admin)
                         .requestMatchers(HttpMethod.POST, "/api/projetos").hasRole("ADMIN")
 
                         // Inscrever e cancelar inscrição (qualquer usuário logado)
-                        .requestMatchers(HttpMethod.POST, "/api/projetos/{projetoId}/inscrever").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/projetos/{projetoId}/cancelar").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/projetos/*/inscrever").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/projetos/*/cancelar").authenticated()
 
                         // Deletar projeto (somente admin)
-                        .requestMatchers(HttpMethod.DELETE, "/api/projetos/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/projetos/**").hasRole("ADMIN")
 
-                        // --- Demais regras ---
+                        // Treinos - leitura pública, alterações apenas por admin
+                        .requestMatchers(HttpMethod.GET, "/api/treinos/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/treinos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/treinos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/treinos/**").hasRole("ADMIN")
+
                         .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")

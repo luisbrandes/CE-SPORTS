@@ -37,14 +37,27 @@ export default function ProjetosPage() {
                 });
 
                 const data = await res.json();
-                setProjetos(data || []);
+
+                // Normaliza resposta: aceita array direto ou vários formatos comuns
+                let projetosData: any[] = [];
+                if (Array.isArray(data)) {
+                    projetosData = data;
+                } else if (data && typeof data === "object") {
+                    if (Array.isArray((data as any).content)) projetosData = (data as any).content;
+                    else if (Array.isArray((data as any).data)) projetosData = (data as any).data;
+                    else if (Array.isArray((data as any).projetos)) projetosData = (data as any).projetos;
+                    else projetosData = [];
+                }
+
+                if (!Array.isArray(projetosData)) projetosData = [];
+                setProjetos(projetosData);
 
                 const inscrRes = await fetch("http://localhost:8080/api/projetos/inscritos", {
                     credentials: "include",
                 });
 
                 const inscrData = await inscrRes.json();
-                setInscritos(inscrData || []);
+                setInscritos(Array.isArray(inscrData) ? inscrData : []);
             } catch (err) {
                 console.error("Erro ao carregar dados:", err);
             } finally {
@@ -56,10 +69,11 @@ export default function ProjetosPage() {
     }, []);
 
     const projetosFiltrados = useMemo(() => {
-        return projetos.filter((p) => {
-            const matchNome = p.nome.toLowerCase().includes(filtroNome.toLowerCase());
-            const matchModalidade = p.modalidade.toLowerCase().includes(filtroModalidade.toLowerCase());
-            const matchLocal = p.local.toLowerCase().includes(filtroLocal.toLowerCase());
+        const lista = Array.isArray(projetos) ? projetos : [];
+        return lista.filter((p) => {
+            const matchNome = (p.nome || "").toLowerCase().includes(filtroNome.toLowerCase());
+            const matchModalidade = (p.modalidade || "").toLowerCase().includes(filtroModalidade.toLowerCase());
+            const matchLocal = (p.local || "").toLowerCase().includes(filtroLocal.toLowerCase());
 
             return matchNome && matchModalidade && matchLocal;
         });

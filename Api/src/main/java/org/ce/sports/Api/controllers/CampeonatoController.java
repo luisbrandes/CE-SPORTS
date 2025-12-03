@@ -17,10 +17,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/campeonato")
-@CrossOrigin(
-        origins = "http://localhost:3000",
-        allowCredentials = "true"
-)
 public class CampeonatoController {
 
     private final CampeonatoRepository campeonatoRepository;

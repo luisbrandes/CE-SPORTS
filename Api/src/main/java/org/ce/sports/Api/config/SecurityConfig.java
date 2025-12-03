@@ -33,14 +33,38 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // Liberação geral para OPTIONS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                        // Libera login, docs, console
+                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**")
+                        .permitAll()
+
+                        // --- REGRAS DE PROJETOS ---
+                        // Buscar projeto por ID (GET) - antes das rotas específicas
+                        .requestMatchers(HttpMethod.GET, "/api/projetos/{id}").permitAll()
+                        
+                        // Listar todos os projetos (GET)
+                        .requestMatchers(HttpMethod.GET, "/api/projetos").permitAll()
+
+                        // Criar projeto (somente admin)
+                        .requestMatchers(HttpMethod.POST, "/api/projetos").hasRole("ADMIN")
+
+                        // Inscrever e cancelar inscrição (qualquer usuário logado)
+                        .requestMatchers(HttpMethod.POST, "/api/projetos/{projetoId}/inscrever").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/projetos/{projetoId}/cancelar").authenticated()
+
+                        // Deletar projeto (somente admin)
+                        .requestMatchers(HttpMethod.DELETE, "/api/projetos/{id}").hasRole("ADMIN")
+
+                        // --- Demais regras ---
                         .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
@@ -85,7 +109,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // -------- CORS CORRETO E ÚNICO --------
+    // CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -98,6 +122,7 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 }

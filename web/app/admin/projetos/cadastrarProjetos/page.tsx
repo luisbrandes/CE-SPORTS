@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function NovoProjetoPage() {
-  const router = useRouter()
+  const router = useRouter();
 
   const [form, setForm] = useState({
     nome: "",
@@ -17,30 +17,43 @@ export default function NovoProjetoPage() {
     local: "",
     modalidade: "",
     responsavel: "",
-  })
+    vagasTotais: "",      
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    if (!form.vagasTotais || Number(form.vagasTotais) <= 0) {
+      alert("❌ O número de vagas deve ser maior que zero.");
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:8080/api/projetos", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      })
-      if (!res.ok) throw new Error("Erro ao cadastrar projeto")
+        body: JSON.stringify({
+          ...form,
+          vagasTotais: Number(form.vagasTotais), 
+        }),
+      });
 
-      alert("✅ Projeto cadastrado com sucesso!")
-      router.push("/admin/projetos")
+      if (!res.ok) throw new Error("Erro ao cadastrar projeto");
+
+      alert("✅ Projeto cadastrado com sucesso!");
+      router.push("/admin/projetos");
     } catch (err) {
-      console.error(err)
-      alert("❌ Erro ao cadastrar projeto.")
+      console.error(err);
+      alert("❌ Erro ao cadastrar projeto.");
     }
-  }
+  };
 
   return (
     <main className="flex justify-center items-center min-h-screen bg-background">
@@ -75,17 +88,31 @@ export default function NovoProjetoPage() {
             />
           </div>
 
+          {/* Datas */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium mb-1">Data de Início</label>
-              <Input type="date" name="dataInicio" value={form.dataInicio} onChange={handleChange} required />
+              <Input
+                type="date"
+                name="dataInicio"
+                value={form.dataInicio}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Data de Término</label>
-              <Input type="date" name="dataFim" value={form.dataFim} onChange={handleChange} required />
+              <Input
+                type="date"
+                name="dataFim"
+                value={form.dataFim}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
 
+          {/* Local + Modalidade */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium mb-1">Local</label>
@@ -109,6 +136,7 @@ export default function NovoProjetoPage() {
             </div>
           </div>
 
+          {/* Responsável */}
           <div>
             <label className="block text-sm font-medium mb-1">Responsável</label>
             <Input
@@ -120,9 +148,27 @@ export default function NovoProjetoPage() {
             />
           </div>
 
-          <Button type="submit" className="w-full mt-3 bg-yellow-400 hover:bg-yellow-500 font-semibold">
+          {/* NOVO: Número de vagas */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Número de Vagas</label>
+            <Input
+              type="number"
+              name="vagasTotais"
+              value={form.vagasTotais}
+              onChange={handleChange}
+              placeholder="Ex: 20"
+              required
+              min={1}
+            />
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full mt-3 bg-yellow-400 hover:bg-yellow-500 font-semibold"
+          >
             Adicionar Projeto
           </Button>
+
           <Button
             variant="outline"
             type="button"
@@ -138,5 +184,5 @@ export default function NovoProjetoPage() {
         </footer>
       </Card>
     </main>
-  )
+  );
 }

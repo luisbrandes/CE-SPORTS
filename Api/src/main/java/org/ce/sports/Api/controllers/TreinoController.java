@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/treinos")
-@CrossOrigin(origins = "*")
 public class TreinoController {
 
     @Autowired

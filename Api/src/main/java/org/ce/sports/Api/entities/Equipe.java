@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.ce.sports.Api.enums.ModalidadeEnum;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "equipes")
 public class Equipe {
-    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,19 +25,19 @@ public class Equipe {
     private Set<Campeonato> campeonatos = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "equipe_aluno",
-        joinColumns = @JoinColumn(name = "equipe_id"),
-        inverseJoinColumns = @JoinColumn(name = "aluno_id")
-    )
+    @JoinTable(name = "equipe_aluno", joinColumns = @JoinColumn(name = "equipe_id"), inverseJoinColumns = @JoinColumn(name = "aluno_id"))
     private Set<User> integrantes = new HashSet<>();
 
-    public Equipe() {}
+    ModalidadeEnum modalidade;
 
-    public Equipe(String nome, Set<Campeonato> campeonatos, Set<User> integrantes) {
+    public Equipe() {
+    }
+
+    public Equipe(String nome, Set<Campeonato> campeonatos, Set<User> integrantes, ModalidadeEnum modalidade) {
         this.nome = nome;
         this.campeonatos = campeonatos;
         this.integrantes = integrantes;
+        this.modalidade = modalidade;
     }
 
     public Long getId() {
@@ -65,5 +66,13 @@ public class Equipe {
 
     public void setIntegrantes(Set<User> integrantes) {
         this.integrantes = integrantes;
+    }
+
+    public ModalidadeEnum getModalidade() {
+        return modalidade;
+    }
+
+    public void setModalidade(ModalidadeEnum modalidade) {
+        this.modalidade = modalidade;
     }
 }

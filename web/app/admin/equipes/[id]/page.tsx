@@ -182,7 +182,10 @@ export default function DetalhesEquipePage() {
 
       const res = await fetch(`http://localhost:8080/api/equipe/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json", // Adicionar Accept header
+        },
         body: JSON.stringify(payload),
         credentials: "include",
       });
@@ -193,13 +196,14 @@ export default function DetalhesEquipePage() {
         return;
       }
 
-      setEquipe({
-        ...equipe!,
-        nome: editForm.nome,
-        modalidade: editForm.modalidade,
-        descricao: editForm.descricao,
-        ativo: editForm.ativo,
+      const equipeRes = await fetch(`http://localhost:8080/api/equipe/${id}`, {
+        credentials: "include",
       });
+
+      if (equipeRes.ok) {
+        const data = await equipeRes.json();
+        setEquipe(data);
+      }
 
       setEditMode(false);
       alert("Equipe atualizada com sucesso!");

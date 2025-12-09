@@ -36,13 +36,12 @@ public class SecurityConfig {
                         "/api/auth/**",
                         "/h2-console/**",
                         "/swagger-ui/**",
-                        "/v3/api-docs/**"
-                ).permitAll()
+                        "/v3/api-docs/**")
+                .permitAll()
                 .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
-                .anyRequest().authenticated()
-        );
+                .anyRequest().authenticated());
 
         http.sessionManagement(session -> session.maximumSessions(1));
         http.csrf(csrf -> csrf.disable());
@@ -54,8 +53,7 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .clearAuthentication(true)
-                .permitAll()
-        );
+                .permitAll());
 
         return http.build();
     }
@@ -67,8 +65,7 @@ public class SecurityConfig {
                         .username(user.getEmail())
                         .password(user.getSenha())
                         .roles(user.getRole().name().replace("ROLE_", ""))
-                        .build()
-                )
+                        .build())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
@@ -99,10 +96,9 @@ public class SecurityConfig {
                 "http://127.0.0.1:3000",
                 "http://localhost:8080",
                 "http://127.0.0.1:8080",
-                "http://192.168.*.*:8080"
-        ));
+                "http://192.168.*.*:8080"));
 
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);

@@ -122,6 +122,29 @@ public class EquipeController {
         return ResponseEntity.status(201).build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirEquipe(@PathVariable Long id) {
+        Optional<Equipe> equipeOpt = equipeRepository.findById(id);
+
+        if (equipeOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Equipe equipe = equipeOpt.get();
+
+        for (Campeonato campeonato : equipe.getCampeonatos()) {
+            campeonato.getEquipes().remove(equipe);
+            campeonatoRepository.save(campeonato);
+        }
+
+        equipe.getIntegrantes().clear();
+        equipeRepository.save(equipe);
+
+        equipeRepository.delete(equipe);
+
+        return ResponseEntity.ok("Equipe excluída com sucesso");
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<?> atualizarEquipe(
             @PathVariable Long id,
@@ -130,6 +153,7 @@ public class EquipeController {
         return equipeRepository.findById(id)
                 .map(equipe -> {
                     if (request.nome() != null && !request.nome().isBlank()) {
+                        // Verificar se novo nome não conflita com outras equipes
                         if (!equipe.getNome().equals(request.nome()) &&
                                 equipeRepository.findByNome(request.nome()).isPresent()) {
                             return ResponseEntity.status(409)
@@ -159,7 +183,21 @@ public class EquipeController {
                     }
 
                     equipeRepository.save(equipe);
-                    return ResponseEntity.ok("Equipe atualizada com sucesso");
+
+                    EquipeResponse response = new EquipeResponse(
+                            equipe.getId(),
+                            equipe.getNome(),
+                            equipe.getModalidade(),
+                            equipe.getDescricao(),
+                            equipe.getIntegrantes().size(),
+                            equipe.getCampeonatos().size(),
+                            equipe.isAtivo(),
+                            equipe.getIntegrantes().stream()
+                                    .map(User::getNome)
+                                    .limit(3)
+                                    .collect(Collectors.toList()));
+
+                    return ResponseEntity.ok(response);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

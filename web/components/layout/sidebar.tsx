@@ -1,26 +1,40 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Dumbbell, Users, Settings, LogOut, Newspaper, Trophy, Medal} from "lucide-react"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { useSession } from "@/lib/session"
+import Link from "next/link";
+import {
+  Dumbbell,
+  Users,
+  Settings,
+  LogOut,
+  Newspaper,
+  Trophy,
+  Medal,
+  Users2,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { useSession } from "@/lib/session";
 
 interface SidebarProps {
-  onNavigate?: () => void
+  onNavigate?: () => void;
 }
 
 export function Sidebar({ onNavigate }: SidebarProps) {
-  const pathname = usePathname()
-  const { logout } = useSession()
+  const pathname = usePathname();
+  const { logout } = useSession();
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: Dumbbell },
-    { href: "/admin/aprovacoesContas", label: "Usuários Pendentes", icon: Users },
+    { href: "/admin/equipes", label: "Equipes", icon: Users2 },
+    {
+      href: "/admin/aprovacoesContas",
+      label: "Usuários Pendentes",
+      icon: Users,
+    },
     { href: "/admin/noticia", label: "Notícias", icon: Newspaper },
     { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
     { href: "/admin/projetos", label: "Projetos", icon: Medal },
-  ]
+  ];
 
   return (
     <aside className="flex flex-col justify-between h-full">
@@ -61,5 +75,5 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         Sair
       </button>
     </aside>
-  )
+  );
 }

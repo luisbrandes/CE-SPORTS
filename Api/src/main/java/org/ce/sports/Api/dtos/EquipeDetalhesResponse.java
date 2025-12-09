@@ -3,13 +3,12 @@ package org.ce.sports.Api.dtos;
 import org.ce.sports.Api.enums.ModalidadeEnum;
 import java.util.List;
 
-public record EquipeResponse(
+public record EquipeDetalhesResponse(
         Long id,
         String nome,
         ModalidadeEnum modalidade,
         String descricao,
-        int totalIntegrantes,
-        int totalCampeonatos,
         boolean ativo,
-        List<String> integrantesNomes) {
+        List<IntegranteDTO> integrantes,
+        List<CampeonatoEquipeDTO> campeonatos) {
 }

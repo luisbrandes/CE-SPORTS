@@ -6,6 +6,7 @@ import org.ce.sports.Api.dtos.EquipeResponse;
 import org.ce.sports.Api.dtos.ClassificacaoEquipe;
 import org.ce.sports.Api.entities.Campeonato;
 import org.ce.sports.Api.entities.Equipe;
+import org.ce.sports.Api.enums.ModalidadeEnum;
 import org.ce.sports.Api.entities.repositories.CampeonatoRepository;
 import org.ce.sports.Api.entities.repositories.EquipeRepository;
 import org.ce.sports.Api.services.ClassificacaoService;
@@ -25,9 +26,9 @@ public class CampeonatoController {
     private final EquipeRepository equipeRepository;
     private final ClassificacaoService classificacaoService;
 
-    public CampeonatoController(CampeonatoRepository campeonatoRepository, 
-                              EquipeRepository equipeRepository,
-                              ClassificacaoService classificacaoService) {
+    public CampeonatoController(CampeonatoRepository campeonatoRepository,
+            EquipeRepository equipeRepository,
+            ClassificacaoService classificacaoService) {
         this.campeonatoRepository = campeonatoRepository;
         this.equipeRepository = equipeRepository;
         this.classificacaoService = classificacaoService;
@@ -38,15 +39,17 @@ public class CampeonatoController {
         if (campeonatoRepository.existsByNome(request.nome())) {
             return ResponseEntity.status(409).body("Esse campeonato já existe");
         }
-        
+
         if (request.equipes().size() < 2) {
             return ResponseEntity.badRequest().body("O campeonato deve ter pelo menos 2 equipes");
         }
-        
+
         Set<Equipe> equipes = new HashSet<>();
         for (String nomeEquipe : request.equipes()) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
-                    .orElseGet(() -> equipeRepository.save(new Equipe(nomeEquipe, new HashSet<>(), new HashSet<>())));
+                    .orElseGet(() -> equipeRepository.save(
+                            new Equipe(nomeEquipe, ModalidadeEnum.FUTEBOL) // Modalidade padrão
+                    ));
             equipes.add(equipe);
         }
 
@@ -55,8 +58,7 @@ public class CampeonatoController {
                 equipes,
                 request.vitoria(),
                 request.derrota(),
-                request.empate()
-        );
+                request.empate());
 
         campeonatoRepository.save(campeonato);
         return ResponseEntity.status(201).build();
@@ -65,16 +67,27 @@ public class CampeonatoController {
     @GetMapping
     public ResponseEntity<List<CampeonatoResponse>> listarTodos() {
         List<CampeonatoResponse> resp = campeonatoRepository.findAll().stream()
-            .map(c -> new CampeonatoResponse(
-                c.getId(),
-                c.getNome(),
-                c.getVitoria(),
-                c.getDerrota(),
-                c.getEmpate(),
-                c.getEquipes().stream()
-                    .map(e -> new EquipeResponse(e.getId(), e.getNome()))
-                    .toList()
-            )).toList();
+                .map(c -> new CampeonatoResponse(
+                        c.getId(),
+                        c.getNome(),
+                        c.getVitoria(),
+                        c.getDerrota(),
+                        c.getEmpate(),
+                        c.getEquipes().stream()
+                                .map(e -> new EquipeResponse(
+                                        e.getId(),
+                                        e.getNome(),
+                                        e.getModalidade(),
+                                        e.getDescricao(),
+                                        e.getIntegrantes().size(),
+                                        e.getCampeonatos().size(),
+                                        e.isAtivo(),
+                                        e.getIntegrantes().stream()
+                                                .map(user -> user.getNome())
+                                                .limit(3)
+                                                .toList()))
+                                .toList()))
+                .toList();
         return ResponseEntity.ok(resp);
     }
 
@@ -86,15 +99,25 @@ public class CampeonatoController {
         }
         Campeonato c = opt.get();
         CampeonatoResponse resp = new CampeonatoResponse(
-            c.getId(),
-            c.getNome(),
-            c.getVitoria(),
-            c.getDerrota(),
-            c.getEmpate(),
-            c.getEquipes().stream()
-                .map(e -> new EquipeResponse(e.getId(), e.getNome()))
-                .toList()
-        );
+                c.getId(),
+                c.getNome(),
+                c.getVitoria(),
+                c.getDerrota(),
+                c.getEmpate(),
+                c.getEquipes().stream()
+                        .map(e -> new EquipeResponse(
+                                e.getId(),
+                                e.getNome(),
+                                e.getModalidade(),
+                                e.getDescricao(),
+                                e.getIntegrantes().size(),
+                                e.getCampeonatos().size(),
+                                e.isAtivo(),
+                                e.getIntegrantes().stream()
+                                        .map(user -> user.getNome())
+                                        .limit(3)
+                                        .toList()))
+                        .toList());
         return ResponseEntity.ok(resp);
     }
 
@@ -104,7 +127,7 @@ public class CampeonatoController {
         if (opt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         List<ClassificacaoEquipe> classificacao = classificacaoService.calcularClassificacao(opt.get());
         return ResponseEntity.ok(classificacao);
     }
@@ -112,12 +135,15 @@ public class CampeonatoController {
     @PostMapping("/{id}/equipes")
     public ResponseEntity<?> adicionarEquipes(@PathVariable Long id, @RequestBody List<String> nomesEquipes) {
         Optional<Campeonato> opt = campeonatoRepository.findById(id);
-        if (opt.isEmpty()) return ResponseEntity.notFound().build();
+        if (opt.isEmpty())
+            return ResponseEntity.notFound().build();
 
         Campeonato campeonato = opt.get();
         for (String nomeEquipe : nomesEquipes) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
-                    .orElseGet(() -> equipeRepository.save(new Equipe(nomeEquipe, new HashSet<>(), new HashSet<>())));
+                    .orElseGet(() -> equipeRepository.save(
+                            new Equipe(nomeEquipe, ModalidadeEnum.FUTEBOL) // Modalidade padrão
+                    ));
             campeonato.getEquipes().add(equipe);
         }
 

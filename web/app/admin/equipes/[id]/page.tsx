@@ -547,48 +547,23 @@ export default function DetalhesEquipePage() {
           </Card>
         </div>
 
-        {/* Conteúdo em duas colunas */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Coluna 1: Integrantes */}
           <div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900">
                 Integrantes ({equipe.integrantes.length})
               </h2>
 
-              <Dialog
-                open={showAddIntegrante}
-                onOpenChange={setShowAddIntegrante}
-              >
-                <DialogTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-blue-600 text-blue-600 hover:bg-blue-50 px-4"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Adicionar Integrante
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Adicionar Integrante</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-4">
-                    <p className="text-gray-600 mb-4">
-                      Para adicionar integrantes, edite a equipe na página de
-                      edição.
-                    </p>
-                    <Button
-                      onClick={() => setEditMode(true)}
-                      className="w-full"
-                    >
-                      <Edit className="h-4 w-4 mr-2" />
-                      Editar Equipe
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Link href={`/admin/equipes/${equipe.id}/adicionar-integrantes`}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-blue-600 text-blue-600 hover:bg-blue-50 px-4"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Gerenciar Integrantes
+                </Button>
+              </Link>
             </div>
 
             <Card className="p-6">
@@ -628,7 +603,6 @@ export default function DetalhesEquipePage() {
                         size="sm"
                         className="text-red-600 hover:text-red-800 hover:bg-red-50"
                         onClick={() => {
-                          // Implementar remoção de integrante se necessário
                           alert("Para remover integrantes, edite a equipe.");
                         }}
                       >

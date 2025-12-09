@@ -11,9 +11,13 @@ import org.ce.sports.Api.enums.ModalidadeEnum;
 import org.ce.sports.Api.entities.repositories.CampeonatoRepository;
 import org.ce.sports.Api.services.EquipeService;
 import org.ce.sports.Api.services.ClassificacaoService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,6 +32,9 @@ public class EquipeController {
     private final CampeonatoRepository campeonatoRepository;
     private final EquipeService equipeService;
     private final ClassificacaoService classificacaoService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @GetMapping
     public ResponseEntity<List<EquipeResponse>> listarTodas() {
@@ -123,26 +130,28 @@ public class EquipeController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<?> excluirEquipe(@PathVariable Long id) {
-        Optional<Equipe> equipeOpt = equipeRepository.findById(id);
+        try {
+            if (!equipeRepository.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
 
-        if (equipeOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            boolean excluido = equipeService.excluirEquipeComRelacionamentos(id);
+
+            if (excluido) {
+                return ResponseEntity.ok("Equipe excluída com sucesso");
+            } else {
+                return ResponseEntity.status(500).body("Falha ao excluir equipe");
+            }
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(409)
+                    .body("Não é possível excluir a equipe porque ela está vinculada a outros registros.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body("Erro interno: " + e.getMessage());
         }
-
-        Equipe equipe = equipeOpt.get();
-
-        for (Campeonato campeonato : equipe.getCampeonatos()) {
-            campeonato.getEquipes().remove(equipe);
-            campeonatoRepository.save(campeonato);
-        }
-
-        equipe.getIntegrantes().clear();
-        equipeRepository.save(equipe);
-
-        equipeRepository.delete(equipe);
-
-        return ResponseEntity.ok("Equipe excluída com sucesso");
     }
 
     @PatchMapping("/{id}")

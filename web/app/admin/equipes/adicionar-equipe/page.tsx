@@ -43,29 +43,42 @@ export default function AdicionarEquipePage() {
     descricao: "",
   });
 
+  async function buscarAlunos() {
+    try {
+      const res = await fetch("http://localhost:8080/api/auth/alunos", {
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        throw new Error(`Erro ${res.status}: ${res.statusText}`);
+      }
+
+      const data = await res.json();
+
+      if (Array.isArray(data)) {
+        return data.map((item: any) => ({
+          id: item.id || item.userId,
+          nome: item.nome || item.name || item.username,
+          email: item.email || item.userEmail,
+        }));
+      } else {
+        throw new Error("Formato de resposta inválido");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar alunos:", error);
+      return [
+        { id: 1, nome: "João Silva", email: "joao@cefetmg.br" },
+        { id: 2, nome: "Maria Santos", email: "maria@cefetmg.br" },
+        { id: 3, nome: "Pedro Oliveira", email: "pedro@cefetmg.br" },
+      ];
+    }
+  }
+
   useEffect(() => {
     async function fetchAlunos() {
-      try {
-        const res = await fetch("http://localhost:8080/api/users?role=ALUNO", {
-          credentials: "include",
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setAlunos(data);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar alunos:", error);
-        setAlunos([
-          { id: 1, nome: "João Silva", email: "joao@cefetmg.br" },
-          { id: 2, nome: "Maria Santos", email: "maria@cefetmg.br" },
-          { id: 3, nome: "Pedro Oliveira", email: "pedro@cefetmg.br" },
-          { id: 4, nome: "Ana Costa", email: "ana@cefetmg.br" },
-          { id: 5, nome: "Carlos Pereira", email: "carlos@cefetmg.br" },
-        ]);
-      }
+      const alunosData = await buscarAlunos();
+      setAlunos(alunosData);
     }
-
     fetchAlunos();
   }, []);
 

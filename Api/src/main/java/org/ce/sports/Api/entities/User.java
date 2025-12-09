@@ -6,6 +6,7 @@ import org.ce.sports.Api.enums.RoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,12 +36,19 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private RoleEnum role;
 
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(name = "usuario_equipe", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "equipe_id"))
+    private List<Equipe> equipes = new ArrayList<>();
+
+    @Builder.Default
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean verified = false;
 
     @Column(name = "verification_code", length = 6)
     private String verificationCode;
 
+    @Builder.Default
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean systemAdmin = false;
 
@@ -77,5 +85,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return verified;
+    }
+
+    public List<Equipe> getEquipes() {
+        return equipes;
+    }
+
+    public void setEquipes(List<Equipe> equipes) {
+        this.equipes = equipes;
     }
 }

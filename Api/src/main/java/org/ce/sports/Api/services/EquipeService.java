@@ -11,6 +11,7 @@ import org.ce.sports.Api.enums.ModalidadeEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,6 +89,33 @@ public class EquipeService {
         }
 
         equipeRepository.delete(equipe);
+    }
+
+    @Transactional
+    public boolean excluirEquipeComRelacionamentos(Long equipeId) {
+        try {
+            Equipe equipe = equipeRepository.findById(equipeId)
+                    .orElseThrow(() -> new RuntimeException("Equipe não encontrada"));
+
+            List<Campeonato> campeonatos = new ArrayList<>(equipe.getCampeonatos());
+            for (Campeonato campeonato : campeonatos) {
+                campeonato.getEquipes().remove(equipe);
+                campeonatoRepository.save(campeonato);
+                equipe.getCampeonatos().remove(campeonato);
+            }
+
+            equipe.getIntegrantes().clear();
+
+            equipeRepository.save(equipe);
+
+            equipeRepository.delete(equipe);
+
+            return true;
+        } catch (Exception e) {
+            System.err.println("Erro no serviço ao excluir equipe: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Transactional

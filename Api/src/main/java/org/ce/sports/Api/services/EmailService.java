@@ -3,6 +3,7 @@ package org.ce.sports.Api.services;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ce.sports.Api.entities.User;
 import org.ce.sports.Api.entities.repositories.UserRepository;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,9 +14,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailService {
     private final UserRepository userRepository;
     private final JavaMailSender mailSender;
+    private final NotificationPreferenceService preferenceService;
+
 
     public void enviarCodigoVerificacao(String destinatario, String codigo) {
         try {
@@ -117,45 +121,57 @@ public class EmailService {
 
 
     public void enviarNotificacao(String titulo, String conteudo) {
-        List<User> Usuarios = userRepository.findAll();
-        for (User user : Usuarios) {
+        List<User> usuarios = userRepository.findAll();
+
+        for (User user : usuarios) {
+            // Verificar se o usuário quer receber notificações de notícias
+            if (!preferenceService.shouldReceiveNewsNotifications(user.getId())) {
+                log.debug("Usuário {} optou por não receber notificações de notícias", user.getEmail());
+                continue;
+            }
+
             try {
                 MimeMessage mensagem = mailSender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(mensagem, true);
                 helper.setSubject(titulo);
                 helper.setTo(user.getEmail());
+
                 String html = String.format("""
-    <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #0f172a; 
-                color: #f8fafc; padding: 30px; border-radius: 12px; 
-                max-width: 520px; margin: auto; text-align: center;">
+                    <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #0f172a; 
+                                color: #f8fafc; padding: 30px; border-radius: 12px; 
+                                max-width: 520px; margin: auto; text-align: center;">
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="color: #38bdf8; margin: 0;">🏋️‍♂️ CE Sports</h2>
+                            <p style="font-size: 14px; color: #cbd5e1;">Centro Esportivo CEFET-MG</p>
+                        </div>
 
-        <div style="margin-bottom: 20px;">
-            <h2 style="color: #38bdf8; margin: 0;">🏋️‍♂️ CE Sports</h2>
-            <p style="font-size: 14px; color: #cbd5e1;">Centro Esportivo CEFET-MG</p>
-        </div>
-
-        <div style="background-color: #1e293b; border-radius: 10px; 
-                    padding: 20px; margin-bottom: 25px; text-align: left;">
-            
-   
-
-            <p style="font-size: 15px; color: #cbd5e1; margin-top: 12px; line-height: 1.6;">
-                %s
-            </p>
-        </div>
-
-        <p style="font-size: 12px; color: #64748b; margin-top: 25px;">
-            Esta é uma mensagem automática do sistema CE Sports. Por favor, não responda este e-mail.
-        </p>
-    </div>
-    """, conteudo);
-
+                        <div style="background-color: #1e293b; border-radius: 10px; 
+                                    padding: 20px; margin-bottom: 25px; text-align: left;">
+                            
+                            <h3 style="color: #f1f5f9; margin: 0 0 10px 0;">%s</h3>
+                            
+                            <p style="font-size: 15px; color: #cbd5e1; margin-top: 12px; line-height: 1.6;">
+                                %s
+                            </p>
+                        </div>
+                        
+                        <div style="font-size: 12px; color: #64748b; margin-top: 20px; padding-top: 20px; border-top: 1px solid #334155;">
+                            <p>Para deixar de receber estas notificações, 
+                               <a href="http://localhost:3000/noticias" style="color: #38bdf8; text-decoration: none;">
+                               acesse suas configurações</a>.
+                            </p>
+                        </div>
+                    </div>
+                    """, titulo, conteudo);
 
                 helper.setText(html, true);
                 mailSender.send(mensagem);
+                log.info("Notificação de notícia enviada para: {}", user.getEmail());
+
             } catch (MessagingException e) {
-                throw new RuntimeException("Erro ao enviar e-mail: " + e.getMessage());
+                log.error("Erro ao enviar notificação para {}: {}", user.getEmail(), e.getMessage());
             }
-    }
+        }
     }
 }

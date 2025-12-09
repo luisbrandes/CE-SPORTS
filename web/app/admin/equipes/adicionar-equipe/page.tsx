@@ -203,7 +203,7 @@ export default function AdicionarEquipePage() {
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione a modalidade" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white">
                         {MODALIDADES.map((modalidade) => (
                           <SelectItem
                             key={modalidade.value}
@@ -382,20 +382,6 @@ export default function AdicionarEquipePage() {
               </div>
             </form>
           </Card>
-
-          <div className="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="font-medium text-blue-800 mb-2 flex items-center">
-              <Check className="h-5 w-5 mr-2" />
-              Dicas para criar uma boa equipe
-            </h3>
-            <ul className="text-blue-700 text-sm space-y-1">
-              <li>• Escolha um nome que represente bem a equipe</li>
-              <li>• Adicione uma descrição clara dos objetivos</li>
-              <li>• Selecione alunos que realmente participarão</li>
-              <li>• Você poderá adicionar mais alunos depois</li>
-              <li>• A equipe pode participar de múltiplos campeonatos</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

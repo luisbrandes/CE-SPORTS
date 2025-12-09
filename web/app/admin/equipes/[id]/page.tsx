@@ -381,7 +381,7 @@ export default function DetalhesEquipePage() {
                       <SelectTrigger className="w-48">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white">
                         {MODALIDADES.map((modalidade) => (
                           <SelectItem key={modalidade} value={modalidade}>
                             {modalidade.charAt(0) +
@@ -557,7 +557,11 @@ export default function DetalhesEquipePage() {
                 onOpenChange={setShowAddIntegrante}
               >
                 <DialogTrigger asChild>
-                  <Button size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-blue-600 text-blue-600 hover:bg-blue-50 px-4"
+                  >
                     <Plus className="h-4 w-4 mr-2" />
                     Adicionar Integrante
                   </Button>
@@ -593,10 +597,6 @@ export default function DetalhesEquipePage() {
                   <p className="text-gray-600 mb-4">
                     Esta equipe ainda não possui integrantes.
                   </p>
-                  <Button onClick={() => setEditMode(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Adicionar Integrantes
-                  </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -648,7 +648,11 @@ export default function DetalhesEquipePage() {
                 onOpenChange={setShowAddCampeonato}
               >
                 <DialogTrigger asChild>
-                  <Button size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-blue-600 text-blue-600 hover:bg-blue-50 px-4"
+                  >
                     <Plus className="h-4 w-4 mr-2" />
                     Inscrever em Campeonato
                   </Button>
@@ -714,10 +718,6 @@ export default function DetalhesEquipePage() {
                   <p className="text-gray-600 mb-4">
                     Esta equipe ainda não está inscrita em nenhum campeonato.
                   </p>
-                  <Button onClick={() => setShowAddCampeonato(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Inscrever em Campeonato
-                  </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -822,7 +822,7 @@ export default function DetalhesEquipePage() {
 
             <Button
               variant="outline"
-              className="h-auto p-6"
+              className="h-auto p-6 hover:shadow-md transition-shadow cursor-pointer"
               onClick={() => setEditMode(true)}
             >
               <div className="flex items-center">

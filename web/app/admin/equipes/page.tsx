@@ -154,7 +154,11 @@ export default function EquipesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
+        <Link href="/admin">
+          <Button variant="outline" size="sm" className="mb-4">
+            ← Voltar à Home
+          </Button>
+        </Link>
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -166,14 +170,12 @@ export default function EquipesPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="/admin">
-              <Button variant="outline" size="sm">
-                ← Voltar
-              </Button>
-            </Link>
-
             <Link href="/admin/equipes/adicionar-equipe">
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button
+                variant="outline"
+                size="md"
+                className="border-blue-600 text-blue-600 hover:bg-blue-50 px-4"
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Nova Equipe
               </Button>
@@ -266,7 +268,7 @@ export default function EquipesPage() {
                 <SelectTrigger>
                   <SelectValue placeholder="Todas as modalidades" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   <SelectItem value="todas">Todas as modalidades</SelectItem>
                   {MODALIDADES.map((modalidade) => (
                     <SelectItem key={modalidade} value={modalidade}>
@@ -285,7 +287,7 @@ export default function EquipesPage() {
                 <SelectTrigger>
                   <SelectValue placeholder="Todos os status" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   <SelectItem value="todas">Todas as equipes</SelectItem>
                   <SelectItem value="ativas">Somente ativas</SelectItem>
                   <SelectItem value="inativas">Somente inativas</SelectItem>
@@ -426,13 +428,6 @@ export default function EquipesPage() {
           <div className="text-sm text-gray-600">
             {equipesFiltradas.length} equipes mostradas
           </div>
-
-          <Link href="/admin/equipes/adicionar-equipe">
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              <Plus className="mr-2 h-4 w-4" />
-              Adicionar Nova Equipe
-            </Button>
-          </Link>
         </div>
       </div>
     </div>

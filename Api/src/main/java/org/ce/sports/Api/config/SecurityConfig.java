@@ -37,11 +37,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        // Liberação geral para OPTIONS
+                        // Liberação para CORS preflight (OPTIONS)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // Login, console e documentação
-                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // Login, documentação e H2 console
+                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**")
+                        .permitAll()
+
+                        // --------------------------
+                        // NOTIFICAÇÕES (CORRIGIDO)
+                        // --------------------------
+                        .requestMatchers(HttpMethod.GET, "/api/notificacoes/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/notificacoes/**").authenticated()
 
                         // --------------------------
                         // NOTÍCIAS
@@ -75,7 +82,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // Rotas de aluno
+                        // ROTAS DE ALUNO
                         .requestMatchers("/api/aluno/**")
                         .hasAnyRole("USER", "ALUNO", "ADMIN")
 
@@ -83,8 +90,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
+                // Necessário para H2 Console
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
+                // Logout
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
                         .clearAuthentication(true)
@@ -105,8 +114,6 @@ public class SecurityConfig {
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getSenha())
-
-                        // remove "ROLE_" do banco e mantém só "ADMIN", "USER", etc.
                         .roles(user.getRole().name().replace("ROLE_", ""))
                         .build()
                 )

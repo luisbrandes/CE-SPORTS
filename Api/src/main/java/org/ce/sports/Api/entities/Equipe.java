@@ -1,16 +1,18 @@
 package org.ce.sports.Api.entities;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.ce.sports.Api.enums.ModalidadeEnum;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "equipes")
+@Getter
+@Setter
 public class Equipe {
 
     @Id
@@ -25,54 +27,28 @@ public class Equipe {
     private Set<Campeonato> campeonatos = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "equipe_aluno", joinColumns = @JoinColumn(name = "equipe_id"), inverseJoinColumns = @JoinColumn(name = "aluno_id"))
+    @JoinTable(
+            name = "equipe_aluno",
+            joinColumns = @JoinColumn(name = "equipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "aluno_id")
+    )
     private Set<User> integrantes = new HashSet<>();
 
-    ModalidadeEnum modalidade;
+    private ModalidadeEnum modalidade;
+
 
     public Equipe() {
     }
 
-    public Equipe(String nome, Set<Campeonato> campeonatos, Set<User> integrantes, ModalidadeEnum modalidade) {
+
+    public Equipe(String nome,
+                  Set<Campeonato> campeonatos,
+                  Set<User> integrantes,
+                  ModalidadeEnum modalidade) {
         this.nome = nome;
         this.campeonatos = campeonatos;
         this.integrantes = integrantes;
         this.modalidade = modalidade;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Set<Campeonato> getCampeonatos() {
-        return campeonatos;
-    }
-
-    public void setCampeonatos(Set<Campeonato> campeonatos) {
-        this.campeonatos = campeonatos;
-    }
-
-    public Set<User> getIntegrantes() {
-        return integrantes;
-    }
-
-    public void setIntegrantes(Set<User> integrantes) {
-        this.integrantes = integrantes;
-    }
-
-    public ModalidadeEnum getModalidade() {
-        return modalidade;
-    }
-
-    public void setModalidade(ModalidadeEnum modalidade) {
-        this.modalidade = modalidade;
-    }
 }

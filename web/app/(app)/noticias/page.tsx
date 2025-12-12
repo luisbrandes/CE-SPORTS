@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Bell, BellOff, CheckCircle, XCircle } from "lucide-react";
+import { Bell, BellOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Noticia {
@@ -28,23 +28,42 @@ export default function NoticiasPage() {
   const [loading, setLoading] = useState(true);
   const [notificacoes, setNotificacoes] = useState<NotificacoesState>({
     ativado: false,
-    loading: false,
+    loading: true,
   });
   const router = useRouter();
-  
+
   const [filtroTitulo, setFiltroTitulo] = useState("");
   const [filtroAutor, setFiltroAutor] = useState("");
   const [filtroEsporte, setFiltroEsporte] = useState("");
 
-  // Carrega preferência de notificações do localStorage
   useEffect(() => {
-    const preferencia = localStorage.getItem("notificacoes_ativadas");
-    if (preferencia !== null) {
-      setNotificacoes({
-        ativado: JSON.parse(preferencia),
-        loading: false,
-      });
+    async function loadPreferencia() {
+      try {
+        const res = await fetch("http://localhost:8080/api/notificacoes/status", {
+          credentials: "include",
+        });
+
+        const json = await res.json();
+
+        setNotificacoes({
+          ativado: json.ativado,
+          loading: false,
+        });
+
+        localStorage.setItem(
+          "notificacoes_ativadas",
+          JSON.stringify(json.ativado)
+        );
+      } catch {
+        const cache = localStorage.getItem("notificacoes_ativadas");
+        setNotificacoes({
+          ativado: cache ? JSON.parse(cache) : false,
+          loading: false,
+        });
+      }
     }
+
+    loadPreferencia();
   }, []);
 
   useEffect(() => {
@@ -53,44 +72,40 @@ export default function NoticiasPage() {
         const res = await fetch("http://localhost:8080/api/noticias", {
           credentials: "include",
         });
-        
+
         const data = await res.json();
-        
+
         let noticiasData: Noticia[] = [];
-        if (Array.isArray(data)) {
-          noticiasData = data;
-        } else if (data && typeof data === "object") {
-          if (Array.isArray((data as any).content)) noticiasData = (data as any).content;
-          else if (Array.isArray((data as any).data)) noticiasData = (data as any).data;
-        }
-        
-        const noticiasOrdenadas = noticiasData
-          .filter((n: any) => n && n.titulo)
-          .sort((a: any, b: any) => 
-            new Date(b.criadaEm).getTime() - new Date(a.criadaEm).getTime()
+
+        if (Array.isArray(data)) noticiasData = data;
+        else if (data?.content) noticiasData = data.content;
+        else if (data?.data) noticiasData = data.data;
+
+        const ordenadas = noticiasData
+          .sort(
+            (a, b) =>
+              new Date(b.criadaEm).getTime() - new Date(a.criadaEm).getTime()
           )
           .slice(0, 10);
-        
-        setNoticias(noticiasOrdenadas);
-      } catch (err) {
-        console.error("Erro ao carregar notícias:", err);
-        setNoticias([]);
+
+        setNoticias(ordenadas);
+      } catch {
       } finally {
         setLoading(false);
       }
     }
-    
+
     loadNoticias();
   }, []);
 
   const noticiasFiltradas = useMemo(() => {
     return noticias.filter((n) => {
-      const matchTitulo = (n.titulo || "").toLowerCase().includes(filtroTitulo.toLowerCase());
-      const matchAutor = (n.autorNome || "").toLowerCase().includes(filtroAutor.toLowerCase());
-      const matchEsporte = !filtroEsporte || 
-        (n.esporte || "").toLowerCase().includes(filtroEsporte.toLowerCase());
-      
-      return matchTitulo && matchAutor && matchEsporte;
+      const t = n.titulo.toLowerCase().includes(filtroTitulo.toLowerCase());
+      const a = n.autorNome.toLowerCase().includes(filtroAutor.toLowerCase());
+      const e =
+        !filtroEsporte ||
+        n.esporte.toLowerCase().includes(filtroEsporte.toLowerCase());
+      return t && a && e;
     });
   }, [noticias, filtroTitulo, filtroAutor, filtroEsporte]);
 
@@ -100,141 +115,140 @@ export default function NoticiasPage() {
     setFiltroEsporte("");
   };
 
-  const formatarData = (dataString: string) => {
-    try {
-      const data = new Date(dataString);
-      return data.toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch {
-      return "Data inválida";
-    }
+  const formatarData = (d: string) => {
+    const date = new Date(d);
+    return date.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const handleLerMais = (id: number) => {
     router.push(`/noticias/${id}`);
   };
 
-  const toggleNotificacoes = async () => {
-    setNotificacoes(prev => ({ ...prev, loading: true }));
-    
-    try {
-      const novoEstado = !notificacoes.ativado;
-      
-      // Salva no localStorage (frontend)
-      localStorage.setItem("notificacoes_ativadas", JSON.stringify(novoEstado));
-      
-      // Chama API para ativar/desativar (quando backend estiver pronto)
-      // Por enquanto só atualiza estado local
-      if (novoEstado) {
-        // Simula ativação - no futuro chamará /api/notificacoes/ativar
-        console.log("Notificações ativadas - pronto para receber emails");
-      } else {
-        // Simula desativação - no futuro chamará /api/notificacoes/desativar
-        console.log("Notificações desativadas");
-      }
-      
-      setNotificacoes({ ativado: novoEstado, loading: false });
-      
-      
-      const toast = document.createElement("div");
-      toast.className = "fixed top-4 right-4 p-4 rounded-xl shadow-lg z-50 flex items-center gap-3 transition-all duration-300";
-      toast.innerHTML = `
-        <div class="w-5 h-5 rounded-full ${novoEstado ? 'bg-green-500' : 'bg-gray-500'} flex items-center justify-center">
-          ${novoEstado ? '<CheckCircle class="w-3 h-3 text-white"/>' : '<XCircle class="w-3 h-3 text-white"/>'}
-        </div>
-        <span class="font-medium text-white">${novoEstado ? 'Notificações ativadas!' : 'Notificações desativadas'}</span>
-      `;
-      if (novoEstado) {
-        Object.assign(toast.style, {
-          background: 'linear-gradient(135deg, #10b981, #059669)',
-        });
-      } else {
-        Object.assign(toast.style, {
-          background: 'linear-gradient(135deg, #6b7280, #4b5563)',
-        });
-      }
-      
-      document.body.appendChild(toast);
-      
-      setTimeout(() => {
-        toast.classList.add("translate-x-full");
-        setTimeout(() => document.body.removeChild(toast), 300);
-      }, 3000);
-      
-    } catch (err) {
-      console.error("Erro ao alternar notificações:", err);
-      setNotificacoes(prev => ({ ...prev, loading: false }));
-    }
-  };
+  async function toggleNotificacoes() {
+    setNotificacoes((prev) => ({ ...prev, loading: true }));
 
-  if (loading) {
+    try {
+      const novo = !notificacoes.ativado;
+      const endpoint = novo ? "ativar" : "desativar";
+
+      const res = await fetch(
+        `http://localhost:8080/api/notificacoes/${endpoint}`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      if (!res.ok) throw new Error();
+
+      setNotificacoes({
+        ativado: novo,
+        loading: false,
+      });
+
+      localStorage.setItem("notificacoes_ativadas", JSON.stringify(novo));
+    } catch {
+      setNotificacoes((prev) => ({ ...prev, loading: false }));
+    }
+  }
+
+  if (loading || notificacoes.loading) {
     return (
-      <main className="container mx-auto px-6 py-12 min-h-screen ">
-        <p className="text-center text-gray-500 text-xl mt-20">Carregando notícias...</p>
+      <main className="container mx-auto px-6 py-12 min-h-screen bg-gray-50">
+        <p className="text-center text-gray-500 text-xl mt-20">Carregando...</p>
       </main>
     );
   }
 
   return (
     <main className="container mx-auto px-6 py-8 min-h-screen ">
-      <div className="text-center mb-12">
+      {/* Cabeçalho */}
+      <div className="text-center mb-12 max-w-4xl mx-auto">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-4 select-none">
           Últimas Notícias
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-xl text-gray-600">
           Fique por dentro de tudo que acontece no mundo do esporte do CEFET-MG
         </p>
       </div>
 
-      {/* Botão de Notificações */}
-      <div className="max-w-4xl mx-auto mb-8">
+      {/* Card de Notificações */}
+      <div className="max-w-4xl mx-auto mb-10">
         <Card className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 shadow-md rounded-xl">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-white rounded-xl shadow-sm border">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-white rounded-xl shadow-sm border">
                 {notificacoes.ativado ? (
-                  <Bell className="w-6 h-6 text-blue-600" />
+                  <Bell className="w-7 h-7 text-blue-600" />
                 ) : (
-                  <BellOff className="w-6 h-6 text-gray-400" />
+                  <BellOff className="w-7 h-7 text-gray-400" />
                 )}
               </div>
+
               <div>
-                <h3 className="font-bold text-lg text-gray-800">
+                <h3 className="font-bold text-xl text-gray-800 select-none">
                   Receber notificações por email
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {notificacoes.ativado 
-                    ? "Você receberá emails sobre novas notícias importantes" 
-                    : "Ative para receber notificações das últimas notícias"
-                  }
+                  {notificacoes.ativado
+                    ? "Você receberá avisos de novas notícias"
+                    : "Clique para ativar as notificações"}
                 </p>
               </div>
             </div>
-            
+
             <Button
               onClick={toggleNotificacoes}
               disabled={notificacoes.loading}
               className={cn(
-                "px-6 py-2 font-semibold rounded-xl shadow-lg transition-all duration-300",
-                notificacoes.ativado 
-                  ? "bg-green-600 hover:bg-green-700 text-white shadow-green-500/50 hover:shadow-green-500/75" 
-                  : "bg-gray-200 hover:bg-gray-300 text-gray-700 hover:shadow-md"
+                "px-8 py-3 text-lg rounded-xl font-semibold shadow-md transition-all flex items-center gap-2",
+                notificacoes.loading
+                  ? "bg-gray-300 text-gray-600 cursor-wait"
+                  : notificacoes.ativado
+                  ? "bg-red-600 hover:bg-red-700 text-white shadow-red-500/50 hover:shadow-red-500/75"
+                  : "bg-green-600 hover:bg-green-700 text-white shadow-green-500/50 hover:shadow-green-500/75"
               )}
             >
               {notificacoes.loading ? (
-                <span className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
+                    />
+                  </svg>
                   Salvando...
-                </span>
+                </>
               ) : notificacoes.ativado ? (
-                "Ativo"
+                <>
+                  <BellOff className="w-5 h-5" />
+                  Desativar
+                </>
               ) : (
-                "Ativar"
+                <>
+                  <Bell className="w-5 h-5" />
+                  Ativar
+                </>
               )}
             </Button>
           </div>
@@ -242,43 +256,50 @@ export default function NoticiasPage() {
       </div>
 
       {/* Filtros */}
-      <Card className="p-6 mb-10 bg-white border border-gray-300 shadow-md rounded-xl space-y-6">
+      <Card className="p-6 mb-10 bg-white border border-gray-300 shadow-md rounded-xl space-y-6 max-w-4xl mx-auto">
         <h2 className="font-semibold text-xl text-gray-800 select-none">Filtrar Notícias</h2>
 
         <div className="grid md:grid-cols-3 gap-6">
           <div>
-            <label className="text-sm font-medium text-gray-700 block mb-2 select-none">Título</label>
+            <label className="text-sm font-medium text-gray-700 block mb-2 select-none">
+              Título
+            </label>
             <Input
               value={filtroTitulo}
               onChange={(e) => setFiltroTitulo(e.target.value)}
               placeholder="Ex: Futsal, Copa Caloura..."
+              className="mt-1"
             />
           </div>
-
           <div>
-            <label className="text-sm font-medium text-gray-700 block mb-2 select-none">Autor</label>
+            <label className="text-sm font-medium text-gray-700 block mb-2 select-none">
+              Autor
+            </label>
             <Input
               value={filtroAutor}
               onChange={(e) => setFiltroAutor(e.target.value)}
               placeholder="Ex: João Silva..."
+              className="mt-1"
             />
           </div>
-
           <div>
-            <label className="text-sm font-medium text-gray-700 block mb-2 select-none">Esporte</label>
+            <label className="text-sm font-medium text-gray-700 block mb-2 select-none">
+              Esporte
+            </label>
             <Input
               value={filtroEsporte}
               onChange={(e) => setFiltroEsporte(e.target.value)}
               placeholder="Ex: Futsal, Vôlei..."
+              className="mt-1"
             />
           </div>
         </div>
 
         <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 select-text">
             Mostrando {noticiasFiltradas.length} de {noticias.length} notícias
           </p>
-          <Button variant="outline" onClick={limparFiltros}>
+          <Button variant="outline" onClick={limparFiltros} className="hover:bg-gray-100">
             Limpar filtros
           </Button>
         </div>
@@ -287,9 +308,11 @@ export default function NoticiasPage() {
       {/* Lista de Notícias */}
       <section className="space-y-6 max-w-4xl mx-auto">
         {noticiasFiltradas.length === 0 ? (
-          <Card className="p-12 text-center bg-white border border-gray-200 shadow-sm">
-            <p className="text-gray-500 text-lg">Nenhuma notícia encontrada.</p>
-            <Button onClick={limparFiltros} variant="outline" className="mt-4">
+          <Card className="p-12 text-center bg-white border border-gray-200 shadow-sm rounded-xl">
+            <p className="text-gray-500 text-lg select-text mb-6">
+              Nenhuma notícia encontrada com os filtros aplicados.
+            </p>
+            <Button onClick={limparFiltros} variant="outline" className="hover:bg-gray-100">
               Ver todas as notícias
             </Button>
           </Card>
@@ -297,12 +320,12 @@ export default function NoticiasPage() {
           noticiasFiltradas.map((noticia) => (
             <Card
               key={noticia.id}
-              className="p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-300 cursor-pointer group"
+              className="p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition-all border border-gray-300 cursor-pointer group hover:-translate-y-1"
               onClick={() => handleLerMais(noticia.id)}
             >
               <div className="flex items-start justify-between mb-4">
                 {noticia.esporte && (
-                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full select-none">
                     {noticia.esporte}
                   </span>
                 )}
@@ -311,11 +334,11 @@ export default function NoticiasPage() {
                 </span>
               </div>
 
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 leading-tight group-hover:text-blue-800">
+              <h2 className="text-2xl font-bold text-blue-700 mb-4 leading-tight group-hover:text-blue-800 transition-colors select-text">
                 {noticia.titulo}
               </h2>
 
-              <p className="text-gray-700 mb-6 leading-relaxed line-clamp-3">
+              <p className="text-gray-700 mb-6 leading-relaxed line-clamp-3 select-text">
                 {noticia.conteudo}
               </p>
 
@@ -326,7 +349,7 @@ export default function NoticiasPage() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="hover:bg-blue-50 border-blue-300 text-blue-700"
+                  className="hover:bg-blue-50 border-blue-300 text-blue-700 hover:text-blue-900 transition-colors"
                 >
                   Ler mais →
                 </Button>

@@ -51,6 +51,13 @@ public class User implements UserDetails {
     @Column(name = "token_expiration")
     private LocalDateTime tokenExpiration;
 
+    @Column(
+            name = "receber_notificacoes",
+            nullable = false,
+            columnDefinition = "BOOLEAN DEFAULT TRUE"
+    )
+    private Boolean receberNotificacoes = true;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> role.name());

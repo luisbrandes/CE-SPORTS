@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.ce.sports.Api.enums.ModalidadeEnum;
+
 @Service
 public class CampeonatoService {
 
@@ -46,18 +48,23 @@ public class CampeonatoService {
 
         if (request.equipes() != null) {
             Set<Equipe> novasEquipes = new HashSet<>();
+
             for (String nomeEquipe : request.equipes()) {
                 Equipe equipe = equipeRepository.findByNome(nomeEquipe)
                         .orElseGet(() -> equipeRepository.save(
-                                new Equipe(nomeEquipe, new HashSet<>(), new HashSet<>())
+                                new Equipe(
+                                        nomeEquipe,
+                                        new HashSet<>(),     // campeonatos
+                                        new HashSet<>(),     // integrantes
+                                        ModalidadeEnum.FUTEBOL // modalidade padrão
+                                )
                         ));
                 novasEquipes.add(equipe);
             }
+
             campeonato.setEquipes(novasEquipes);
         }
 
         campeonatoRepository.save(campeonato);
     }
-
-
 }

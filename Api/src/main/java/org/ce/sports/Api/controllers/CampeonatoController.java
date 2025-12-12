@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.*;
 
+import org.ce.sports.Api.enums.ModalidadeEnum;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/campeonato")
@@ -38,7 +40,12 @@ public class CampeonatoController {
         for (String nomeEquipe : request.equipes()) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
                     .orElseGet(() -> equipeRepository.save(
-                            new Equipe(nomeEquipe, new HashSet<>(), new HashSet<>())
+                            new Equipe(
+                                    nomeEquipe,
+                                    new HashSet<>(),     // campeonatos
+                                    new HashSet<>(),     // integrantes
+                                    ModalidadeEnum.FUTEBOL // modalidade padrão
+                            )
                     ));
             equipes.add(equipe);
         }
@@ -108,7 +115,12 @@ public class CampeonatoController {
         for (String nomeEquipe : nomesEquipes) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
                     .orElseGet(() -> equipeRepository.save(
-                            new Equipe(nomeEquipe, new HashSet<>(), new HashSet<>())
+                            new Equipe(
+                                    nomeEquipe,
+                                    new HashSet<>(),
+                                    new HashSet<>(),
+                                    ModalidadeEnum.FUTEBOL // modalidade padrão
+                            )
                     ));
             campeonato.getEquipes().add(equipe);
         }
@@ -126,4 +138,3 @@ public class CampeonatoController {
         return ResponseEntity.ok("Campeonato atualizado (PATCH)!");
     }
 }
-

@@ -12,27 +12,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class News {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String titulo;
 
     @Lob
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String conteudo;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String esporte;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Long autorId;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String autorNome;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private LocalDateTime criadaEm;
-
 }

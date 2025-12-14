@@ -77,7 +77,7 @@ public class AuthService {
                     user.getRole().name()
             );
 
-            String redirect = user.getRole() == RoleEnum.ROLE_ADMIN ? "/admin" : "/aluno";
+            String redirect = user.getRole() == RoleEnum.ROLE_ADMIN ? "/admin" : "/";
 
             System.out.println("✅ Login realizado com sucesso: " + req.getEmail());
             return ResponseEntity.ok(Map.of(

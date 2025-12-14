@@ -1,7 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { Dumbbell, Users, Settings, LogOut, Newspaper, Trophy, Medal, Calendar, Bell } from "lucide-react"
+import {
+  Dumbbell, Users, Settings, LogOut, Newspaper,
+  Trophy, Medal, Calendar, Bell, UserCircle
+} from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useSession } from "@/lib/session"
@@ -12,16 +15,19 @@ interface SidebarProps {
 
 export function Sidebar({ onNavigate }: SidebarProps) {
   const pathname = usePathname()
-  const { logout } = useSession()
+  const { logout, user } = useSession()
+
+  const isAdmin = user?.role === "ADMIN"
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: Dumbbell },
-    { href: "/admin/treino", label: "Treino", icon: Calendar }, 
+    { href: "/admin/treino", label: "Treino", icon: Calendar },
     { href: "/admin/aprovacoesContas", label: "Usuários Pendentes", icon: Users },
     { href: "/admin/noticia", label: "Notícias", icon: Newspaper },
     { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
     { href: "/admin/projetos", label: "Projetos", icon: Medal },
     { href: "/admin/notificacoes", label: "Notificações", icon: Bell },
+    { href: "/", label: "Área do Aluno", icon: UserCircle}
   ]
 
   return (
@@ -51,6 +57,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
               {label}
             </Link>
           ))}
+
         </nav>
       </div>
 

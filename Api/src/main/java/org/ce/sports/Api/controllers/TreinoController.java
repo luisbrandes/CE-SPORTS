@@ -9,10 +9,10 @@ import org.ce.sports.Api.dtos.TreinoRecorrenteDTO;
 import org.ce.sports.Api.entities.Treino;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/treinos")
-@CrossOrigin(origins = "*")
 public class TreinoController {
 
     @Autowired
@@ -24,6 +24,19 @@ public class TreinoController {
             return ResponseEntity.ok(treinoService.listarTreinos());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao carregar treinos");
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obterTreino(@PathVariable Long id) {
+        try {
+            Treino treino = treinoService.obterTreino(id);
+            if (treino == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(treino);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of("error", "Erro ao carregar treino: " + e.getMessage()));
         }
     }
 
@@ -43,6 +56,26 @@ public class TreinoController {
             return ResponseEntity.ok("Treino recorrente criado");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarTreino(@PathVariable Long id, @RequestBody TreinoDTO dto) {
+        try {
+            Treino atualizado = treinoService.atualizarTreino(id, dto);
+            return ResponseEntity.ok(atualizado);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Erro ao atualizar treino: " + e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarTreino(@PathVariable Long id) {
+        try {
+            treinoService.deletarTreino(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Erro ao deletar treino: " + e.getMessage()));
         }
     }
 }

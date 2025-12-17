@@ -1,49 +1,49 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Menu, X, LogOut } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { apiFetch } from "@/lib/api"
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Menu, X, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
 export function Header() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [userName, setUserName] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   // 🔹 Verifica se há usuário logado ao carregar
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const data = await apiFetch("/auth/me")
+        const data = await apiFetch("/auth/me");
         if (data?.user) {
-          setUserName(data.user.nome || data.user.email || "Usuário")
+          setUserName(data.user.nome || data.user.email || "Usuário");
         } else {
-          setUserName(null)
+          setUserName(null);
         }
       } catch {
-        setUserName(null)
+        setUserName(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchUser()
-  }, [])
+    };
+    fetchUser();
+  }, []);
 
   // 🔹 Logout
   const handleLogout = async () => {
     try {
-      await apiFetch("/auth/logout", { method: "POST" })
+      await apiFetch("/auth/logout", { method: "POST" });
     } catch {
       // ignora erro
     } finally {
-      setUserName(null)
-      router.push("/login")
+      setUserName(null);
+      router.push("/login");
     }
-  }
+  };
 
   return (
     <header
@@ -63,12 +63,17 @@ export function Header() {
         <nav className="hidden md:flex items-center justify-end gap-8 ml-auto text-right">
           {!loading && userName ? (
             <>
-              {/* Links só aparecem se estiver logado */}
               <Link
-                href="/campeonatos"
+                href="/aluno/campeonatos"
                 className="text-sm font-medium text-white/90 hover:text-accent transition-colors"
               >
                 Campeonatos
+              </Link>
+              <Link
+                href="/aluno/equipes"
+                className="text-sm font-medium text-white/90 hover:text-accent transition-colors"
+              >
+                Equipes
               </Link>
               <Link
                 href="/projetos"
@@ -143,8 +148,8 @@ export function Header() {
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  handleLogout()
-                  setIsOpen(false)
+                  handleLogout();
+                  setIsOpen(false);
                 }}
               >
                 <LogOut size={16} />
@@ -163,5 +168,5 @@ export function Header() {
         </nav>
       )}
     </header>
-  )
+  );
 }

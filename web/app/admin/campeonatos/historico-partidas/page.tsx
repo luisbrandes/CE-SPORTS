@@ -101,7 +101,6 @@ export default function PartidasPage() {
 
       setPartidas(normalized);
 
-      // Extrair campeonatos e equipes únicas para os filtros
       const campeonatosSet = new Set<string>();
       const equipesSet = new Set<string>();
 
@@ -130,7 +129,6 @@ export default function PartidasPage() {
     fetchPartidas();
   }, []);
 
-  // Filtrar partidas
   const partidasFiltradas = useMemo(() => {
     if (!partidas) return null;
 
@@ -141,25 +139,21 @@ export default function PartidasPage() {
         const e2 = normalizeName(p.equipe2);
         const dataPartida = p.data || "";
 
-        // Filtro por campeonato
         const passaFiltroCampeonato =
           filtroCampeonato === "todos" ||
           camp.toLowerCase().includes(filtroCampeonato.toLowerCase());
 
-        // Filtro por equipe
         const passaFiltroEquipe =
           filtroEquipe === "todos" ||
           e1.toLowerCase().includes(filtroEquipe.toLowerCase()) ||
           e2.toLowerCase().includes(filtroEquipe.toLowerCase());
 
-        // Filtro por data
         const passaFiltroData =
           filtroData === "" || dataPartida.includes(filtroData);
 
         return passaFiltroCampeonato && passaFiltroEquipe && passaFiltroData;
       })
       .sort((a, b) => {
-        // Ordenar por data (mais recente primeiro)
         const aDate = a.data ? Date.parse(a.data) : NaN;
         const bDate = b.data ? Date.parse(b.data) : NaN;
         if (!Number.isNaN(aDate) && !Number.isNaN(bDate)) return bDate - aDate;
@@ -211,16 +205,6 @@ export default function PartidasPage() {
             >
               {loading ? "Carregando..." : "🔄 Atualizar"}
             </Button>
-
-            <Link href="/admin/campeonatos/registrar-partida">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-blue-600 text-blue-600 hover:bg-blue-50 px-5"
-              >
-                ➕ Nova Partida
-              </Button>
-            </Link>
           </div>
         </div>
 
@@ -601,7 +585,6 @@ export default function PartidasPage() {
                   </table>
                 </div>
 
-                {/* Paginação/resumo */}
                 <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                   <div className="text-sm text-gray-700">
                     Mostrando{" "}

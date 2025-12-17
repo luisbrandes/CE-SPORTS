@@ -300,7 +300,7 @@ export default function CampeonatosPage() {
       </section>
 
       {/* Botão de adicionar campeonato */}
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-8 space-x-4">
         <Link href="/admin/campeonatos/adicionar-campeonato">
           <Button
             variant="outline"
@@ -308,6 +308,16 @@ export default function CampeonatosPage() {
             className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8"
           >
             🏆 Adicionar Novo Campeonato
+          </Button>
+        </Link>
+
+        <Link href="/admin/campeonatos/registrar-partida">
+          <Button
+            variant="outline"
+            size="md"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50 px-5"
+          >
+            ➕ Nova Partida
           </Button>
         </Link>
       </div>

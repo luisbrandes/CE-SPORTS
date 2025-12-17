@@ -12,6 +12,7 @@ import org.ce.sports.Api.entities.repositories.CampeonatoRepository;
 import org.ce.sports.Api.services.EquipeService;
 import org.ce.sports.Api.services.ClassificacaoService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -133,24 +134,46 @@ public class EquipeController {
     @Transactional
     public ResponseEntity<?> excluirEquipe(@PathVariable Long id) {
         try {
+            System.out.println("=== TENTANDO EXCLUIR EQUIPE ID: " + id + " ===");
+
             if (!equipeRepository.existsById(id)) {
+                System.out.println("Equipe não encontrada: " + id);
                 return ResponseEntity.notFound().build();
             }
+
+            boolean podeExcluir = equipeService.podeExcluirEquipe(id);
+            System.out.println("Pode excluir? " + podeExcluir);
 
             boolean excluido = equipeService.excluirEquipeComRelacionamentos(id);
 
             if (excluido) {
-                return ResponseEntity.ok("Equipe excluída com sucesso");
+                System.out.println("=== EXCLUSÃO CONCLUÍDA COM SUCESSO ===");
+                return ResponseEntity.ok(Map.of(
+                        "success", true,
+                        "message", "Equipe excluída com sucesso"));
             } else {
-                return ResponseEntity.status(500).body("Falha ao excluir equipe");
+                System.out.println("=== FALHA NA EXCLUSÃO ===");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of(
+                                "success", false,
+                                "message", "Falha ao excluir equipe"));
             }
 
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(409)
-                    .body("Não é possível excluir a equipe porque ela está vinculada a outros registros.");
+            System.err.println("VIOLAÇÃO DE INTEGRIDADE: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of(
+                            "success", false,
+                            "message", "Não é possível excluir a equipe porque ela está vinculada a outros registros.",
+                            "error", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500)
-                    .body("Erro interno: " + e.getMessage());
+            System.err.println("ERRO GERAL: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "success", false,
+                            "message", "Erro interno ao excluir equipe",
+                            "error", e.getMessage()));
         }
     }
 

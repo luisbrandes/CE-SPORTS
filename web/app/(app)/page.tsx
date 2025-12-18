@@ -1,195 +1,248 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { useSession } from "@/lib/session";
+import { useRouter } from "next/navigation";
 
-export default function HomePage() {
+interface Projeto {
+  id: number;
+  nome: string;
+  descricao: string;
+  modalidade: string;
+  local: string;
+  dataInicio: string;
+  dataFim: string;
+  responsavel: string;
+  vagasTotais: number;
+  vagasPreenchidas: number;
+}
+
+export default function ProjetosPage() {
   const router = useRouter();
-  const { user, loading } = useSession();
 
-  if (loading)
-    return <p className="text-center py-10 text-gray-500">Carregando...</p>;
+  const [projetos, setProjetos] = useState<Projeto[]>([]);
+  const [inscritos, setInscritos] = useState<number[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  const [filtroNome, setFiltroNome] = useState("");
+  const [filtroModalidade, setFiltroModalidade] = useState("");
+  const [filtroLocal, setFiltroLocal] = useState("");
 
-  function getRoute(target: string) {
-    return user ? target : "/login";
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("http://localhost:8080/api/projetos", {
+          credentials: "include",
+        });
+
+        const data = await res.json();
+
+        let lista: any[] = [];
+
+        if (Array.isArray(data)) lista = data;
+        else if (data?.content) lista = data.content;
+        else if (data?.data) lista = data.data;
+        else if (data?.projetos) lista = data.projetos;
+
+        setProjetos(Array.isArray(lista) ? lista : []);
+
+        const inscRes = await fetch("http://localhost:8080/api/projetos/inscritos", {
+          credentials: "include",
+        });
+
+        const ids = await inscRes.json();
+        setInscritos(Array.isArray(ids) ? ids : []);
+      } catch (err) {
+        console.error("Erro ao carregar projetos:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, []);
+
+  const projetosFiltrados = useMemo(() => {
+    return projetos.filter((p) => {
+      const nome = p.nome.toLowerCase().includes(filtroNome.toLowerCase());
+      const modalidade = p.modalidade.toLowerCase().includes(filtroModalidade.toLowerCase());
+      const local = p.local.toLowerCase().includes(filtroLocal.toLowerCase());
+      return nome && modalidade && local;
+    });
+  }, [filtroNome, filtroModalidade, filtroLocal, projetos]);
+
+  const limparFiltros = () => {
+    setFiltroNome("");
+    setFiltroModalidade("");
+    setFiltroLocal("");
+  };
+
+  async function inscrever(id: number) {
+    try {
+      const res = await fetch(`http://localhost:8080/api/projetos/${id}/inscrever`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!res.ok) throw new Error();
+
+      setInscritos((prev) => [...prev, id]);
+      setProjetos((prev) =>
+        prev.map((p) =>
+          p.id === id ? { ...p, vagasPreenchidas: p.vagasPreenchidas + 1 } : p
+        )
+      );
+    } catch {
+      alert("Erro ao se inscrever");
+    }
   }
 
-  const mainCards = [
-    {
-      icon: "🏆",
-      title: "Campeonatos",
-      desc: "Resultados, inscrições e classificações",
-      href: "/campeonatos",
-    },
-    {
-      icon: "📋",
-      title: "Projetos",
-      desc: "Horários, objetivos e equipes envolvidas",
-      href: "/projetos",
-    },
-    {
-      icon: "📰",
-      title: "Notícias",
-      desc: "Últimas informações do esporte no campus",
-      href: "/noticias",
-    },
-  ];
+  async function cancelar(id: number) {
+    try {
+      const res = await fetch(`http://localhost:8080/api/projetos/${id}/cancelar`, {
+        method: "POST",
+        credentials: "include",
+      });
 
-  const campeonatos = [
-    {
-      title: "Copa Caloura 2025",
-      desc: "Fase de grupos em andamento. Confira os resultados e próximos jogos.",
-    },
-    {
-      title: "Interturmas 2025",
-      desc: "Times das turmas do 2º ano competindo nas quadras do CEFET-MG.",
-    },
-    {
-      title: "Torneio de Vôlei",
-      desc: "Campeonato misto com equipes de diferentes cursos. Semifinais chegando!",
-    },
-  ];
+      if (!res.ok) throw new Error();
 
-  const noticias = [
-    {
-      title: "Equipe de Futsal conquista vitória emocionante",
-      desc: "O time do CEFET-MG venceu o rival por 3x2 na prorrogação.",
-    },
-    {
-      title: "Novos horários de treinos disponíveis",
-      desc: "Os projetos esportivos divulgaram novos horários.",
-    },
-    {
-      title: "Projeto de corrida atrai alunos",
-      desc: "Mais de 100 estudantes participaram do evento.",
-    },
-  ];
+      setInscritos((prev) => prev.filter((x) => x !== id));
+      setProjetos((prev) =>
+        prev.map((p) =>
+          p.id === id ? { ...p, vagasPreenchidas: p.vagasPreenchidas - 1 } : p
+        )
+      );
+    } catch {
+      alert("Erro ao cancelar inscrição");
+    }
+  }
+
+  if (loading)
+    return <p className="text-center mt-10 text-gray-500">Carregando projetos...</p>;
 
   return (
-    <main className="flex flex-col items-center justify-center w-full bg-gray-50 min-h-screen">
+    <main className="container mx-auto px-6 py-8 min-h-screen">
 
-      {/* Banner */}
-      <section
-        className="relative h-[60vh] w-full bg-[url('/img/banner1.jpg')] bg-cover bg-center flex items-center justify-center"
-        aria-label="Banner principal CE Sports"
-      >
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative z-10 text-center text-white max-w-2xl px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 select-none">
-            Participação, Esporte e Comunidade no CEFET-MG
-          </h1>
-          <p className="text-lg opacity-90">
-            Clique em Login para acessar como Aluno ou Administrador.
-          </p>
-        </div>
-      </section>
+     
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <h1 className="text-4xl font-extrabold text-blue-700 select-none">Projetos</h1>
 
-      {/* Cards principais */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl w-full px-6 py-16">
-        {mainCards.map((item) => (
-          <Card
-            key={item.title}
-            onClick={() => router.push(getRoute(item.href))}
-            className="cursor-pointer hover:shadow-xl transition-transform hover:-translate-y-1 text-center p-6 flex flex-col items-center justify-center"
-            role="link"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") router.push(getRoute(item.href));
-            }}
+        <div className="flex gap-4">
+          <Button
+            onClick={() => router.push("/meus-projetos")}
+            className="bg-blue-600 text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition"
           >
-            <div className="text-5xl mb-3">{item.icon}</div>
-            <h3 className="font-bold text-xl text-blue-700">{item.title}</h3>
-            <p className="text-muted-foreground mt-2 text-sm max-w-xs">
-              {item.desc}
-            </p>
-          </Card>
-        ))}
-      </section>
+            Minhas Inscrições
+          </Button>
 
-      {/* Sobre */}
-      <section className="bg-white rounded-2xl shadow-lg p-8 md:p-10 max-w-3xl mx-4 my-10 text-center">
-        <h2 className="text-3xl font-bold text-primary mb-5 select-none">
-          Sobre o CE Sports ⚽
-        </h2>
-        <p className="mb-4 leading-relaxed">
-          O <strong>CE Sports</strong> é o sistema esportivo oficial do{" "}
-          <strong>CEFET-MG</strong>, criado para integrar a comunidade acadêmica.
-        </p>
-        <p className="mb-4 leading-relaxed">
-          Você pode acompanhar campeonatos, participar de projetos esportivos e
-          ficar por dentro das notícias.
-        </p>
-        <p className="leading-relaxed">
-          Seja atleta, organizador ou torcedor — o CE Sports é para você!
-        </p>
-      </section>
-
-      {/* Campeonatos */}
-      <section className="w-full max-w-5xl px-6 py-12">
-        <h2 className="text-3xl font-bold text-primary mb-10 text-center select-none">
-          Campeonatos em Andamento
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {campeonatos.map((item) => (
-            <Card
-              key={item.title}
-              className="p-6 text-center flex flex-col justify-between hover:shadow-lg transition-shadow rounded-lg border border-gray-200"
-            >
-              <h3 className="text-lg font-semibold text-blue-700 mb-3">
-                {item.title}
-              </h3>
-              <p className="text-muted-foreground mb-6">{item.desc}</p>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  alert("Página de detalhes do campeonato ainda não implementada.")
-                }
-                className="mx-auto"
-              >
-                Ver mais
-              </Button>
-            </Card>
-          ))}
+          <Button
+            onClick={() => router.push("/proporProjetos")}
+            className="bg-yellow-500 text-white shadow-md hover:bg-yellow-600 hover:shadow-lg transition"
+          >
+            Propor Projeto
+          </Button>
         </div>
-      </section>
+      </div>
 
-      {/* Notícias */}
-      <section className="w-full max-w-5xl px-6 py-12">
-        <h2 className="text-3xl font-bold text-primary mb-10 text-center select-none">
-          Últimas Notícias
-        </h2>
+   
+      <Card className="p-6 mb-10 bg-white border border-gray-300 shadow-md rounded-lg space-y-6">
+        <h2 className="font-semibold text-xl text-gray-800 select-none">Filtros</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {noticias.map((item) => (
+        <div className="grid md:grid-cols-3 gap-6">
+          <div>
+            <label className="text-sm font-medium text-gray-700">Nome</label>
+            <Input
+              value={filtroNome}
+              onChange={(e) => setFiltroNome(e.target.value)}
+              placeholder="Pesquisar..."
+              className="mt-1"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-700">Modalidade</label>
+            <Input
+              value={filtroModalidade}
+              onChange={(e) => setFiltroModalidade(e.target.value)}
+              placeholder="Ex: Futsal"
+              className="mt-1"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-700">Local</label>
+            <Input
+              value={filtroLocal}
+              onChange={(e) => setFiltroLocal(e.target.value)}
+              placeholder="Ex: Quadra A"
+              className="mt-1"
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+          <p className="text-sm text-gray-600">
+            Mostrando {projetosFiltrados.length} de {projetos.length} projetos
+          </p>
+          <Button variant="outline" onClick={limparFiltros} className="hover:bg-gray-100">
+            Limpar filtros
+          </Button>
+        </div>
+      </Card>
+
+     
+      <section className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projetosFiltrados.map((p) => {
+          const vagasRestantes = p.vagasTotais - p.vagasPreenchidas;
+          const estaInscrito = inscritos.includes(p.id);
+
+          return (
             <Card
-              key={item.title}
-              className="p-6 flex flex-col justify-between hover:shadow-lg transition-shadow rounded-lg border border-gray-200"
+              key={p.id}
+              className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition border border-gray-300 relative flex flex-col"
             >
-              <div>
-                <h3 className="text-lg font-semibold text-blue-700 mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground mb-4">{item.desc}</p>
+              {estaInscrito && (
+                <span className="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  INSCRITO
+                </span>
+              )}
+
+              <h2 className="text-2xl font-bold text-blue-700 mb-2 truncate">{p.nome}</h2>
+
+              <p className="text-sm text-gray-600"><strong>Modalidade:</strong> {p.modalidade}</p>
+              <p className="text-sm text-gray-600"><strong>Local:</strong> {p.local}</p>
+              <p className="text-sm text-gray-600"><strong>Responsável:</strong> {p.responsavel}</p>
+
+              <p className="mt-3 text-sm text-gray-700 flex-grow">{p.descricao}</p>
+
+              <p className="mt-3 text-sm font-semibold text-gray-700">
+                Vagas: {p.vagasPreenchidas} / {p.vagasTotais}
+              </p>
+
+              <div className="mt-5">
+                {!estaInscrito ? (
+                  <Button
+                    disabled={vagasRestantes <= 0}
+                    onClick={() => inscrever(p.id)}
+                    className="w-full bg-blue-600 text-white hover:bg-blue-700 transition"
+                  >
+                    {vagasRestantes > 0 ? "Inscrever-se" : "Sem vagas"}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    onClick={() => cancelar(p.id)}
+                    className="w-full border-red-500 text-red-500 hover:bg-red-50 transition"
+                  >
+                    Cancelar inscrição
+                  </Button>
+                )}
               </div>
-
-              <Link
-                href="#"
-                className="text-accent font-medium hover:underline mx-auto"
-              >
-                Ler mais →
-              </Link>
             </Card>
-          ))}
-        </div>
+          );
+        })}
       </section>
     </main>
   );

@@ -55,4 +55,7 @@ public class PropostaProjeto {
                 .orElse(0.0);
     }
 
+    @Column(nullable = false)
+    private Integer vagasTotais;
+
 }

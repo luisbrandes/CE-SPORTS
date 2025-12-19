@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-
 interface Projeto {
   id: number;
   nome: string;
@@ -28,33 +27,53 @@ interface PropostaProjeto {
   modalidade: string;
   local: string;
   alunoNome: string;
-  mediaAvaliacoes: number;
-  minhaNota?: number;
+  mediaAvaliacoes?: number;
+  minhaNota?: number | null;
+}
+
+interface AvaliacaoResponse {
+  id: number;
+  mediaAvaliacoes?: number;
 }
 
 function Estrelas({
   valor,
   onChange,
+  disabled = false,
+  isLoading = false
 }: {
   valor: number;
   onChange: (v: number) => void;
+  disabled?: boolean;
+  isLoading?: boolean;
 }) {
   return (
-    <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <button
-          key={n}
-          type="button"
-          onClick={() => onChange(n)}
-          className={cn(
-            "text-2xl transition-all duration-200 hover:scale-110",
-            n <= valor ? "text-yellow-400" : "text-gray-300 hover:text-yellow-400"
-          )}
-          aria-label={`Nota ${n} estrelas`}
-        >
-          ★
-        </button>
-      ))}
+    <div className="relative">
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => !disabled && onChange(n)}
+            disabled={disabled || isLoading}
+            className={cn(
+              "text-2xl transition-all duration-200",
+              !disabled && !isLoading && "hover:scale-110",
+              n <= valor ? "text-yellow-500" : "text-gray-300",
+              (disabled || isLoading) && "cursor-not-allowed",
+              !disabled && !isLoading && "hover:text-yellow-400"
+            )}
+            aria-label={`Nota ${n} estrelas`}
+          >
+            ★
+          </button>
+        ))}
+      </div>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded">
+          <div className="w-5 h-5 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
     </div>
   );
 }
@@ -66,6 +85,7 @@ export default function ProjetosPage() {
   const [propostas, setPropostas] = useState<PropostaProjeto[]>([]);
   const [inscritos, setInscritos] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
+  const [avaliando, setAvaliando] = useState<number | null>(null);
 
   const [filtroNome, setFiltroNome] = useState("");
   const [filtroModalidade, setFiltroModalidade] = useState("");
@@ -74,43 +94,91 @@ export default function ProjetosPage() {
   const [filtroPropostaAluno, setFiltroPropostaAluno] = useState("");
   const [filtroPropostaModalidade, setFiltroPropostaModalidade] = useState("");
 
-  useEffect(() => {
-    async function loadData() {
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+
+
+      const projetosRes = await fetch("http://localhost:8080/api/projetos", {
+        credentials: "include",
+      });
+      if (projetosRes.ok) {
+        setProjetos(await projetosRes.json());
+      }
+
+
+      const inscritosRes = await fetch(
+        "http://localhost:8080/api/projetos/inscritos",
+        { credentials: "include" }
+      );
+      if (inscritosRes.ok) {
+        setInscritos(await inscritosRes.json());
+      }
+
+
       try {
-        const projetosRes = await fetch("http://localhost:8080/api/projetos", {
-          credentials: "include",
-        });
-        if (projetosRes.ok) {
-          setProjetos(await projetosRes.json());
-        }
-
-        const inscritosRes = await fetch(
-          "http://localhost:8080/api/projetos/inscritos",
-          { credentials: "include" }
-        );
-        if (inscritosRes.ok) {
-          setInscritos(await inscritosRes.json());
-        }
-
         const propostasRes = await fetch(
           "http://localhost:8080/api/propostas",
-          { credentials: "include" }
+          {
+            credentials: "include",
+            headers: {
+              "Cache-Control": "no-cache"
+            }
+          }
         );
 
         if (propostasRes.ok) {
-          setPropostas(await propostasRes.json());
+          const propostasData = await propostasRes.json();
+          console.log("Propostas carregadas:", propostasData);
+          setPropostas(propostasData);
         } else {
+          console.warn("Erro ao carregar propostas:", propostasRes.status);
           setPropostas([]);
         }
-      } catch (e) {
-        console.error("Erro ao carregar dados", e);
-      } finally {
-        setLoading(false);
+      } catch (propostasError) {
+        console.error("Erro na requisição de propostas:", propostasError);
+        setPropostas([]);
       }
-    }
 
+    } catch (e) {
+      console.error("Erro geral ao carregar dados", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadData();
   }, []);
+
+
+ const carregarPropostas = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/api/propostas", {
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      if (!res.ok) return;
+
+      const data: any[] = await res.json();
+
+      setPropostas((prev) =>
+        data.map((p) => {
+          const anterior = prev.find((x) => x.id === p.id);
+
+          return {
+            ...p,
+            mediaAvaliacoes: typeof p.mediaAvaliacoes === "number" ? p.mediaAvaliacoes : 0,
+            minhaNota: anterior?.minhaNota ?? p.minhaNota ?? null,
+          };
+        })
+      );
+    } catch (e) {
+      console.error("Erro ao carregar propostas", e);
+    }
+  };
 
   const projetosFiltrados = useMemo(() => {
     return projetos.filter(
@@ -167,9 +235,21 @@ export default function ProjetosPage() {
     );
   }
 
-  async function avaliarProposta(propostaId: number, nota: number) {
+
+   async function avaliarProposta(propostaId: number, nota: number) {
+    if (avaliando === propostaId) return;
+
+    setAvaliando(propostaId);
+
+  
+    setPropostas((prev) =>
+      prev.map((p) =>
+        p.id === propostaId ? { ...p, minhaNota: nota } : p
+      )
+    );
+
     try {
-      const res = await fetch(
+      await fetch(
         `http://localhost:8080/api/propostas/${propostaId}/avaliar`,
         {
           method: "POST",
@@ -179,35 +259,25 @@ export default function ProjetosPage() {
         }
       );
 
-      if (res.status === 401 || res.status === 403) {
-        alert("Você não tem permissão para avaliar esta proposta.");
-        return;
-      }
-
-      if (!res.ok) throw new Error();
-
-      const data = await res.json();
-
-      setPropostas((prev) =>
-        prev.map((p) =>
-          p.id === propostaId
-            ? {
-                ...p,
-                minhaNota: nota,
-                mediaAvaliacoes: data.mediaAvaliacoes,
-              }
-            : p
-        )
-      );
-    } catch {
-      alert("Erro ao avaliar proposta");
+      
+      await carregarPropostas();
+    } catch (e) {
+      console.error("Erro ao avaliar", e);
+    } finally {
+      setAvaliando(null);
     }
   }
+
+
+
 
   if (loading) {
     return (
       <main className="container mx-auto px-6 py-12 min-h-screen ">
-        <p className="text-center text-gray-500 text-xl mt-20">Carregando projetos...</p>
+        <div className="flex flex-col items-center justify-center mt-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-center text-gray-500 text-xl">Carregando projetos...</p>
+        </div>
       </main>
     );
   }
@@ -228,13 +298,13 @@ export default function ProjetosPage() {
       <div className="flex flex-wrap gap-3 justify-center mb-12 max-w-4xl mx-auto">
         <Button
           variant="outline"
-          onClick={() => router.push("/projetos/propostas/minhas")}
+          onClick={() => router.push("/projetos/proposta/minhas")}
           className="hover:bg-gray-100"
         >
           Minhas Propostas
         </Button>
-        <Button 
-          onClick={() => router.push("/projetos/propostas/novas")}
+        <Button
+          onClick={() => router.push("/projetos/proposta/novas")}
           className="bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg"
         >
           Propor Projeto
@@ -246,6 +316,7 @@ export default function ProjetosPage() {
         >
           Minhas Inscrições
         </Button>
+
       </div>
 
       {/* Filtros Projetos */}
@@ -369,11 +440,15 @@ export default function ProjetosPage() {
         })}
       </section>
 
+
       {/* Propostas */}
       <section className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-extrabold text-blue-700 mb-8 text-center select-none">
-          Propostas de Novos Projetos
-        </h2>
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-extrabold text-blue-700 select-none">
+            Propostas de Novos Projetos
+          </h2>
+
+        </div>
 
         {/* Filtros Propostas */}
         <Card className="p-6 mb-10 bg-white border border-gray-300 shadow-md rounded-xl space-y-6">
@@ -414,8 +489,8 @@ export default function ProjetosPage() {
             <p className="text-sm text-gray-600 select-text">
               Mostrando {propostasFiltradas.length} de {propostas.length} propostas
             </p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setFiltroPropostaNome("");
                 setFiltroPropostaAluno("");
@@ -433,8 +508,8 @@ export default function ProjetosPage() {
             <p className="text-gray-500 text-lg mb-6 select-text">
               Nenhuma proposta encontrada com os filtros aplicados.
             </p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="hover:bg-gray-100"
               onClick={() => {
                 setFiltroPropostaNome("");
@@ -472,19 +547,31 @@ export default function ProjetosPage() {
                 <div className="space-y-3 pt-4 border-t border-gray-200">
                   <div>
                     <label className="text-sm font-medium text-gray-700 block mb-2 select-none">
-                      Sua avaliação
+                      Sua avaliação {p.minhaNota && `(${p.minhaNota} estrelas)`}
                     </label>
                     <Estrelas
                       valor={p.minhaNota ?? 0}
                       onChange={(nota) => avaliarProposta(p.id, nota)}
+                      disabled={false}
+                      isLoading={avaliando === p.id}
                     />
                   </div>
 
-                  <p className="text-sm text-gray-700 text-center bg-blue-50 p-2 rounded-lg font-semibold">
-                    Média: {p.mediaAvaliacoes != null
-                      ? p.mediaAvaliacoes.toFixed(1)
-                      : "Sem avaliações"}
-                  </p>
+                  <div className="bg-blue-50 p-3 rounded-lg">
+                    <p className="text-sm font-semibold text-blue-700 text-center">
+                      Média geral:{" "}
+                      <span className="text-lg">
+                        {typeof p.mediaAvaliacoes === "number"
+                          ? p.mediaAvaliacoes.toFixed(1)
+                          : "0.0"}
+                      </span>
+                      {p.minhaNota && (
+                        <span className="block text-xs text-gray-600 mt-1">
+                          Sua avaliação: {p.minhaNota} estrelas
+                        </span>
+                      )}
+                    </p>
+                  </div>
                 </div>
               </Card>
             ))}

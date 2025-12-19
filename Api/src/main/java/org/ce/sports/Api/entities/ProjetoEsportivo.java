@@ -1,9 +1,12 @@
 package org.ce.sports.Api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import org.ce.sports.Api.entities.User;
 
 @Entity
 @Table(name = "projetos_esportivos")
@@ -24,7 +27,23 @@ public class ProjetoEsportivo {
 
     private LocalDate dataInicio;
     private LocalDate dataFim;
+
     private String local;
     private String modalidade;
     private String responsavel;
+
+    @Column(nullable = false)
+    private Integer vagasTotais = 0;
+
+    @Column(nullable = false)
+    private Integer vagasPreenchidas = 0;
+
+    @ManyToMany
+    @JoinTable(
+            name = "projeto_inscricoes",
+            joinColumns = @JoinColumn(name = "projeto_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @JsonIgnore
+    private Set<User> inscritos = new HashSet<>();
 }

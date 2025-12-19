@@ -27,6 +27,7 @@ public class AdminInitializer implements CommandLineRunner {
                     .role(RoleEnum.ROLE_ADMIN)
                     .verified(true)
                     .systemAdmin(true)
+                    .receberNotificacoes(true)
                     .build();
 
             userRepository.save(admin);

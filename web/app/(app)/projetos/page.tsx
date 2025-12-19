@@ -126,7 +126,7 @@ export default function Page() {
           onClick={() => router.push("/proposta/novaProposta")}
           className="px-10 py-6 text-xl bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition rounded-xl"
         >
-          ➕ Propor Novo Projeto
+           Propor Novo Projeto
         </Button>
       </div>
 

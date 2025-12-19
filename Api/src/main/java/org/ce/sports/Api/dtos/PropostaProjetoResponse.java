@@ -1,41 +1,24 @@
 package org.ce.sports.Api.dtos;
 
-public class PropostaProjetoEdicaoDTO {
 
+import lombok.Builder;
+import lombok.Data;
+import java.time.LocalDate;
+
+@Data
+@Builder
+public class PropostaProjetoResponse {
+
+    private Long id;
     private String nome;
     private String descricao;
     private String modalidade;
     private String local;
 
-    public String getNome() {
-        return nome;
-    }
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    private String status;
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getModalidade() {
-        return modalidade;
-    }
-
-    public void setModalidade(String modalidade) {
-        this.modalidade = modalidade;
-    }
-
-    public String getLocal() {
-        return local;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
-    }
+    private String alunoNome;
 }

@@ -130,6 +130,13 @@ export default function ProjetosPage() {
           >
             + Adicionar Projeto
           </Button>
+          <Button
+            onClick={() => router.push("/admin/projetos/propostas")}
+            variant="outline"
+            className="w-full sm:w-auto border-[#E5E7F0] text-[#14539A] hover:bg-[#F2F4FB] font-semibold rounded-full px-5 sm:px-6 py-2.5 h-auto"
+          >
+            📄 Propostas de Projetos
+          </Button>
         </div>
       </header>
 

@@ -127,7 +127,7 @@ export default function ProjetosPage() {
 
      
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h1 className="text-4xl font-extrabold text-blue-700 select-none">Projetos</h1>
+        <h1 className="text-4xl font-extrabold text-blue-700 select-none">Projetossss</h1>
 
         <div className="flex gap-4">
           <Button

@@ -69,6 +69,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/projetos/**").hasRole("ADMIN")
 
                         // --------------------------
+                        // PROPOSTAS
+                        // --------------------------
+                        .requestMatchers(HttpMethod.POST, "/api/propostas").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/propostas").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/propostas/minhas").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/propostas/*/avaliar").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/propostas/**").authenticated()
+
+                        // --------------------------
                         // TREINOS
                         // --------------------------
                         .requestMatchers(HttpMethod.GET, "/api/treinos/**").permitAll()
@@ -149,14 +158,16 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of("http://localhost:3000"));
-        config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
+
+
+        config.setExposedHeaders(List.of("Set-Cookie"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-
         return source;
     }
+
 }

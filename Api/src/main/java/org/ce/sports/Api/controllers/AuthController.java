@@ -89,5 +89,14 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(response);
+        
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> req) {
+        return authService.forgotPassword(req);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> req) {
+        return authService.resetPassword(req);
     }
 }

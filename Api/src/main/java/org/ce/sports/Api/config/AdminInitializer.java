@@ -27,10 +27,11 @@ public class AdminInitializer implements CommandLineRunner {
                     .role(RoleEnum.ROLE_ADMIN)
                     .verified(true)
                     .systemAdmin(true)
+                    .receberNotificacoes(true)
                     .build();
 
             userRepository.save(admin);
-            System.out.println("✅ Usuário admin padrão criado: " + email + " / senha: admin123");
+            System.out.println("✅ Usuário admin padrão criado: " + email + " / senha: ces-123");
         } else {
             System.out.println("ℹ️ Admin padrão já existe, não foi recriado.");
         }

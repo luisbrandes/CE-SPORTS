@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ce.sports.Api.entities.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+<<<<<<< HEAD
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/api/auth/**",
@@ -41,22 +43,102 @@ public class SecurityConfig {
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
                 .anyRequest().authenticated());
+=======
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
-        http.sessionManagement(session -> session.maximumSessions(1));
-        http.csrf(csrf -> csrf.disable());
-        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                        // Liberação para CORS preflight (OPTIONS)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+<<<<<<< HEAD
         http.logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .clearAuthentication(true)
                 .permitAll());
+=======
+                        // Login, documentação e H2 console
+                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**")
+                        .permitAll()
+
+                        // --------------------------
+                        // NOTIFICAÇÕES (CORRIGIDO)
+                        // --------------------------
+                        .requestMatchers(HttpMethod.GET, "/api/notificacoes/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/notificacoes/**").authenticated()
+
+                        // --------------------------
+                        // NOTÍCIAS
+                        // --------------------------
+                        .requestMatchers(HttpMethod.GET, "/api/noticias/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/noticias/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/noticias/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/noticias/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/noticias/**").hasRole("ADMIN")
+
+                        // --------------------------
+                        // PROJETOS
+                        // --------------------------
+                        .requestMatchers(HttpMethod.GET, "/api/projetos/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/projetos").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/projetos/*/inscrever").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/projetos/*/cancelar").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/projetos/**").hasRole("ADMIN")
+
+                        // --------------------------
+                        // PROPOSTAS
+                        // --------------------------
+                        .requestMatchers(HttpMethod.POST, "/api/propostas").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/propostas").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/propostas/minhas").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/propostas/*/avaliar").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/propostas/**").authenticated()
+
+                        // --------------------------
+                        // TREINOS
+                        // --------------------------
+                        .requestMatchers(HttpMethod.GET, "/api/treinos/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/treinos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/treinos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/treinos/**").hasRole("ADMIN")
+
+                        // --------------------------
+                        // OUTRAS ROTAS ADMIN
+                        // --------------------------
+                        .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // ROTAS DE ALUNO
+                        .requestMatchers("/api/aluno/**")
+                        .hasAnyRole("USER", "ALUNO", "ADMIN")
+
+                        // Qualquer outra rota → autenticado
+                        .anyRequest().authenticated()
+                )
+
+                // Necessário para H2 Console
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
+                // Logout
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .permitAll()
+                );
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
         return http.build();
     }
 
+    // ========================================
+    // USER DETAILS
+    // ========================================
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
@@ -68,6 +150,9 @@ public class SecurityConfig {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
+    // ========================================
+    // AUTENTICAÇÃO
+    // ========================================
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -86,10 +171,14 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // ========================================
+    // CORS
+    // ========================================
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
+<<<<<<< HEAD
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:3000",
                 "http://127.0.0.1:3000",
@@ -97,13 +186,19 @@ public class SecurityConfig {
                 "http://127.0.0.1:8080",
                 "http://192.168.*.*:8080"));
 
+=======
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
+
+
+        config.setExposedHeaders(List.of("Set-Cookie"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }

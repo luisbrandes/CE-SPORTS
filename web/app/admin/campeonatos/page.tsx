@@ -13,6 +13,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// 👇 IMPORT DO ÍCONE (ÚNICA COISA EXTRA)
+import { Pencil } from "lucide-react";
+
 interface Equipe {
   id: number;
   nome: string;
@@ -47,7 +50,6 @@ export default function CampeonatosPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Estados para filtros
   const [filtroEquipe, setFiltroEquipe] = useState<string>("todos");
   const [filtroNome, setFiltroNome] = useState<string>("");
   const [todasEquipes, setTodasEquipes] = useState<string[]>([]);
@@ -65,7 +67,6 @@ export default function CampeonatosPage() {
         const data = await res.json();
         setCampeonatos(data);
 
-        // Extrair todas as equipes únicas para o filtro
         const equipesSet = new Set<string>();
         data.forEach((camp: Campeonato) => {
           camp.equipes.forEach((equipe: Equipe) => {
@@ -74,7 +75,6 @@ export default function CampeonatosPage() {
         });
         setTodasEquipes(Array.from(equipesSet).sort());
 
-        // Buscar classificação para cada campeonato
         const classificacoesData: Record<number, ClassificacaoEquipe[]> = {};
         for (const camp of data) {
           try {
@@ -88,12 +88,7 @@ export default function CampeonatosPage() {
               const classificacaoData = await classificacaoRes.json();
               classificacoesData[camp.id] = classificacaoData;
             }
-          } catch (err) {
-            console.error(
-              `Erro ao buscar classificação do campeonato ${camp.id}:`,
-              err
-            );
-          }
+          } catch (err) {}
         }
         setClassificacoes(classificacoesData);
       } catch (err: any) {
@@ -105,15 +100,12 @@ export default function CampeonatosPage() {
     fetchCampeonatos();
   }, []);
 
-  // Filtrar campeonatos
   const campeonatosFiltrados = useMemo(() => {
     return campeonatos.filter((camp) => {
-      // Filtro por nome do campeonato
       const passaFiltroNome =
         filtroNome === "" ||
         camp.nome.toLowerCase().includes(filtroNome.toLowerCase());
 
-      // Filtro por equipe
       const passaFiltroEquipe =
         filtroEquipe === "todos" ||
         camp.equipes.some((e) => e.nome === filtroEquipe);
@@ -133,6 +125,7 @@ export default function CampeonatosPage() {
         Carregando campeonatos...
       </p>
     );
+
   if (error)
     return <p className="text-center text-red-600 mt-10">Erro: {error}</p>;
 
@@ -160,7 +153,6 @@ export default function CampeonatosPage() {
         </Link>
       </div>
 
-      {/* Seção de Filtros */}
       <Card className="p-4 mb-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
@@ -200,7 +192,6 @@ export default function CampeonatosPage() {
           </div>
         </div>
 
-        {/* Contador de resultados */}
         <div className="mt-3 text-sm text-gray-600">
           Mostrando {campeonatosFiltrados.length} de {campeonatos.length}{" "}
           campeonatos
@@ -209,7 +200,6 @@ export default function CampeonatosPage() {
         </div>
       </Card>
 
-      {/* Lista de Campeonatos */}
       <section className="grid sm:grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
         {campeonatosFiltrados.length === 0 ? (
           <div className="col-span-2 text-center py-10">
@@ -230,9 +220,21 @@ export default function CampeonatosPage() {
                 className="p-4 hover:shadow-lg transition-shadow"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold text-black">
-                    {camp.nome}
-                  </h3>
+
+                  {/* 👇 ÚNICA ALTERAÇÃO: ÍCONE AO LADO DO NOME */}
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-semibold text-black">
+                      {camp.nome}
+                    </h3>
+
+                    <Link href={`/admin/campeonatos/${camp.id}/editar`}>
+                      <Pencil
+                        size={20}
+                        className="text-gray-600 hover:text-blue-600 cursor-pointer transition"
+                      />
+                    </Link>
+                  </div>
+
                   <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
                     {camp.equipes.length} equipes
                   </span>

@@ -7,8 +7,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjetoEsportivoDTO{
-
+public class ProjetoEsportivoDTO {
     private String nome;
     private String descricao;
     private LocalDate dataInicio;
@@ -16,4 +15,5 @@ public class ProjetoEsportivoDTO{
     private String local;
     private String modalidade;
     private String responsavel;
+    private Integer vagasTotais;
 }

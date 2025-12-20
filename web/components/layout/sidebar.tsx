@@ -1,5 +1,6 @@
 "use client";
 
+<<<<<<< HEAD
 import Link from "next/link";
 import {
   Dumbbell,
@@ -14,12 +15,23 @@ import {
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useSession } from "@/lib/session";
+=======
+import Link from "next/link"
+import {
+  Dumbbell, Users, Settings, LogOut, Newspaper,
+  Trophy, Medal, Calendar, Bell, UserCircle
+} from "lucide-react"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
+import { useSession } from "@/lib/session"
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
 interface SidebarProps {
   onNavigate?: () => void;
 }
 
 export function Sidebar({ onNavigate }: SidebarProps) {
+<<<<<<< HEAD
   const pathname = usePathname();
   const { logout } = useSession();
 
@@ -35,6 +47,23 @@ export function Sidebar({ onNavigate }: SidebarProps) {
     { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
     { href: "/admin/projetos", label: "Projetos", icon: Medal },
   ];
+=======
+  const pathname = usePathname()
+  const { logout, user } = useSession()
+
+  const isAdmin = user?.role === "ADMIN"
+
+  const navItems = [
+    { href: "/admin", label: "Dashboard", icon: Dumbbell },
+    { href: "/admin/treino", label: "Treino", icon: Calendar },
+    { href: "/admin/aprovacoesContas", label: "Usuários Pendentes", icon: Users },
+    { href: "/admin/noticia", label: "Notícias", icon: Newspaper },
+    { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
+    { href: "/admin/projetos", label: "Projetos", icon: Medal },
+    { href: "/admin/notificacoes", label: "Notificações", icon: Bell },
+    { href: "/", label: "Área do Aluno", icon: UserCircle}
+  ]
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
   return (
     <aside className="flex flex-col justify-between h-full">
@@ -63,6 +92,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
               {label}
             </Link>
           ))}
+
         </nav>
       </div>
 

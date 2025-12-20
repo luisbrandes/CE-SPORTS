@@ -9,60 +9,91 @@ import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
 export function Header() {
+<<<<<<< HEAD
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+=======
+  const [isOpen, setIsOpen] = useState(false)
+  const [userName, setUserName] = useState<string | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
-  // 🔹 Verifica se há usuário logado ao carregar
   useEffect(() => {
     const fetchUser = async () => {
       try {
+<<<<<<< HEAD
         const data = await apiFetch("/auth/me");
         if (data?.user) {
           setUserName(data.user.nome || data.user.email || "Usuário");
+=======
+        const data = await apiFetch("/auth/me")
+
+        if (data?.user) {
+          setUserName(data.user.nome || data.user.email)
+          setIsAdmin(data.user.role === "ROLE_ADMIN")
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
         } else {
           setUserName(null);
         }
+<<<<<<< HEAD
       } catch {
         setUserName(null);
+=======
+      } catch (e) {
+        console.error("Erro no /auth/me", e)
+        setUserName(null)
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
       } finally {
         setLoading(false);
       }
+<<<<<<< HEAD
     };
     fetchUser();
   }, []);
+=======
+    }
 
-  // 🔹 Logout
+    fetchUser()
+  }, [])
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
+
   const handleLogout = async () => {
     try {
+<<<<<<< HEAD
       await apiFetch("/auth/logout", { method: "POST" });
     } catch {
       // ignora erro
     } finally {
       setUserName(null);
       router.push("/login");
+=======
+      await apiFetch("/auth/logout", { method: "POST" })
+    } catch {}
+    finally {
+      setUserName(null)
+      router.push("/login")
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
     }
   };
 
   return (
-    <header
-      className={cn(
-        "w-full bg-secondary text-secondary-foreground shadow-sm sticky top-0 z-50"
-      )}
-    >
+    <header className={cn("w-full bg-secondary text-secondary-foreground shadow-sm sticky top-0 z-50")}>
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
+
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-lg font-bold tracking-wide text-white">
-            CE Sports
-          </span>
+        <Link href="/" className="flex items-center gap-2 text-white">
+          <span className="text-lg font-bold tracking-wide select-none">CE Sports</span>
         </Link>
 
-        {/* Navegação Desktop */}
-        <nav className="hidden md:flex items-center justify-end gap-8 ml-auto text-right">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8 ml-auto">
           {!loading && userName ? (
             <>
+<<<<<<< HEAD
               <Link
                 href="/aluno/campeonatos"
                 className="text-sm font-medium text-white/90 hover:text-accent transition-colors"
@@ -93,57 +124,75 @@ export function Header() {
               >
                 Contato
               </Link>
+=======
+              <Link href="/campeonatos" className="text-sm hover:text-accent transition-colors">Campeonatos</Link>
+              <Link href="/projetos" className="text-sm hover:text-accent transition-colors">Projetos</Link>
+              <Link href="/noticias" className="text-sm hover:text-accent transition-colors">Notícias</Link>
+              <Link href="/contato" className="text-sm hover:text-accent transition-colors">Contato</Link>
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
-              {/* Nome + Logout */}
-              <div className="flex items-center gap-3 text-white">
-                <span className="font-medium">👋 {userName}</span>
+              {isAdmin && (
+                <Link href="/admin" className="text-sm hover:text-accent transition-colors">Painel Admin</Link>
+              )}
+
+              <div className="flex items-center gap-4 text-white ml-6">
+                <span className="font-medium select-text">👋 {userName}</span>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={handleLogout}
-                  className="text-white hover:bg-blue-800"
+                  className="text-white hover:bg-blue-800 transition-colors"
                 >
-                  <LogOut size={16} />
-                  Sair
+                  <LogOut size={16} /> Sair
                 </Button>
               </div>
             </>
           ) : (
-            // 🔹 Apenas botão de login se não estiver logado
             !loading && (
-              <Link href="/login">
-                <Button variant="primary" size="sm" className="ml-2">
-                  Login
-                </Button>
+              <Link href="/login"  className="ml-2">
+                <Button variant="primary" size="sm">Login</Button>
               </Link>
             )
           )}
         </nav>
 
-        {/* Botão Menu Mobile */}
+        {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-accent"
+          className="md:hidden text-accent focus:outline-none"
+          aria-label="Toggle menu"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Navegação Mobile */}
+      {/* Mobile Navigation */}
       {isOpen && (
-        <nav className="md:hidden bg-secondary text-white flex flex-col items-center gap-4 py-4 border-t border-border animate-fade-in">
+        <nav className="md:hidden bg-secondary text-white flex flex-col items-center gap-4 py-4 border-t">
           {!loading && userName ? (
             <>
-              <Link href="/campeonatos" onClick={() => setIsOpen(false)}>
+              <Link href="/campeonatos" onClick={() => setIsOpen(false)} className="w-full text-center py-2 hover:text-accent transition-colors">
                 Campeonatos
               </Link>
-              <Link href="/projetos" onClick={() => setIsOpen(false)}>
+              <Link href="/projetos" onClick={() => setIsOpen(false)} className="w-full text-center py-2 hover:text-accent transition-colors">
                 Projetos
               </Link>
-              <Link href="/noticias" onClick={() => setIsOpen(false)}>
+              <Link href="/noticias" onClick={() => setIsOpen(false)} className="w-full text-center py-2 hover:text-accent transition-colors">
                 Notícias
               </Link>
-              <span className="font-medium">{userName}</span>
+
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full text-center py-2 text-sm hover:text-accent transition-colors"
+                >
+                  Painel Admin
+                </Link>
+              )}
+
+              <span className="font-medium py-2 select-text">{userName}</span>
+
               <Button
                 variant="ghost"
                 size="sm"
@@ -151,17 +200,15 @@ export function Header() {
                   handleLogout();
                   setIsOpen(false);
                 }}
+                className="w-full"
               >
-                <LogOut size={16} />
-                Sair
+                <LogOut size={16} /> Sair
               </Button>
             </>
           ) : (
             !loading && (
-              <Link href="/login" onClick={() => setIsOpen(false)}>
-                <Button variant="primary" size="sm">
-                  Login
-                </Button>
+              <Link href="/login" onClick={() => setIsOpen(false)} className="w-full">
+                <Button variant="primary" size="sm" className="w-full">Login</Button>
               </Link>
             )
           )}

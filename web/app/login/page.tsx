@@ -15,39 +15,39 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
 
- 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
 
-  if (!email || !senha) {
-    alert("Por favor, preencha todos os campos.")
-    return
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
 
-  try {
-    const res = await fetch("http://localhost:8080/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ email, senha }),
-    })
-
-    const data = await res.json().catch(() => ({})) 
-
-    if (!res.ok) {
-      const errorMessage =
-        data?.error || data?.message || `Erro ${res.status}: ${res.statusText}`
-      throw new Error(errorMessage)
+    if (!email || !senha) {
+      alert("Por favor, preencha todos os campos.")
+      return
     }
+
+    try {
+      const res = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, senha }),
+      })
+
+      const data = await res.json().catch(() => ({}))
+
+      if (!res.ok) {
+        const errorMessage =
+          data?.error || data?.message || `Erro ${res.status}: ${res.statusText}`
+        throw new Error(errorMessage)
+      }
       setMessage("✅ Login realizado com sucesso! Redirecionando...")
       setTimeout(() => {
         router.push(data.redirect)
       }, 1500)
-  } catch (err: any) {
-    console.error("❌ Erro no login:", err)
-    alert("❌ Erro: " + err.message)
+    } catch (err: any) {
+      console.error("❌ Erro no login:", err)
+      alert("❌ Erro: " + err.message)
+    }
   }
-}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-500 p-6">
@@ -105,6 +105,9 @@ export default function LoginPage() {
           </Link>
           <Link href="/" className="text-blue-500 hover:underline">
             ← Voltar para o site
+          </Link>
+          <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+            Esqueci minha senha
           </Link>
         </div>
       </Card>

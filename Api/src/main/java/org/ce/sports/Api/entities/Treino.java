@@ -1,31 +1,63 @@
 package org.ce.sports.Api.entities;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "treinos")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
+@ToString
 public class Treino {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String modalidade;
-    private LocalDateTime dataHora;
+
+    @Column(nullable = false)
+    private LocalTime horaInicio;
+
+    @Column(nullable = false)
+    private LocalTime horaFim;
+
+    @Column(nullable = false)
     private String local;
+
+    @Column(nullable = false)
     private String professor;
+
+    @Column(nullable = false)
     private Integer vagasTotais;
+
+    @Column(nullable = false)
+    private String status = "ATIVO";
+
+    // 🔹 Período do treino recorrente
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
+
+    // 🔹 Se não for recorrente, salva somente 1 data
+    private LocalDate data;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "treino_dias", joinColumns = @JoinColumn(name = "treino_id"))
+    @Column(name = "dia_semana")
+    private List<String> diasDaSemana;
+
+    @Column(nullable = false)
+    private boolean recorrente = false;
+
+    @Transient
+    private List<LocalDate> todasDatas;
+
+
 }

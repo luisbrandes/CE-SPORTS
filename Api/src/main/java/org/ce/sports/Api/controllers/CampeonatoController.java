@@ -1,27 +1,27 @@
 package org.ce.sports.Api.controllers;
 
-import org.ce.sports.Api.dtos.CampeonatoRequest;
-import org.ce.sports.Api.dtos.CampeonatoResponse;
-import org.ce.sports.Api.dtos.EquipeResponse;
-import org.ce.sports.Api.dtos.ClassificacaoEquipe;
+import lombok.RequiredArgsConstructor;
+import org.ce.sports.Api.dtos.*;
 import org.ce.sports.Api.entities.Campeonato;
 import org.ce.sports.Api.entities.Equipe;
 import org.ce.sports.Api.enums.ModalidadeEnum;
 import org.ce.sports.Api.entities.repositories.CampeonatoRepository;
 import org.ce.sports.Api.entities.repositories.EquipeRepository;
+import org.ce.sports.Api.services.CampeonatoService;
 import org.ce.sports.Api.services.ClassificacaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+import org.ce.sports.Api.enums.ModalidadeEnum;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/campeonato")
 public class CampeonatoController {
+
     private final CampeonatoRepository campeonatoRepository;
     private final EquipeRepository equipeRepository;
     private final ClassificacaoService classificacaoService;
@@ -48,7 +48,7 @@ public class CampeonatoController {
         for (String nomeEquipe : request.equipes()) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
                     .orElseGet(() -> equipeRepository.save(
-                            new Equipe(nomeEquipe, ModalidadeEnum.FUTEBOL) // Modalidade padrão
+                            new Equipe(nomeEquipe, ModalidadeEnum.FUTEBOL) 
                     ));
             equipes.add(equipe);
         }
@@ -149,5 +149,14 @@ public class CampeonatoController {
 
         campeonatoRepository.save(campeonato);
         return ResponseEntity.ok("Equipes adicionadas com sucesso!");
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> atualizarParcial(
+            @PathVariable Long id,
+            @RequestBody CampeonatoPatchRequest request
+    ) {
+        campeonatoService.atualizarParcial(id, request);
+        return ResponseEntity.ok("Campeonato atualizado (PATCH)!");
     }
 }

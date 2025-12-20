@@ -4,12 +4,20 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+<<<<<<< HEAD
 import org.ce.sports.Api.enums.ModalidadeEnum;
 
+=======
+import lombok.Getter;
+import lombok.Setter;
+import org.ce.sports.Api.enums.ModalidadeEnum;
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "equipes")
+@Getter
+@Setter
 public class Equipe {
 
     @Id
@@ -24,6 +32,7 @@ public class Equipe {
     private Set<Campeonato> campeonatos = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
+<<<<<<< HEAD
     @JoinTable(name = "equipe_aluno", joinColumns = @JoinColumn(name = "equipe_id"), inverseJoinColumns = @JoinColumn(name = "aluno_id"))
     private Set<User> integrantes = new HashSet<>();
 
@@ -36,10 +45,22 @@ public class Equipe {
 
     @Column(name = "ativo", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean ativo = true;
+=======
+    @JoinTable(
+            name = "equipe_aluno",
+            joinColumns = @JoinColumn(name = "equipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "aluno_id")
+    )
+    private Set<User> integrantes = new HashSet<>();
+
+    private ModalidadeEnum modalidade;
+
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
     public Equipe() {
     }
 
+<<<<<<< HEAD
     public Equipe(String nome, ModalidadeEnum modalidade) {
         this.nome = nome;
         this.modalidade = modalidade;
@@ -119,3 +140,17 @@ public class Equipe {
         this.campeonatos.remove(campeonato);
     }
 }
+=======
+
+    public Equipe(String nome,
+                  Set<Campeonato> campeonatos,
+                  Set<User> integrantes,
+                  ModalidadeEnum modalidade) {
+        this.nome = nome;
+        this.campeonatos = campeonatos;
+        this.integrantes = integrantes;
+        this.modalidade = modalidade;
+    }
+
+}
+>>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a

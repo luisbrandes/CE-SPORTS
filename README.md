@@ -120,7 +120,7 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 | Caso de Uso | Desenvolvedor | Função |
 |:-------------|:---------------|:--------|
 | **CSU02** | **Luís** | Atualizar informações esportivas |
-| **CSU04** | **Miguel** | Visualizar classificação de equipes |
+| **CSU04** | **Miguel** | Integração entre partidas, campeonatos e equipes |
 | **CSU01** | **Rúbia** | Visualizar horários e locais de treinos |
 | **CSU10** | **Rúbia** | Editar dados de treino |
 | **CSU05** | **Mariana** | Enviar notificações aos usuários |
@@ -136,7 +136,7 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 |:-------------|:---------------|:--------|
 | **CSU07** | **Luís** | Inscrição e monitoramento de time |
 | **CSU18** | **Rúbia** | Propor projeto esportivo |
-| **CSU17** | **Miguel** | Visualizar estatísticas do time |
+| **CSU17** | **Miguel** | Gestão de time |
 | **CSU20** | **Mariana** | Avaliar projetos |
 | **CSU08** | **Ísis** | Ver informações de participação |
 

@@ -23,20 +23,29 @@ public class PropostaProjetoController {
     private final PropostaProjetoService service;
     private final UserRepository userRepository;
 
-    // ---------------------- CRIAR ----------------------
+    // ----------- CRIAR -----------
     @PostMapping
     public ResponseEntity<PropostaProjetoResponse> criar(
             @RequestBody PropostaProjetoDTO dto,
             Authentication auth
     ) {
-        return ResponseEntity.ok(toResponse(
-                service.criar(dto, auth.getName())
-        ));
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        return ResponseEntity.ok(
+                toResponse(service.criar(dto, auth.getName()))
+        );
     }
 
-    // ---------------------- MINHAS ----------------------
+    // ----------- MINHAS -----------
     @GetMapping("/minhas")
     public ResponseEntity<List<PropostaProjetoResponse>> minhas(Authentication auth) {
+
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(401).build();
+        }
+
         return ResponseEntity.ok(
                 service.listarMinhas(auth.getName())
                         .stream()
@@ -45,21 +54,29 @@ public class PropostaProjetoController {
         );
     }
 
-    // ---------------------- EDITAR ----------------------
+    // ----------- EDITAR -----------
     @PatchMapping("/{id}")
     public ResponseEntity<PropostaProjetoResponse> editar(
             @PathVariable Long id,
             @RequestBody PropostaProjetoDTO dto,
             Authentication auth
     ) {
-        return ResponseEntity.ok(toResponse(
-                service.atualizar(id, dto, auth.getName())
-        ));
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        return ResponseEntity.ok(
+                toResponse(service.atualizar(id, dto, auth.getName()))
+        );
     }
 
-    // ---------------------- LISTAR TODAS (COM AVALIAÇÕES) ----------------------
+    // ----------- LISTAR TODAS (COM AVALIAÇÕES) -----------
     @GetMapping
     public ResponseEntity<List<PropostaResponseDTO>> listar(Authentication auth) {
+
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(401).build();
+        }
 
         User usuario = userRepository.findByEmail(auth.getName())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -69,29 +86,29 @@ public class PropostaProjetoController {
         );
     }
 
-    // ---------------------- EXCLUIR ----------------------
+    // ----------- EXCLUIR -----------
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(
             @PathVariable Long id,
             Authentication auth
     ) {
+        if (auth == null || auth.getName() == null) {
+            return ResponseEntity.status(401).build();
+        }
+
         service.excluir(id, auth.getName());
         return ResponseEntity.noContent().build();
     }
 
-    // ---------------------- APROVAR (ADMIN) ----------------------
+    // ----------- APROVAR (ADMIN) -----------
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/aprovar")
-    public ResponseEntity<?> aprovar(@PathVariable Long id) {
-        try {
-            service.aprovar(id);
-            return ResponseEntity.ok().build();
-        } catch (IllegalStateException | IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Void> aprovar(@PathVariable Long id) {
+        service.aprovar(id);
+        return ResponseEntity.ok().build();
     }
 
-    // ---------------------- REJEITAR (ADMIN) ----------------------
+    // ----------- REJEITAR (ADMIN) -----------
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/rejeitar")
     public ResponseEntity<Void> rejeitar(@PathVariable Long id) {
@@ -99,7 +116,7 @@ public class PropostaProjetoController {
         return ResponseEntity.ok().build();
     }
 
-    // ---------------------- CONVERSOR ----------------------
+    // ----------- CONVERSOR -----------
     private PropostaProjetoResponse toResponse(PropostaProjeto p) {
         return PropostaProjetoResponse.builder()
                 .id(p.getId())

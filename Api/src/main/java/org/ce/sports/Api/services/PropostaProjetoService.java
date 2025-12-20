@@ -56,33 +56,40 @@ public class PropostaProjetoService {
     // ----------- LISTAR MINHAS -----------
     @Transactional(readOnly = true)
     public List<PropostaProjeto> listarMinhas(String email) {
-        return propostaRepo.findByAlunoEmail(email);
+        return propostaRepo.findByAlunoEmailAndStatus(email, StatusProposta.PENDENTE);
     }
 
     // ----------- LISTAR COM AVALIAÇÕES -----------
     @Transactional(readOnly = true)
     public List<PropostaResponseDTO> listarComAvaliacoes(User usuario) {
-        return propostaRepo.findAll().stream().map(proposta -> {
 
-            Double media = avaliacaoRepo.calcularMediaPorProposta(proposta.getId());
+        return propostaRepo.findByStatus(StatusProposta.PENDENTE)
+                .stream()
+                .map(proposta -> {
 
-            Integer minhaNota = avaliacaoRepo
-                    .findByProposta_IdAndUsuario_Id(proposta.getId(), usuario.getId())
-                    .map(a -> a.getNota())
-                    .orElse(null);
+                    Double media = avaliacaoRepo.calcularMediaPorProposta(proposta.getId());
 
-            return PropostaResponseDTO.builder()
-                    .id(proposta.getId())
-                    .nome(proposta.getNome())
-                    .descricao(proposta.getDescricao())
-                    .modalidade(proposta.getModalidade())
-                    .local(proposta.getLocal())
-                    .alunoNome(proposta.getAluno().getNome())
-                    .vagasTotais(proposta.getVagasTotais())
-                    .mediaAvaliacoes(media != null ? media : 0.0)
-                    .minhaNota(minhaNota)
-                    .build();
-        }).toList();
+                    Integer minhaNota = avaliacaoRepo
+                            .findByProposta_IdAndUsuario_Id(
+                                    proposta.getId(),
+                                    usuario.getId()
+                            )
+                            .map(a -> a.getNota())
+                            .orElse(null);
+
+                    return PropostaResponseDTO.builder()
+                            .id(proposta.getId())
+                            .nome(proposta.getNome())
+                            .descricao(proposta.getDescricao())
+                            .modalidade(proposta.getModalidade())
+                            .local(proposta.getLocal())
+                            .alunoNome(proposta.getAluno().getNome())
+                            .vagasTotais(proposta.getVagasTotais())
+                            .mediaAvaliacoes(media != null ? media : 0.0)
+                            .minhaNota(minhaNota)
+                            .build();
+                })
+                .toList();
     }
 
     // ----------- ATUALIZAR -----------
@@ -92,19 +99,21 @@ public class PropostaProjetoService {
         PropostaProjeto proposta = propostaRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Proposta não encontrada"));
 
-        if (!proposta.getAluno().getEmail().equals(email))
+        if (!proposta.getAluno().getEmail().equals(email)) {
             throw new RuntimeException("Sem permissão");
+        }
 
-        if (proposta.getStatus() != StatusProposta.PENDENTE)
+        if (proposta.getStatus() != StatusProposta.PENDENTE) {
             throw new RuntimeException("Proposta já avaliada");
+        }
 
-        proposta.setNome(dto.getNome());
-        proposta.setDescricao(dto.getDescricao());
-        proposta.setModalidade(dto.getModalidade());
-        proposta.setLocal(dto.getLocal());
-        proposta.setDataInicio(dto.getDataInicio());
-        proposta.setDataFim(dto.getDataFim());
-        proposta.setVagasTotais(dto.getVagasTotais());
+        if (dto.getNome() != null) proposta.setNome(dto.getNome());
+        if (dto.getDescricao() != null) proposta.setDescricao(dto.getDescricao());
+        if (dto.getModalidade() != null) proposta.setModalidade(dto.getModalidade());
+        if (dto.getLocal() != null) proposta.setLocal(dto.getLocal());
+        if (dto.getDataInicio() != null) proposta.setDataInicio(dto.getDataInicio());
+        if (dto.getDataFim() != null) proposta.setDataFim(dto.getDataFim());
+        if (dto.getVagasTotais() != null) proposta.setVagasTotais(dto.getVagasTotais());
 
         return propostaRepo.save(proposta);
     }
@@ -116,10 +125,15 @@ public class PropostaProjetoService {
         PropostaProjeto proposta = propostaRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Proposta não encontrada"));
 
-        if (!proposta.getAluno().getEmail().equals(email))
+        if (!proposta.getAluno().getEmail().equals(email)) {
             throw new RuntimeException("Sem permissão");
+        }
 
-        propostaRepo.delete(proposta);
+        if (proposta.getStatus() != StatusProposta.PENDENTE) {
+            throw new RuntimeException("Proposta já avaliada");
+        }
+
+        propostaRepo.deleteById(id);
     }
 
     // ----------- APROVAR -----------
@@ -131,8 +145,9 @@ public class PropostaProjetoService {
 
         Double media = avaliacaoRepo.calcularMediaPorProposta(id);
 
-        if (media == null || media < 3.0)
+        if (media == null || media < 3.0) {
             throw new RuntimeException("Média insuficiente para aprovação");
+        }
 
         ProjetoEsportivo projeto = ProjetoEsportivo.builder()
                 .nome(proposta.getNome())
@@ -148,18 +163,19 @@ public class PropostaProjetoService {
 
         projetoRepo.save(projeto);
 
-        proposta.setStatus(StatusProposta.APROVADA);
-        propostaRepo.save(proposta);
+
+        propostaRepo.deleteById(id);
     }
 
     // ----------- REJEITAR -----------
     @Transactional
     public void rejeitar(Long id) {
 
-        PropostaProjeto proposta = propostaRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Proposta não encontrada"));
+        if (!propostaRepo.existsById(id)) {
+            throw new RuntimeException("Proposta não encontrada");
+        }
 
-        proposta.setStatus(StatusProposta.REJEITADA);
-        propostaRepo.save(proposta);
+
+        propostaRepo.deleteById(id);
     }
 }

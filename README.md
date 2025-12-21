@@ -83,7 +83,7 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 | **CSU14** | Visualizar notícias esportivas | Visitante |
 | **CSU15** | Logar no sistema | Aluno / Administrador |
 | **CSU16** | Entrar como visitante | Visitante |
-| **CSU17** | Visualizar estatísticas do time | Aluno |
+| **CSU17** | Gestão de equipes | Aluno |
 | **CSU18** | Propor projeto esportivo | Aluno |
 | **CSU19** | Avaliar e aprovar projetos esportivos | Administrador |
 | **CSU20** | Avaliar projetos | Aluno |

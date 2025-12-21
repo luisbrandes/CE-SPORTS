@@ -136,7 +136,7 @@ O sistema permite que **alunos, administradores e visitantes** acompanhem **camp
 |:-------------|:---------------|:--------|
 | **CSU07** | **Luís** | Inscrição e monitoramento de time |
 | **CSU18** | **Rúbia** | Propor projeto esportivo |
-| **CSU17** | **Miguel** | Gestão de time |
+| **CSU17** | **Miguel** | Gestão de equipes |
 | **CSU20** | **Mariana** | Avaliar projetos |
 | **CSU08** | **Ísis** | Ver informações de participação |
 

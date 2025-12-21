@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link"
 import {
@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 import { useSession } from "@/lib/session"
 
 interface SidebarProps {
-  onNavigate?: () => void
+  onNavigate?: () => void;
 }
 
 export function Sidebar({ onNavigate }: SidebarProps) {
@@ -20,15 +20,17 @@ export function Sidebar({ onNavigate }: SidebarProps) {
   const isAdmin = user?.role === "ADMIN"
 
   const navItems = [
-    { href: "/admin", label: "Dashboard", icon: Dumbbell },
-    { href: "/admin/treino", label: "Treino", icon: Calendar },
-    { href: "/admin/aprovacoesContas", label: "Usuários Pendentes", icon: Users },
-    { href: "/admin/noticia", label: "Notícias", icon: Newspaper },
-    { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
-    { href: "/admin/projetos", label: "Projetos", icon: Medal },
-    { href: "/admin/notificacoes", label: "Notificações", icon: Bell },
-    { href: "/", label: "Área do Aluno", icon: UserCircle}
-  ]
+  { href: "/admin", label: "Dashboard", icon: Dumbbell },
+  { href: "/admin/treino", label: "Treino", icon: Calendar },
+  { href: "/admin/aprovacoesContas", label: "Usuários Pendentes", icon: Users },
+  { href: "/admin/equipes", label: "Equipes", icon: Users }, 
+  { href: "/admin/noticia", label: "Notícias", icon: Newspaper },
+  { href: "/admin/campeonatos", label: "Campeonatos", icon: Trophy },
+  { href: "/admin/projetos", label: "Projetos", icon: Medal },
+  { href: "/admin/notificacoes", label: "Notificações", icon: Bell },
+  { href: "/", label: "Área do Aluno", icon: UserCircle }
+]
+
 
   return (
     <aside className="flex flex-col justify-between h-full">
@@ -70,5 +72,5 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         Sair
       </button>
     </aside>
-  )
+  );
 }

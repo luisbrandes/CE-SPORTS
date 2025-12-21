@@ -5,7 +5,14 @@ export async function middleware(req: NextRequest) {
   const sessionCookie = req.cookies.get("JSESSIONID")
   const url = req.nextUrl.clone()
 
-  if (!sessionCookie && url.pathname.startsWith("/aluno")) {
+  const isAlunoPage =
+    url.pathname.startsWith("/campeonatos") ||
+    url.pathname.startsWith("/equipes")
+
+  const isAdminPage = url.pathname.startsWith("/admin")
+
+  // 🔒 Páginas de aluno exigem login
+  if (!sessionCookie && isAlunoPage) {
     url.pathname = "/login"
     return NextResponse.redirect(url)
   }
@@ -25,18 +32,24 @@ export async function middleware(req: NextRequest) {
       const data = await res.json()
       const role = data.user?.role
 
-      // Mantém regra: aluno não acessa admin
-      if (url.pathname.startsWith("/admin") && role !== "ROLE_ADMIN") {
+      // 🔐 ADMIN: acesso total
+      if (isAdminPage && role !== "ROLE_ADMIN") {
         return NextResponse.redirect(new URL("/403", req.url))
       }
 
-      // Mantém regra para área do aluno
-      if (url.pathname.startsWith("/aluno") && role !== "ROLE_USER") {
+      // 🎓 Páginas de aluno:
+      // USER, ALUNO e ADMIN podem acessar
+      if (
+        isAlunoPage &&
+        !["ROLE_USER", "ROLE_ALUNO", "ROLE_ADMIN"].includes(role)
+      ) {
         return NextResponse.redirect(new URL("/403", req.url))
       }
 
     } catch (e) {
       console.error("Erro no middleware:", e)
+      url.pathname = "/login"
+      return NextResponse.redirect(url)
     }
   }
 
@@ -44,5 +57,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/aluno/:path*"],
+  matcher: ["/admin/:path*", "/campeonatos/:path*", "/equipes/:path*"],
 }

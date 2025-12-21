@@ -54,9 +54,9 @@ public class CampeonatoService {
                         .orElseGet(() -> equipeRepository.save(
                                 new Equipe(
                                         nomeEquipe,
-                                        new HashSet<>(),     // campeonatos
-                                        new HashSet<>(),     // integrantes
-                                        ModalidadeEnum.FUTEBOL // modalidade padrão
+                                        new HashSet<>(),
+                                        new HashSet<>(),
+                                        ModalidadeEnum.FUTEBOL
                                 )
                         ));
                 novasEquipes.add(equipe);

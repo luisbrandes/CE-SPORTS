@@ -23,10 +23,9 @@ public class PartidaController {
     private final EquipeRepository equipeRepository;
 
     public PartidaController(
-        PartidaRepository repository,
-        CampeonatoRepository campeonatoRepository,
-        EquipeRepository equipeRepository
-    ) {
+            PartidaRepository repository,
+            CampeonatoRepository campeonatoRepository,
+            EquipeRepository equipeRepository) {
         this.repository = repository;
         this.campeonatoRepository = campeonatoRepository;
         this.equipeRepository = equipeRepository;
@@ -52,7 +51,6 @@ public class PartidaController {
             return ResponseEntity.badRequest().body("Campeonato não encontrado.");
         }
 
-        // Buscar equipes
         Equipe equipe1 = equipeRepository.findByNome(partidaDto.equipe1()).orElse(null);
         Equipe equipe2 = equipeRepository.findByNome(partidaDto.equipe2()).orElse(null);
 
@@ -75,13 +73,12 @@ public class PartidaController {
         }
 
         Partida partida = new Partida(
-            campeonato,
-            equipe1,
-            equipe2,
-            partidaDto.pontuacao1(),
-            partidaDto.pontuacao2(),
-            partidaDto.data()
-        );
+                campeonato,
+                equipe1,
+                equipe2,
+                partidaDto.pontuacao1(),
+                partidaDto.pontuacao2(),
+                partidaDto.data());
 
         repository.save(partida);
 

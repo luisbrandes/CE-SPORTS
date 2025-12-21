@@ -109,7 +109,7 @@ export default function DetalhesEquipeAlunoPage() {
             Erro ao carregar equipe
           </h2>
           <p className="text-red-600">{error || "Equipe não encontrada"}</p>
-          <Link href="/aluno/equipes">
+          <Link href="/equipes">
             <Button variant="outline" className="mt-4">
               ← Voltar para Equipes
             </Button>
@@ -126,7 +126,7 @@ export default function DetalhesEquipeAlunoPage() {
           <div className="flex-1">
             <div className="flex items-center gap-4 mb-6">
               <Link
-                href="/aluno/equipes"
+                href="/equipes"
                 className="inline-flex items-center text-blue-600 hover:text-blue-800"
               >
                 <ChevronLeft className="h-4 w-4 mr-2" />
@@ -343,7 +343,7 @@ export default function DetalhesEquipeAlunoPage() {
                         </div>
                       </div>
 
-                      <Link href={`/aluno/campeonatos/${campeonato.id}`}>
+                      <Link href={`/campeonatos/${campeonato.id}`}>
                         <Button variant="ghost" size="sm">
                           Ver
                         </Button>

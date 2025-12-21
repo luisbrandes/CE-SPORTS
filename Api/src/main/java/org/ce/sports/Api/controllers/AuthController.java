@@ -89,7 +89,8 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(response);
-        
+    } // 👈 FECHAMENTO QUE FALTAVA
+
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> req) {
         return authService.forgotPassword(req);

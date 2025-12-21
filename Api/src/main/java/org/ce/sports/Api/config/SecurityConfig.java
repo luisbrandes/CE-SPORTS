@@ -32,41 +32,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-<<<<<<< HEAD
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/api/auth/**",
-                        "/h2-console/**",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**")
-                .permitAll()
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/aluno/**").hasAnyRole("USER", "ALUNO", "ADMIN")
-                .anyRequest().authenticated());
-=======
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
->>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
-                        // Liberação para CORS preflight (OPTIONS)
+                .authorizeHttpRequests(auth -> auth
+
+                        // Liberação para preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-<<<<<<< HEAD
-        http.logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout", "POST"))
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .clearAuthentication(true)
-                .permitAll());
-=======
-                        // Login, documentação e H2 console
-                        .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**")
-                        .permitAll()
+                        // Auth, docs e H2
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/h2-console/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()
 
                         // --------------------------
-                        // NOTIFICAÇÕES (CORRIGIDO)
+                        // NOTIFICAÇÕES
                         // --------------------------
                         .requestMatchers(HttpMethod.GET, "/api/notificacoes/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/notificacoes/**").authenticated()
@@ -106,21 +90,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/treinos/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/treinos/**").hasRole("ADMIN")
 
-                        // --------------------------
-                        // OUTRAS ROTAS ADMIN
-                        // --------------------------
-                        .requestMatchers("/api/campeonato/**").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // ADMIN
+                        .requestMatchers("/api/admin/**", "/api/campeonato/**").hasRole("ADMIN")
 
-                        // ROTAS DE ALUNO
+                        // ALUNO
                         .requestMatchers("/api/aluno/**")
                         .hasAnyRole("USER", "ALUNO", "ADMIN")
 
-                        // Qualquer outra rota → autenticado
+                        // Qualquer outra
                         .anyRequest().authenticated()
                 )
 
-                // Necessário para H2 Console
+                // Necessário para H2
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
                 // Logout
@@ -131,7 +112,6 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .permitAll()
                 );
->>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
         return http.build();
     }
@@ -147,23 +127,8 @@ public class SecurityConfig {
                         .password(user.getSenha())
                         .roles(user.getRole().name().replace("ROLE_", ""))
                         .build())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
-    }
-
-    // ========================================
-    // AUTENTICAÇÃO
-    // ========================================
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
     @Bean
@@ -171,33 +136,20 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // ========================================
-    // CORS
-    // ========================================
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-<<<<<<< HEAD
-        config.setAllowedOriginPatterns(List.of(
-                "http://localhost:3000",
-                "http://127.0.0.1:3000",
-                "http://localhost:8080",
-                "http://127.0.0.1:8080",
-                "http://192.168.*.*:8080"));
-
-=======
         config.setAllowedOrigins(List.of("http://localhost:3000"));
->>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
+        ));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
-
-        config.setExposedHeaders(List.of("Set-Cookie"));
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 

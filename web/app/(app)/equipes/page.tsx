@@ -22,6 +22,7 @@ import {
   Award,
   User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Equipe {
   id: number;
@@ -37,6 +38,7 @@ interface Equipe {
 const MODALIDADES = ["FUTEBOL", "BASQUETE", "HANDEBOL", "VOLEI"];
 
 export default function EquipesAlunoPage() {
+  const router = useRouter();
   const [equipes, setEquipes] = useState<Equipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -157,6 +159,7 @@ export default function EquipesAlunoPage() {
               Conheça todas as equipes esportivas da instituição
             </p>
           </div>
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -295,14 +298,14 @@ export default function EquipesAlunoPage() {
             </h3>
             <p className="text-gray-600 mb-6">
               {filtroNome ||
-              filtroModalidade !== "todas" ||
-              filtroStatus !== "ativas"
+                filtroModalidade !== "todas" ||
+                filtroStatus !== "ativas"
                 ? "Tente ajustar os filtros para encontrar equipes"
                 : "Nenhuma equipe cadastrada no sistema"}
             </p>
             {filtroNome ||
-            filtroModalidade !== "todas" ||
-            filtroStatus !== "ativas" ? (
+              filtroModalidade !== "todas" ||
+              filtroStatus !== "ativas" ? (
               <Button variant="outline" onClick={limparFiltros}>
                 Limpar filtros
               </Button>
@@ -379,7 +382,7 @@ export default function EquipesAlunoPage() {
                     </div>
                   )}
 
-                  <Link href={`/aluno/equipes/${equipe.id}`} className="block">
+                  <Link href={`/equipes/${equipe.id}`} className="block">
                     <Button variant="outline" className="w-full">
                       <Eye className="mr-2 h-4 w-4" />
                       Ver Detalhes
@@ -432,9 +435,8 @@ const Button = ({
   return (
     <button
       onClick={onClick}
-      className={`${baseClasses} ${sizeClasses} ${variantClasses} ${className} ${
-        disabled ? "opacity-50 cursor-not-allowed" : ""
-      }`}
+      className={`${baseClasses} ${sizeClasses} ${variantClasses} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       disabled={disabled}
     >
       {children}

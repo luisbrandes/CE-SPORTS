@@ -4,20 +4,15 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-<<<<<<< HEAD
+import lombok.*;
 import org.ce.sports.Api.enums.ModalidadeEnum;
-
-=======
-import lombok.Getter;
-import lombok.Setter;
-import org.ce.sports.Api.enums.ModalidadeEnum;
->>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "equipes")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Equipe {
 
     @Id
@@ -32,7 +27,6 @@ public class Equipe {
     private Set<Campeonato> campeonatos = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-<<<<<<< HEAD
     @JoinTable(name = "equipe_aluno", joinColumns = @JoinColumn(name = "equipe_id"), inverseJoinColumns = @JoinColumn(name = "aluno_id"))
     private Set<User> integrantes = new HashSet<>();
 
@@ -45,22 +39,10 @@ public class Equipe {
 
     @Column(name = "ativo", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean ativo = true;
-=======
-    @JoinTable(
-            name = "equipe_aluno",
-            joinColumns = @JoinColumn(name = "equipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "aluno_id")
-    )
-    private Set<User> integrantes = new HashSet<>();
-
-    private ModalidadeEnum modalidade;
-
->>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a
 
     public Equipe() {
     }
 
-<<<<<<< HEAD
     public Equipe(String nome, ModalidadeEnum modalidade) {
         this.nome = nome;
         this.modalidade = modalidade;
@@ -72,57 +54,9 @@ public class Equipe {
         this.descricao = descricao;
     }
 
-    public Long getId() {
-        return id;
+    public <E> Equipe(String nomeEquipe, HashSet<E> es, HashSet<E> es1, ModalidadeEnum modalidadeEnum) {
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Set<Campeonato> getCampeonatos() {
-        return campeonatos;
-    }
-
-    public void setCampeonatos(Set<Campeonato> campeonatos) {
-        this.campeonatos = campeonatos;
-    }
-
-    public Set<User> getIntegrantes() {
-        return integrantes;
-    }
-
-    public void setIntegrantes(Set<User> integrantes) {
-        this.integrantes = integrantes;
-    }
-
-    public ModalidadeEnum getModalidade() {
-        return modalidade;
-    }
-
-    public void setModalidade(ModalidadeEnum modalidade) {
-        this.modalidade = modalidade;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
 
     public void adicionarIntegrante(User aluno) {
         this.integrantes.add(aluno);
@@ -140,17 +74,3 @@ public class Equipe {
         this.campeonatos.remove(campeonato);
     }
 }
-=======
-
-    public Equipe(String nome,
-                  Set<Campeonato> campeonatos,
-                  Set<User> integrantes,
-                  ModalidadeEnum modalidade) {
-        this.nome = nome;
-        this.campeonatos = campeonatos;
-        this.integrantes = integrantes;
-        this.modalidade = modalidade;
-    }
-
-}
->>>>>>> 4b7c5599545fa01fdc2f9b9f0f459d1381ab978a

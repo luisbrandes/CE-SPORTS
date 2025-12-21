@@ -6,11 +6,8 @@ import org.ce.sports.Api.enums.RoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
-import java.util.ArrayList;
-
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,18 +39,22 @@ public class User implements UserDetails {
 
     @Builder.Default
     @ManyToMany
-    @JoinTable(name = "usuario_equipe", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "equipe_id"))
+    @JoinTable(
+            name = "usuario_equipe",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipe_id")
+    )
     private List<Equipe> equipes = new ArrayList<>();
 
     @Builder.Default
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(nullable = false)
     private boolean verified = false;
 
     @Column(name = "verification_code", length = 6)
     private String verificationCode;
 
     @Builder.Default
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(nullable = false)
     private boolean systemAdmin = false;
 
     @Column(name = "reset_token")
@@ -62,12 +63,15 @@ public class User implements UserDetails {
     @Column(name = "token_expiration")
     private LocalDateTime tokenExpiration;
 
-    @Column(
-            name = "receber_notificacoes",
-            nullable = false,
-            columnDefinition = "BOOLEAN DEFAULT TRUE"
-    )
-    private Boolean receberNotificacoes = true;
+    @Builder.Default
+    @Column(name = "receber_notificacoes", nullable = false)
+    private boolean receberNotificacoes = true;
+
+    @PrePersist
+    public void prePersist() {
+        this.receberNotificacoes = true;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -102,13 +106,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return verified;
-    }
-
-    public List<Equipe> getEquipes() {
-        return equipes;
-    }
-
-    public void setEquipes(List<Equipe> equipes) {
-        this.equipes = equipes;
     }
 }

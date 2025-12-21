@@ -159,7 +159,7 @@ export default function CampeonatosAlunoPage() {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/aluno/campeonatos/historico-partidas"
+              href="/campeonatos/historico-partidas"
               className="inline-flex items-center text-blue-600 hover:text-blue-800"
             >
               <Calendar className="h-4 w-4 mr-2" />

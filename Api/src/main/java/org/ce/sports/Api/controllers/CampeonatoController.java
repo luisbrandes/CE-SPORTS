@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.*;
 
-import org.ce.sports.Api.enums.ModalidadeEnum;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/campeonato")
@@ -25,17 +23,11 @@ public class CampeonatoController {
     private final CampeonatoRepository campeonatoRepository;
     private final EquipeRepository equipeRepository;
     private final ClassificacaoService classificacaoService;
-
-    public CampeonatoController(CampeonatoRepository campeonatoRepository,
-            EquipeRepository equipeRepository,
-            ClassificacaoService classificacaoService) {
-        this.campeonatoRepository = campeonatoRepository;
-        this.equipeRepository = equipeRepository;
-        this.classificacaoService = classificacaoService;
-    }
+    private final CampeonatoService campeonatoService;
 
     @PostMapping
     public ResponseEntity<?> adicionar(@Valid @RequestBody CampeonatoRequest request) {
+
         if (campeonatoRepository.existsByNome(request.nome())) {
             return ResponseEntity.status(409).body("Esse campeonato já existe");
         }
@@ -45,10 +37,16 @@ public class CampeonatoController {
         }
 
         Set<Equipe> equipes = new HashSet<>();
+
         for (String nomeEquipe : request.equipes()) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
                     .orElseGet(() -> equipeRepository.save(
-                            new Equipe(nomeEquipe, ModalidadeEnum.FUTEBOL) 
+                            new Equipe(
+                                    nomeEquipe,
+                                    new HashSet<>(),
+                                    new HashSet<>(),
+                                    ModalidadeEnum.FUTEBOL
+                            )
                     ));
             equipes.add(equipe);
         }
@@ -58,7 +56,8 @@ public class CampeonatoController {
                 equipes,
                 request.vitoria(),
                 request.derrota(),
-                request.empate());
+                request.empate()
+        );
 
         campeonatoRepository.save(campeonato);
         return ResponseEntity.status(201).build();
@@ -66,6 +65,7 @@ public class CampeonatoController {
 
     @GetMapping
     public ResponseEntity<List<CampeonatoResponse>> listarTodos() {
+
         List<CampeonatoResponse> resp = campeonatoRepository.findAll().stream()
                 .map(c -> new CampeonatoResponse(
                         c.getId(),
@@ -85,64 +85,76 @@ public class CampeonatoController {
                                         e.getIntegrantes().stream()
                                                 .map(user -> user.getNome())
                                                 .limit(3)
-                                                .toList()))
-                                .toList()))
+                                                .toList()
+                                ))
+                                .toList()
+                ))
                 .toList();
+
         return ResponseEntity.ok(resp);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CampeonatoResponse> buscarPorId(@PathVariable Long id) {
-        Optional<Campeonato> opt = campeonatoRepository.findById(id);
-        if (opt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Campeonato c = opt.get();
-        CampeonatoResponse resp = new CampeonatoResponse(
-                c.getId(),
-                c.getNome(),
-                c.getVitoria(),
-                c.getDerrota(),
-                c.getEmpate(),
-                c.getEquipes().stream()
-                        .map(e -> new EquipeResponse(
-                                e.getId(),
-                                e.getNome(),
-                                e.getModalidade(),
-                                e.getDescricao(),
-                                e.getIntegrantes().size(),
-                                e.getCampeonatos().size(),
-                                e.isAtivo(),
-                                e.getIntegrantes().stream()
-                                        .map(user -> user.getNome())
-                                        .limit(3)
-                                        .toList()))
-                        .toList());
-        return ResponseEntity.ok(resp);
+
+        return campeonatoRepository.findById(id)
+                .map(c -> ResponseEntity.ok(
+                        new CampeonatoResponse(
+                                c.getId(),
+                                c.getNome(),
+                                c.getVitoria(),
+                                c.getDerrota(),
+                                c.getEmpate(),
+                                c.getEquipes().stream()
+                                        .map(e -> new EquipeResponse(
+                                                e.getId(),
+                                                e.getNome(),
+                                                e.getModalidade(),
+                                                e.getDescricao(),
+                                                e.getIntegrantes().size(),
+                                                e.getCampeonatos().size(),
+                                                e.isAtivo(),
+                                                e.getIntegrantes().stream()
+                                                        .map(user -> user.getNome())
+                                                        .limit(3)
+                                                        .toList()
+                                        ))
+                                        .toList()
+                        )
+                ))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/classificacao")
     public ResponseEntity<List<ClassificacaoEquipe>> getClassificacao(@PathVariable Long id) {
+
+        return campeonatoRepository.findById(id)
+                .map(c -> ResponseEntity.ok(classificacaoService.calcularClassificacao(c)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/equipes")
+    public ResponseEntity<?> adicionarEquipes(
+            @PathVariable Long id,
+            @RequestBody List<String> nomesEquipes
+    ) {
+
         Optional<Campeonato> opt = campeonatoRepository.findById(id);
         if (opt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        List<ClassificacaoEquipe> classificacao = classificacaoService.calcularClassificacao(opt.get());
-        return ResponseEntity.ok(classificacao);
-    }
-
-    @PostMapping("/{id}/equipes")
-    public ResponseEntity<?> adicionarEquipes(@PathVariable Long id, @RequestBody List<String> nomesEquipes) {
-        Optional<Campeonato> opt = campeonatoRepository.findById(id);
-        if (opt.isEmpty())
-            return ResponseEntity.notFound().build();
-
         Campeonato campeonato = opt.get();
+
         for (String nomeEquipe : nomesEquipes) {
             Equipe equipe = equipeRepository.findByNome(nomeEquipe)
                     .orElseGet(() -> equipeRepository.save(
-                            new Equipe(nomeEquipe, ModalidadeEnum.FUTEBOL) // Modalidade padrão
+                            new Equipe(
+                                    nomeEquipe,
+                                    new HashSet<>(),
+                                    new HashSet<>(),
+                                    ModalidadeEnum.FUTEBOL
+                            )
                     ));
             campeonato.getEquipes().add(equipe);
         }
@@ -160,3 +172,4 @@ public class CampeonatoController {
         return ResponseEntity.ok("Campeonato atualizado (PATCH)!");
     }
 }
+

@@ -118,6 +118,20 @@ export default function AdminDashboardPage() {
             Envie comunicados para os usuários da plataforma.
           </p>
         </Card>
+
+        {/* Equipes */}
+        <Card
+          className="p-4 sm:p-5 lg:p-6 cursor-pointer bg-white border border-[#E5E7F0] rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+          onClick={() => router.push("/admin/equipes")}
+        >
+          <h2 className="text-base sm:text-lg font-semibold text-[#14539A] mb-1.5">
+            Equipes
+          </h2>
+          <p className="text-xs sm:text-sm text-[#7C8698] leading-relaxed">
+            Gerencie as equipes esportivas da plataforma. Crie times, edite informações,
+            defina integrantes e vincule equipes a campeonatos e treinos.
+          </p>
+        </Card>
       </section>
     </div>
   );

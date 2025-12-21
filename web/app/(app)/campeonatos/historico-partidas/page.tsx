@@ -185,7 +185,7 @@ export default function HistoricoPartidasAlunoPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
             <Link
-              href="/aluno/campeonatos"
+              href="/campeonatos"
               className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4"
             >
               <ChevronLeft className="h-4 w-4 mr-2" />

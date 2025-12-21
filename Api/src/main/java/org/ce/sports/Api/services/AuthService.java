@@ -161,6 +161,9 @@ public class AuthService {
     // ---------------------------
     // REGISTER
     // ---------------------------
+    // ---------------------------
+// REGISTER
+// ---------------------------
     public ResponseEntity<?> register(Register request) {
         try {
             if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -177,6 +180,8 @@ public class AuthService {
                         .senha(passwordEncoder.encode(request.getSenha()))
                         .role(RoleEnum.ROLE_USER)
                         .verified(false)
+                        .systemAdmin(false)
+                        .receberNotificacoes(true) // ✅ CORREÇÃO
                         .verificationCode(codigo)
                         .build();
 
@@ -197,6 +202,8 @@ public class AuthService {
                         .senha(passwordEncoder.encode(request.getSenha()))
                         .role(RoleEnum.ROLE_ADMIN)
                         .verified(false)
+                        .systemAdmin(false)
+                        .receberNotificacoes(true)
                         .verificationCode(null)
                         .build();
 
@@ -217,6 +224,7 @@ public class AuthService {
                     .body(Map.of("error", "Erro ao registrar: " + e.getMessage()));
         }
     }
+
 
     // ---------------------------
     // VERIFY

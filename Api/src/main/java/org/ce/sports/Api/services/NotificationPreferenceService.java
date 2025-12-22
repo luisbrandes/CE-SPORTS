@@ -1,4 +1,3 @@
-
 package org.ce.sports.Api.services;
 
 import lombok.RequiredArgsConstructor;
@@ -17,16 +16,15 @@ public class NotificationPreferenceService {
     private final NotificationPreferenceRepository repo;
     private final UserRepository userRepository;
 
+
     public boolean shouldReceiveNewsNotifications(Long userId) {
         return repo.findById(userId)
                 .map(NotificationPreference::isReceiveNews)
-                .orElseGet(() -> {
-                    User u = userRepository.findById(userId).orElse(null);
-                    if (u != null && u.getReceberNotificacoes() != null) {
-                        return u.getReceberNotificacoes();
-                    }
-                    return true;
-                });
+                .orElseGet(() ->
+                        userRepository.findById(userId)
+                                .map(User::isReceberNotificacoes)
+                                .orElse(true)
+                );
     }
 
     public boolean getPreference(Long userId) {
@@ -34,13 +32,16 @@ public class NotificationPreferenceService {
     }
 
     public void updatePreference(Long userId, boolean receive) {
-        NotificationPreference pref = repo.findById(userId).orElseGet(() -> {
-            NotificationPreference np = new NotificationPreference();
-            np.setUserId(userId);
-            return np;
-        });
+        NotificationPreference pref = repo.findById(userId)
+                .orElseGet(() -> {
+                    NotificationPreference np = new NotificationPreference();
+                    np.setUserId(userId);
+                    return np;
+                });
+
         pref.setReceiveNews(receive);
         repo.save(pref);
+
         userRepository.findById(userId).ifPresent(u -> {
             u.setReceberNotificacoes(receive);
             userRepository.save(u);

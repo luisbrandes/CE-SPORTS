@@ -136,7 +136,7 @@ export default function EditarProjetoPage() {
 
   return (
     <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6 lg:py-8 ">
-      {/* HEADER alinhado com o restante do painel */}
+      
       <header className="mb-6 lg:mb-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl border border-[#E5E7F0] px-4 sm:px-6 py-4 sm:py-5">
           <div>
@@ -159,14 +159,14 @@ export default function EditarProjetoPage() {
         </div>
       </header>
 
-      {/* FORMULÁRIO CENTRAL */}
+     
       <div className="flex justify-center">
         <Card className="w-full max-w-2xl bg-white border border-[#E5E7F0] rounded-2xl shadow-sm px-4 sm:px-6 lg:px-8 py-5 sm:py-6 lg:py-7">
           <form
             onSubmit={salvarAlteracoes}
             className="flex flex-col gap-4 sm:gap-5"
           >
-            {/* Nome */}
+       
             <div className="flex flex-col gap-1">
               <label className="text-xs sm:text-sm font-medium text-[#14539A]">
                 Nome
@@ -179,7 +179,7 @@ export default function EditarProjetoPage() {
               />
             </div>
 
-            {/* Descrição */}
+            
             <div className="flex flex-col gap-1">
               <label className="text-xs sm:text-sm font-medium text-[#14539A]">
                 Descrição
@@ -192,7 +192,6 @@ export default function EditarProjetoPage() {
               />
             </div>
 
-            {/* Modalidade */}
             <div className="flex flex-col gap-1">
               <label className="text-xs sm:text-sm font-medium text-[#14539A]">
                 Modalidade
@@ -205,7 +204,6 @@ export default function EditarProjetoPage() {
               />
             </div>
 
-            {/* Local */}
             <div className="flex flex-col gap-1">
               <label className="text-xs sm:text-sm font-medium text-[#14539A]">
                 Local
@@ -218,7 +216,6 @@ export default function EditarProjetoPage() {
               />
             </div>
 
-            {/* Datas */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <div className="flex-1 flex flex-col gap-1">
                 <label className="text-xs sm:text-sm font-medium text-[#14539A]">
@@ -247,7 +244,7 @@ export default function EditarProjetoPage() {
               </div>
             </div>
 
-            {/* Responsável */}
+     
             <div className="flex flex-col gap-1">
               <label className="text-xs sm:text-sm font-medium text-[#14539A]">
                 Responsável
@@ -260,7 +257,7 @@ export default function EditarProjetoPage() {
               />
             </div>
 
-            {/* Vagas Totais */}
+    
             <div className="flex flex-col gap-1">
               <label className="text-xs sm:text-sm font-medium text-[#14539A]">
                 Vagas totais
@@ -274,7 +271,6 @@ export default function EditarProjetoPage() {
               />
             </div>
 
-            {/* Ações */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button
                 type="submit"

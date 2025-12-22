@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import org.ce.sports.Api.entities.User;
+import org.ce.sports.Api.entities.Treino;
 
 @Entity
 @Table(name = "projetos_esportivos")
@@ -37,6 +38,10 @@ public class ProjetoEsportivo {
 
     @Column(nullable = false)
     private Integer vagasPreenchidas = 0;
+
+    @ManyToOne
+    @JoinColumn(name = "treino_id")
+    private Treino treino;
 
     @ManyToMany
     @JoinTable(

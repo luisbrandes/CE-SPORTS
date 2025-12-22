@@ -57,7 +57,7 @@ export default function NovoProjetoPage() {
 
   return (
     <div className="flex-1 px-4 sm:px-6 lg:px-8 py-6 lg:py-8 ">
-      {/* HEADER alinhado com o restante do painel */}
+     
       <header className="mb-6 lg:mb-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl border border-[#E5E7F0] px-4 sm:px-6 py-4 sm:py-5">
           <div>
@@ -80,11 +80,11 @@ export default function NovoProjetoPage() {
         </div>
       </header>
 
-      {/* FORM CENTRAL */}
+    
       <div className="flex justify-center">
         <Card className="max-w-2xl w-full bg-white border border-[#E5E7F0] rounded-2xl shadow-sm px-4 sm:px-6 lg:px-8 py-5 sm:py-6 lg:py-7">
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-            {/* Nome */}
+   
             <div className="flex flex-col gap-1">
               <label className="block text-xs sm:text-sm font-medium text-[#14539A]">
                 Nome do Projeto
@@ -99,7 +99,6 @@ export default function NovoProjetoPage() {
               />
             </div>
 
-            {/* Descrição */}
             <div className="flex flex-col gap-1">
               <label className="block text-xs sm:text-sm font-medium text-[#14539A]">
                 Descrição
@@ -115,7 +114,7 @@ export default function NovoProjetoPage() {
               />
             </div>
 
-            {/* Datas */}
+     
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="flex flex-col gap-1">
                 <label className="block text-xs sm:text-sm font-medium text-[#14539A]">
@@ -145,7 +144,6 @@ export default function NovoProjetoPage() {
               </div>
             </div>
 
-            {/* Local + Modalidade */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="flex flex-col gap-1">
                 <label className="block text-xs sm:text-sm font-medium text-[#14539A]">
@@ -175,7 +173,7 @@ export default function NovoProjetoPage() {
               </div>
             </div>
 
-            {/* Responsável */}
+
             <div className="flex flex-col gap-1">
               <label className="block text-xs sm:text-sm font-medium text-[#14539A]">
                 Responsável
@@ -190,7 +188,7 @@ export default function NovoProjetoPage() {
               />
             </div>
 
-            {/* Número de vagas */}
+
             <div className="flex flex-col gap-1">
               <label className="block text-xs sm:text-sm font-medium text-[#14539A]">
                 Número de Vagas
@@ -207,7 +205,6 @@ export default function NovoProjetoPage() {
               />
             </div>
 
-            {/* Ações */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button
                 type="submit"

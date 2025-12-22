@@ -28,7 +28,7 @@ export default function PropostasPage() {
   const [filtroModalidade, setFiltroModalidade] = useState("");
   const [filtroLocal, setFiltroLocal] = useState("");
 
-  // ---------------------- CARREGAR ----------------------
+
   const carregarPropostas = async () => {
     try {
       setLoading(true);
@@ -123,7 +123,6 @@ export default function PropostasPage() {
     }
   };
 
-  // ---------------------- REJEITAR ----------------------
   const rejeitar = async (id: number) => {
     if (!confirm("Deseja rejeitar esta proposta?")) return;
 

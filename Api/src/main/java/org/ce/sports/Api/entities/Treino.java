@@ -41,11 +41,11 @@ public class Treino {
     @Column(nullable = false)
     private String status = "ATIVO";
 
-    // 🔹 Período do treino recorrente
+
     private LocalDate dataInicio;
     private LocalDate dataFim;
 
-    // 🔹 Se não for recorrente, salva somente 1 data
+
     private LocalDate data;
 
     @ElementCollection(fetch = FetchType.EAGER)

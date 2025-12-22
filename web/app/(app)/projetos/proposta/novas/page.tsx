@@ -64,19 +64,19 @@ export default function ProporProjetoPage() {
 
   return (
     <main className="container mx-auto px-6 py-8 min-h-screen">
-      {/* Cabeçalho */}
+   
       <div className="max-w-2xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-4">
           Propor Novo Projeto
         </h1>
         <p className="text-xl text-gray-600">
-          Preencha o formulário abaixo para sugerir um novo projeto esportivo
+          Preencha o formulário abaixo para sugerir um NNNNNovo projeto esportivo
         </p>
       </div>
 
       <div className="max-w-2xl mx-auto">
         <Card className="p-8 bg-white border border-gray-200 shadow-xl rounded-2xl space-y-6">
-          {/* Voltar */}
+         
           <Button
             variant="ghost"
             onClick={() => router.back()}
@@ -86,9 +86,8 @@ export default function ProporProjetoPage() {
             Voltar aos projetos
           </Button>
 
-          {/* Formulário */}
           <div className="space-y-6">
-            {/* Nome */}
+   
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Nome do Projeto *
@@ -100,7 +99,6 @@ export default function ProporProjetoPage() {
               />
             </div>
 
-            {/* Modalidade */}
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Modalidade *
@@ -114,7 +112,6 @@ export default function ProporProjetoPage() {
               />
             </div>
 
-            {/* Local */}
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Local *
@@ -126,7 +123,7 @@ export default function ProporProjetoPage() {
               />
             </div>
 
-            {/* Vagas */}
+    
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Quantidade de Vagas *
@@ -145,7 +142,6 @@ export default function ProporProjetoPage() {
               />
             </div>
 
-            {/* Descrição */}
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Descrição *
@@ -159,7 +155,6 @@ export default function ProporProjetoPage() {
               />
             </div>
 
-            {/* Datas */}
             <div>
               <label className="text-sm font-semibold text-gray-700 mb-4 block">
                 Período *
@@ -185,14 +180,12 @@ export default function ProporProjetoPage() {
             </div>
           </div>
 
-          {/* Erro */}
           {erro && (
             <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
               <p className="text-sm text-red-700">{erro}</p>
             </div>
           )}
 
-          {/* Status */}
           <div className="pt-4 border-t">
             <span
               className={cn(
@@ -206,7 +199,6 @@ export default function ProporProjetoPage() {
             </span>
           </div>
 
-          {/* Botões */}
           <div className="flex gap-3 pt-4">
             <Button
               variant="outline"

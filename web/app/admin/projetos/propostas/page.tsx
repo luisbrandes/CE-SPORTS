@@ -22,12 +22,12 @@ export default function PropostasPage() {
   const [propostas, setPropostas] = useState<Proposta[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // ---------------------- CARREGAR ----------------------
+
   const carregarPropostas = async () => {
     try {
       const res = await fetch("http://localhost:8080/api/propostas", {
         credentials: "include",
-        cache: "no-store", // 🔥 evita cache
+        cache: "no-store", 
       });
 
       if (res.status === 401 || res.status === 403) {
@@ -54,7 +54,7 @@ export default function PropostasPage() {
     carregarPropostas();
   }, []);
 
-  // ---------------------- APROVAR ----------------------
+
   const aprovar = async (id: number) => {
     if (!confirm("Deseja aprovar esta proposta?")) return;
 
@@ -78,7 +78,7 @@ export default function PropostasPage() {
         return;
       }
 
-      // 🔥 garante sincronização total com o backend
+
       await carregarPropostas();
     } catch (err) {
       console.error(err);
@@ -86,7 +86,6 @@ export default function PropostasPage() {
     }
   };
 
-  // ---------------------- REJEITAR ----------------------
   const rejeitar = async (id: number) => {
     if (!confirm("Deseja rejeitar esta proposta?")) return;
 
@@ -109,20 +108,16 @@ export default function PropostasPage() {
         return;
       }
 
-      // 🔥 garante sincronização total com o backend
       await carregarPropostas();
     } catch (err) {
       console.error(err);
       alert("Erro ao rejeitar proposta");
     }
   };
-
-  // ---------------------- LOADING ----------------------
   if (loading) {
     return <p className="text-center mt-10">Carregando propostas...</p>;
   }
 
-  // ---------------------- VIEW ----------------------
   return (
     <div className="px-6 py-8">
       <h1 className="text-3xl font-bold text-[#14539A] mb-6">

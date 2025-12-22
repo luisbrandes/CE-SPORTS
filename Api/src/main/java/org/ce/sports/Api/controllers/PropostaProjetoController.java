@@ -23,7 +23,7 @@ public class PropostaProjetoController {
     private final PropostaProjetoService service;
     private final UserRepository userRepository;
 
-    // ----------- CRIAR -----------
+
     @PostMapping
     public ResponseEntity<PropostaProjetoResponse> criar(
             @RequestBody PropostaProjetoDTO dto,
@@ -38,7 +38,7 @@ public class PropostaProjetoController {
         );
     }
 
-    // ----------- MINHAS -----------
+
     @GetMapping("/minhas")
     public ResponseEntity<List<PropostaProjetoResponse>> minhas(Authentication auth) {
 
@@ -54,7 +54,7 @@ public class PropostaProjetoController {
         );
     }
 
-    // ----------- EDITAR -----------
+
     @PatchMapping("/{id}")
     public ResponseEntity<PropostaProjetoResponse> editar(
             @PathVariable Long id,
@@ -70,7 +70,7 @@ public class PropostaProjetoController {
         );
     }
 
-    // ----------- LISTAR TODAS (COM AVALIAÇÕES) -----------
+
     @GetMapping
     public ResponseEntity<List<PropostaResponseDTO>> listar(Authentication auth) {
 
@@ -86,7 +86,7 @@ public class PropostaProjetoController {
         );
     }
 
-    // ----------- EXCLUIR -----------
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(
             @PathVariable Long id,
@@ -100,7 +100,7 @@ public class PropostaProjetoController {
         return ResponseEntity.noContent().build();
     }
 
-    // ----------- APROVAR (ADMIN) -----------
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/aprovar")
     public ResponseEntity<Void> aprovar(@PathVariable Long id) {
@@ -108,7 +108,7 @@ public class PropostaProjetoController {
         return ResponseEntity.ok().build();
     }
 
-    // ----------- REJEITAR (ADMIN) -----------
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/rejeitar")
     public ResponseEntity<Void> rejeitar(@PathVariable Long id) {
@@ -116,7 +116,7 @@ public class PropostaProjetoController {
         return ResponseEntity.ok().build();
     }
 
-    // ----------- CONVERSOR -----------
+
     private PropostaProjetoResponse toResponse(PropostaProjeto p) {
         return PropostaProjetoResponse.builder()
                 .id(p.getId())

@@ -91,7 +91,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/treinos/**").hasRole("ADMIN")
 
                         // ADMIN
-                        .requestMatchers("/api/admin/**", "/api/campeonato/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         // ALUNO
                         .requestMatchers("/api/aluno/**")

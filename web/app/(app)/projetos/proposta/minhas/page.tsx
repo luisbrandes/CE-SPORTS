@@ -32,7 +32,7 @@ export default function MinhasPropostasPage() {
   async function carregar() {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8080/api/propostas/minhas", {
+      const res = await fetch("http://localhost:8080/api/proposta/minhas", {
         credentials: "include",
       });
       const data = await res.json();
@@ -64,7 +64,7 @@ export default function MinhasPropostasPage() {
         dataFim: p.dataFim || null,
       };
 
-      const res = await fetch(`http://localhost:8080/api/propostas/${p.id}`, {
+      const res = await fetch(`http://localhost:8080/api/proposta/${p.id}`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -102,7 +102,7 @@ export default function MinhasPropostasPage() {
     if (!confirm("Deseja realmente excluir esta proposta? Esta ação não pode ser desfeita.")) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/propostas/${id}`, {
+      const res = await fetch(`http://localhost:8080/api/proposta/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -184,7 +184,7 @@ export default function MinhasPropostasPage() {
             <br />
             <Button 
               
-              onClick={() => router.push("/projetos/propostas/novas")}
+              onClick={() => router.push("/projetos/proposta/novas")}
               className="text-blue-600 hover:text-blue-700 p-0 h-auto font-semibold"
             >
               Clique aqui para propor o primeiro!
